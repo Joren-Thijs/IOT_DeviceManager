@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOT_Thermostat.API", "IOT_Thermostat.API\IOT_Thermostat.API.csproj", "{3A5204FB-E0C3-4328-A974-6880DDC695F8}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IOT_Thermostat.IOT", "IOT_Thermostat.IOT\IOT_Thermostat.IOT.pyproj", "{9BD01788-425D-46EA-BE24-5304FFC2F5F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{3A5204FB-E0C3-4328-A974-6880DDC695F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A5204FB-E0C3-4328-A974-6880DDC695F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A5204FB-E0C3-4328-A974-6880DDC695F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BD01788-425D-46EA-BE24-5304FFC2F5F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BD01788-425D-46EA-BE24-5304FFC2F5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
