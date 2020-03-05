@@ -9,7 +9,7 @@ namespace IOT_Thermostat.API.Test
     class CalculationTests
     {
         [Test]
-        public void CheckCalculationServiceCanBeCreated_ReturnsFalse()
+        public void CheckCalculationServiceCanBeCreated_ReturnsTrue()
         {
             CalculationService calculationService = new CalculationService();
             Assert.IsNotNull(calculationService);

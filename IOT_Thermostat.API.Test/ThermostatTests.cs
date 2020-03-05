@@ -10,7 +10,7 @@ namespace IOT_Thermostat.API.Test
     {
 
         [Test]
-        public void CheckThermostatCanBeCreated_ReturnsFalse()
+        public void CheckThermostatCanBeCreated_ReturnsTrue()
         {
             Thermostat thermostat = new Thermostat();
             Assert.IsNotNull(thermostat);

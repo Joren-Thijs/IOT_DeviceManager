@@ -8,12 +8,11 @@ namespace IOT_Thermostat.API.Test
     {
 
         [Test]
-        public void CheckMeasurementCanBeCreated_ReturnsFalse()
+        public void CheckMeasurementCanBeCreated_ReturnsTrue()
         {
             Measurement measurement = new Measurement();
             Assert.IsNotNull(measurement);
         }
-
 
     }
 }
