@@ -4,16 +4,10 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace IOT_Thermostat.API.Test
+namespace IOT_Thermostat.API.Test.CalculationTests
 {
-    class CalculationTests
+    class CalculateAverageTests
     {
-        [Test]
-        public void CheckCalculationServiceCanBeCreated_ReturnsTrue()
-        {
-            CalculationService calculationService = new CalculationService();
-            Assert.IsNotNull(calculationService);
-        }
 
         [Test]
         public void CalculatingAverageWithOne_ReturnsTrue()

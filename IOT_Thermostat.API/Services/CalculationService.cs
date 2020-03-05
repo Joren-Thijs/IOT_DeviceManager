@@ -24,6 +24,12 @@ namespace IOT_Thermostat.API.Services
 
         public TimeSpan CalculateTotalOnTime(IEnumerable<Measurement> measurements)
         {
+            // Check for at least 2 measurements
+            if (measurements.Count() < 2)
+            {
+               throw new ArgumentException("At least 2 measurements are required to calculate the on time.");
+            }
+
             double secondsTurnedOn = 0;
             for (int i = 0; i < measurements.Count() - 1; i++)
             {
