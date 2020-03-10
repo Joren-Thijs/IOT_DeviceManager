@@ -12,8 +12,11 @@ class MQTTClient:
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
         self.client.connect("169.254.39.51", 1883, 60)
 
-    # The callback for when the client receives a CONNACK response from the server.
     def on_connect(self, client, userdata, flags, rc):
+        """
+        The callback for when the client receives a CONNACK response from the server.
+        :param client:
+        """
 
         print("Connected with result code "+str(rc))
 
@@ -21,6 +24,8 @@ class MQTTClient:
         # reconnect then subscriptions will be renewed.
         self.client.subscribe("#")
 
-    # The callback for when a PUBLISH message is received from the server.
     def on_message(self, client, userdata, msg):
+        """
+        The callback for when a PUBLISH message is received from the server.
+        """
         print(msg.topic+" "+str(msg.payload))
