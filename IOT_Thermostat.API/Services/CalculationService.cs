@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace IOT_Thermostat.API.Services
 {
@@ -36,7 +35,7 @@ namespace IOT_Thermostat.API.Services
                 // Check if thermostat was turned on during timespan
                 if (measurements.ToArray()[i].On && measurements.ToArray()[i + 1].On)
                 {
-                    TimeSpan diff = measurements.ToArray()[i].TimeStamp - measurements.ToArray()[i + 1].TimeStamp;
+                    TimeSpan diff = measurements.ToArray()[i+1].TimeStamp - measurements.ToArray()[i].TimeStamp;
                     secondsTurnedOn += diff.TotalSeconds;
                 }
             }

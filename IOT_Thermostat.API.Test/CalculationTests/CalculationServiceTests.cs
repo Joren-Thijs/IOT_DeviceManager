@@ -1,8 +1,6 @@
-﻿using IOT_Thermostat.API.Models;
-using IOT_Thermostat.API.Services;
+﻿using IOT_Thermostat.API.Services;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
+
 
 namespace IOT_Thermostat.API.Test.CalculationTests
 {

@@ -14,17 +14,16 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            Measurement measurement = new Measurement()
-            {
-                On = true,
-                SetPoint = 22f,
-                Temperature = 20f,
-                TimeStamp = DateTime.UtcNow
+            List<Measurement> measurements = new List<Measurement>()
+            { 
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                }
             };
-
-            List<Measurement> measurements = new List<Measurement>();
-
-            measurements.Add(measurement);
 
             var result = calculationService.CalculateAverageTemp(measurements);
 
@@ -36,26 +35,23 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            Measurement measurement1 = new Measurement()
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = true,
-                SetPoint = 22f,
-                Temperature = 20f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
-
-            Measurement measurement2 = new Measurement()
-            {
-                On = true,
-                SetPoint = 25f,
-                Temperature = 22f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            List<Measurement> measurements = new List<Measurement>();
-
-            measurements.Add(measurement1);
-            measurements.Add(measurement2);
 
             var result = calculationService.CalculateAverageTemp(measurements);
 
@@ -67,35 +63,30 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            Measurement measurement1 = new Measurement()
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = false,
-                SetPoint = 22f,
-                Temperature = 20f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 21f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
-
-            Measurement measurement2 = new Measurement()
-            {
-                On = false,
-                SetPoint = 25f,
-                Temperature = 22f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            Measurement measurement3 = new Measurement()
-            {
-                On = false,
-                SetPoint = 25f,
-                Temperature = 21f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            List<Measurement> measurements = new List<Measurement>();
-
-            measurements.Add(measurement1);
-            measurements.Add(measurement2);
-            measurements.Add(measurement3);
 
             var result = calculationService.CalculateAverageTemp(measurements);
 
@@ -107,35 +98,30 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            Measurement measurement1 = new Measurement()
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = true,
-                SetPoint = 22f,
-                Temperature = 20f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 21f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
-
-            Measurement measurement2 = new Measurement()
-            {
-                On = false,
-                SetPoint = 25f,
-                Temperature = 22f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            Measurement measurement3 = new Measurement()
-            {
-                On = true,
-                SetPoint = 25f,
-                Temperature = 21f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            List<Measurement> measurements = new List<Measurement>();
-
-            measurements.Add(measurement1);
-            measurements.Add(measurement2);
-            measurements.Add(measurement3);
 
             var result = calculationService.CalculateAverageTemp(measurements);
 
@@ -147,44 +133,142 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            Measurement measurement1 = new Measurement()
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = true,
-                SetPoint = 22f,
-                Temperature = 20f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 24f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 26f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
 
-            Measurement measurement2 = new Measurement()
+            var result = calculationService.CalculateAverageTemp(measurements);
+
+            Assert.AreEqual(23f, result);
+        }
+
+        [Test]
+        public void CalculatingAverageWithFiveAndDifferingOnStatus_ReturnsTrue()
+        {
+            CalculationService calculationService = new CalculationService();
+
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = false,
-                SetPoint = 25f,
-                Temperature = 22f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 24f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 26f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 23f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
 
-            Measurement measurement3 = new Measurement()
+            var result = calculationService.CalculateAverageTemp(measurements);
+
+            Assert.AreEqual(23f, result);
+        }
+
+        [Test]
+        public void CalculatingAverageWithSixAndDifferingOnStatus_ReturnsTrue()
+        {
+            CalculationService calculationService = new CalculationService();
+
+            List<Measurement> measurements = new List<Measurement>()
             {
-                On = true,
-                SetPoint = 30f,
-                Temperature = 24f,
-                TimeStamp = DateTime.UtcNow
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 22f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 24f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 26f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = false,
+                    SetPoint = 22f,
+                    Temperature = 23f,
+                    TimeStamp = DateTime.UtcNow
+                },
+                new Measurement
+                {
+                    On = true,
+                    SetPoint = 22f,
+                    Temperature = 23f,
+                    TimeStamp = DateTime.UtcNow
+                },
             };
-
-            Measurement measurement4 = new Measurement()
-            {
-                On = false,
-                SetPoint = 15f,
-                Temperature = 26f,
-                TimeStamp = DateTime.UtcNow
-            };
-
-            List<Measurement> measurements = new List<Measurement>();
-
-            measurements.Add(measurement1);
-            measurements.Add(measurement2);
-            measurements.Add(measurement3);
-            measurements.Add(measurement4);
 
             var result = calculationService.CalculateAverageTemp(measurements);
 
