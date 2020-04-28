@@ -68,7 +68,8 @@ class MQTTClient:
         self._client.loop_stop()
 
     def sendMeasurement(self, temperature):
-        self._client.publish("temperature", temperature, 0, False)
+        self._client.publish(
+            self.deviceName + "/measurement/temperature", temperature, 0, False)
 
     def getDeviceName(self):
         ethName = self.getEthName()
