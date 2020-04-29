@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import devicename as deviceName
 from time import sleep
 
 
@@ -8,16 +9,12 @@ class MQTTClient:
     """
 
     ''' Class Variables '''
-    deviceName = ""
     setpoint = 0  # Temperature setpoint
     temperature = 0  # Measured Temperature
 
     def __init__(self):
-        # set device name
-        self.deviceName = self.getDeviceName()
-
         # create mqtt client
-        self._client = mqtt.Client(client_id=self.deviceName, clean_session=False,
+        self._client = mqtt.Client(client_id=deviceName.getDeviceName(), clean_session=False,
                                    userdata=None, transport="tcp")
         self._client.on_connect = self.on_connect
         self._client.on_message = self.on_message
@@ -70,27 +67,3 @@ class MQTTClient:
 
     def sendMeasurement(self, temperature):
         self._client.publish("/measurement/temperature", temperature, 0, False)
-
-    def getDeviceName(self):
-        ethName = self.getEthName()
-        ethMAC = self.getMAC(ethName)
-        return ethMAC
-
-    def getEthName(self):
-        # Get name of the Ethernet interface
-        try:
-            for root, dirs, files in os.walk('/sys/class/net'):
-                for dir in dirs:
-                    if dir[:3] == 'enx' or dir[:3] == 'eth':
-                        interface = dir
-        except:
-            interface = "None"
-        return interface
-
-    def getMAC(self, interface='eth0'):
-        # Return the MAC address of the specified interface
-        try:
-            str = open('/sys/class/net/%s/address' % interface).read()
-        except:
-            str = "00:00:00:00:00:00"
-        return str[0:17]
