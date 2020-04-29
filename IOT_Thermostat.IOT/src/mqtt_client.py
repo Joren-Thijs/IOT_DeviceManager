@@ -13,13 +13,14 @@ class MQTTClient:
     temperature = 0  # Measured Temperature
 
     def __init__(self):
-        # create mqtt client
-        self._client = mqtt.Client()
-        self._client.on_connect = self.on_connect
-        self._client.on_message = self.on_message
-
         # set device name
         self.deviceName = self.getDeviceName()
+
+        # create mqtt client
+        self._client = mqtt.Client(client_id=self.deviceName, clean_session=False,
+                                   userdata=None, transport="tcp")
+        self._client.on_connect = self.on_connect
+        self._client.on_message = self.on_message
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
         self._client.connect("169.254.39.51", 1883, 60)
@@ -68,13 +69,12 @@ class MQTTClient:
         self._client.loop_stop()
 
     def sendMeasurement(self, temperature):
-        self._client.publish(
-            self.deviceName + "/measurement/temperature", temperature, 0, False)
+        self._client.publish("/measurement/temperature", temperature, 0, False)
 
     def getDeviceName(self):
         ethName = self.getEthName()
         ethMAC = self.getMAC(ethName)
-        return hash(ethMAC)
+        return ethMAC
 
     def getEthName(self):
         # Get name of the Ethernet interface
