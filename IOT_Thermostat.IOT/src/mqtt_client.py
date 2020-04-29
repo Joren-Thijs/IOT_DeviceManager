@@ -5,10 +5,11 @@ from time import sleep
 
 class MQTTClient:
     """
-    This is MQTT wrapper class for our thermostat.
+    This is an MQTT wrapper class for our thermostat.
     """
 
     ''' Class Variables '''
+    status = False  # Thermostat ON/OFF status
     setpoint = 0  # Temperature setpoint
     temperature = 0  # Measured Temperature
 
@@ -35,11 +36,11 @@ class MQTTClient:
         :param rc: the connection result
         """
 
-        print("Connected with result code "+str(rc))
+        print("Connected with result code " + str(rc))
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe("#")
+        self._client.subscribe("/commands/")
 
     def on_message(self, client, userdata, msg):
         """
@@ -50,6 +51,12 @@ class MQTTClient:
         :param msg: an instance of MQTTMessage. This is a class with members topic, payload, qos, retain.
         """
         print(msg.topic+" "+str(msg.payload))
+
+        if msg.topic == "cmd/status":
+            self.status = msg.payload
+
+        if msg.topic == "cmd/setpoint":
+            self.setpoint = msg.payload
 
     def startListening(self):
         """
@@ -65,5 +72,10 @@ class MQTTClient:
         """
         self._client.loop_stop()
 
-    def sendMeasurement(self, temperature):
-        self._client.publish("/measurement/temperature", temperature, 0, False)
+    def sendMeasurement(self, temperature, setpoint, status):
+        data = {
+            'temp': temperature,
+            'sp': setpoint,
+            'st': status
+        }
+        self._client.publish("ms", data, 0, False)
