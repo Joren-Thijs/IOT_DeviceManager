@@ -72,10 +72,10 @@ class MQTTClient:
         """
         self._client.loop_stop()
 
-    def sendMeasurement(self, temperature, setpoint, status):
+    def sendMeasurement(self, temperature):
         data = {
             'temp': temperature,
-            'sp': setpoint,
-            'st': status
+            'sp': self.setpoint,
+            'st': self.status
         }
         self._client.publish("ms", data, 0, False)
