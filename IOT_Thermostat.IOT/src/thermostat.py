@@ -11,6 +11,8 @@ import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 # 7 Segment displays
 from adafruit_ht16k33 import segments
+# mqtt client
+from mqtt_client import MQTTClient
 
 ''' Global Variables '''
 sleepTime = 1  # Sleep Time in seconds
@@ -81,6 +83,11 @@ webButton = Button(24)
 # Outputs ##########################################################
 statusLED = LED(5)
 heater = LED(6)
+####################################################################
+
+# MQTT Client ######################################################
+# Create the MQTT client
+mqtt = MQTTClient()
 ####################################################################
 
 ''' Main Loop '''
