@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 import devicename as deviceName
+import json
 from time import sleep
 
 
@@ -9,7 +10,7 @@ class MQTTClient:
     """
 
     ''' Class Variables '''
-    status = False  # Thermostat ON/OFF status
+    status = True  # Thermostat ON/OFF status
     setpoint = 0  # Temperature setpoint
     temperature = 0  # Measured Temperature
 
@@ -40,7 +41,7 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe("/commands/")
+        self._client.subscribe("cmd/#")
 
     def on_message(self, client, userdata, msg):
         """
@@ -50,13 +51,23 @@ class MQTTClient:
         :param userdata: the private user data as set in Client() or user_data_set()
         :param msg: an instance of MQTTMessage. This is a class with members topic, payload, qos, retain.
         """
-        print(msg.topic+" "+str(msg.payload))
+        print(msg.topic+" "+str(msg.payload.decode('utf-8')))
 
         if msg.topic == "cmd/status":
-            self.status = msg.payload
+            # Decode the bytes string into a unicode string
+            payload = msg.payload.decode('utf-8')
+            # Convert the string back to dictionary
+            command = json.loads(payload)
+            # Grab the status string from the payload dict
+            self.status = command['status'] == 'True'
 
         if msg.topic == "cmd/setpoint":
-            self.setpoint = msg.payload
+            # Decode the bytes string into a unicode string
+            payload = msg.payload.decode('utf-8')
+            # Convert the string back to dictionary
+            command = json.loads(payload)
+            # Grab the setpoint string from the payload dict
+            self.setpoint = command['setpoint']
 
     def startListening(self):
         """
@@ -78,4 +89,5 @@ class MQTTClient:
             'sp': self.setpoint,
             'st': self.status
         }
-        self._client.publish("ms", data, 0, False)
+        payload = json.dumps(data)
+        self._client.publish("ms", payload, 0, False)
