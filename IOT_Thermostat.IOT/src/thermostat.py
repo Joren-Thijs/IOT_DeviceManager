@@ -102,6 +102,7 @@ while True:
         # Clear The dispalys
         setpointDisplay.fill(0)
         tempDisplay.fill(0)
+        setpointDisplay.print("0ff")
         continue
 
     # If the thermostat is on
@@ -109,6 +110,7 @@ while True:
 
     # Check if we are using the web controller to control the setpoint
     if not webButton.is_pressed:
+        mqtt.status = True
         setpoint = remap_temp(manualSetpoint.value)
     else:
         setpoint = mqtt.setpoint
