@@ -19,6 +19,7 @@ class MQTTClient:
         self._client = mqtt.Client(client_id=deviceName.getDeviceName(), clean_session=False,
                                    userdata=None, transport="tcp")
         self._client.on_connect = self.on_connect
+        self._client.on_disconnect = self.on_disconnect
         self._client.on_message = self.on_message
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
@@ -42,6 +43,10 @@ class MQTTClient:
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
         self._client.subscribe("cmd/#")
+
+    def on_disconnect(self, client, userdata, rc):
+        if rc != 0:
+            self.status = False
 
     def on_message(self, client, userdata, msg):
         """
