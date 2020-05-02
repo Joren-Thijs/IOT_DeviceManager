@@ -40,6 +40,35 @@ def remap_temp(value):
     return remap_range(value, 0, 65535, -5, 40)
 
 
+def initialise():
+    ''' This code is run on startup '''
+
+    # Measure temperature
+    temperature = remap_temp(tempSensor.value)
+
+    # measure setpoint
+    setpoint = remap_temp(manualSetpoint.value)
+
+    # Set values to mqqt client
+    mqtt.temperature = temperature
+    mqtt.setpoint = setpoint
+    mqtt.status = False
+
+    # Turn off status LED's
+    statusLED.off()
+    heater.off()
+
+    # Clear The dispalys
+    setpointDisplay.fill(0)
+    tempDisplay.fill(0)
+
+    # Display the off status
+    setpointDisplay.print("0ff")
+
+    # Display the current Temperature
+    tempDisplay.print(temperature)
+
+
 ''' Initialization '''
 
 # SPI Bus ##########################################################
@@ -90,10 +119,16 @@ heater = LED(6)
 mqtt = MQTTClient()
 ####################################################################
 
+# Initialize the Thermostat
+initialise()
+
 ''' Main Loop '''
 while True:
     # Sleep to unburden the CPU
     sleep(sleepTime)
+
+    # Measure temperature
+    temperature = remap_temp(tempSensor.value)
 
     # Check if the heater is ON/OFF
     if not onButton.is_pressed or onButton.is_pressed and webButton.is_pressed and not mqtt.status:
@@ -102,7 +137,10 @@ while True:
         # Clear The dispalys
         setpointDisplay.fill(0)
         tempDisplay.fill(0)
+        # Display the off status
         setpointDisplay.print("0ff")
+        # Display the current Temperature
+        tempDisplay.print(temperature)
         continue
 
     # If the thermostat is on
@@ -112,11 +150,9 @@ while True:
     if not webButton.is_pressed:
         mqtt.status = True
         setpoint = remap_temp(manualSetpoint.value)
+        mqtt.setpoint = setpoint
     else:
         setpoint = mqtt.setpoint
-
-    # Measure temperature
-    temperature = remap_temp(tempSensor.value)
 
     # Check if temperature is to far below the setpoint and turn on the heater
     if temperature < setpoint - temperatureTolerance:
