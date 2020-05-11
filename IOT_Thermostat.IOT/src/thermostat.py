@@ -23,6 +23,116 @@ temperatureTolerance = 2  # Temperature Hysteris Area
 ''' Functions '''
 
 
+def initialize():
+    # SPI Bus ##########################################################
+    # create the spi bus
+    spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
+
+    # create the cs (chip select)
+    cs = digitalio.DigitalInOut(board.D8)
+    ####################################################################
+
+    # I2C Bus ##########################################################
+    # Create the I2C interface.
+    i2c = busio.I2C(board.SCL, board.SDA)
+    ####################################################################
+
+    # ADC ##############################################################
+    # create the mcp object
+    mcp = MCP.MCP3008(spi, cs)
+
+    # create an analog input channel on pin 0
+    global manualSetpoint
+    manualSetpoint = AnalogIn(mcp, MCP.P0)
+    # create an analog input channel on pin 1
+    global tempSensor
+    tempSensor = AnalogIn(mcp, MCP.P1)
+    ####################################################################
+
+    # 7 Segment displays ###############################################
+    # This creates a 7 segment 4 character display:
+    global setpointDisplay
+    setpointDisplay = segments.Seg7x4(i2c, 0x70)
+    global tempDisplay
+    tempDisplay = segments.Seg7x4(i2c, 0x71)
+
+    # Clear the display.
+    setpointDisplay.fill(0)
+    tempDisplay.fill(0)
+    ####################################################################
+
+    # Inputs ###########################################################
+    global onButton
+    onButton = Button(23)
+    global webButton
+    webButton = Button(24)
+    ####################################################################
+
+    # Outputs ##########################################################
+    global statusLED
+    statusLED = LED(5)
+    global heater
+    heater = LED(6)
+    ####################################################################
+
+    # MQTT Client ######################################################
+    # Create the MQTT client
+    global mqtt
+    mqtt = MQTTClient()
+    ####################################################################
+
+
+def startup():
+
+    measure_temperature()
+
+    measure_setpoint()
+
+    # Set values to mqqt client
+    mqtt.temperature = temperature
+    mqtt.setpoint = setpoint
+    mqtt.status = False
+
+    turn_off_leds()
+
+    display_off_status()
+
+    display_temperature()
+
+
+def measure_temperature():
+    temperature = remap_temp(tempSensor.value)
+
+
+def measure_setpoint():
+    setpoint = remap_temp(manualSetpoint.value)
+
+
+def turn_off_leds():
+    statusLED.off()
+    heater.off()
+
+
+def clear_displays():
+    setpointDisplay.fill(0)
+    tempDisplay.fill(0)
+
+
+def display_off_status():
+    setpointDisplay.fill(0)
+    setpointDisplay.print("0ff")
+
+
+def display_temperature():
+    tempDisplay.fill(0)
+    tempDisplay.print(temperature)
+
+
+def display_setpoint():
+    setpointDisplay.fill(0)
+    setpointDisplay.print(setpoint)
+
+
 def remap_range(value, left_min, left_max, right_min, right_max):
     # this remaps a value from original (left) range to new (right) range
     # Figure out how 'wide' each range is
@@ -40,95 +150,17 @@ def remap_temp(value):
     return remap_range(value, 0, 65535, -5, 40)
 
 
-def initialise():
-    ''' This code is run on startup '''
-
-    # Measure temperature
-    temperature = remap_temp(tempSensor.value)
-
-    # measure setpoint
-    setpoint = remap_temp(manualSetpoint.value)
-
-    # Set values to mqqt client
-    mqtt.temperature = temperature
-    mqtt.setpoint = setpoint
-    mqtt.status = False
-
-    # Turn off status LED's
-    statusLED.off()
-    heater.off()
-
-    # Clear The dispalys
-    setpointDisplay.fill(0)
-    tempDisplay.fill(0)
-
-    # Display the off status
-    setpointDisplay.print("0ff")
-
-    # Display the current Temperature
-    tempDisplay.print(temperature)
-
-
 ''' Initialization '''
 
-# SPI Bus ##########################################################
-# create the spi bus
-spi = busio.SPI(clock=board.SCK, MISO=board.MISO, MOSI=board.MOSI)
-
-# create the cs (chip select)
-cs = digitalio.DigitalInOut(board.D8)
-####################################################################
-
-# I2C Bus ##########################################################
-# Create the I2C interface.
-i2c = busio.I2C(board.SCL, board.SDA)
-####################################################################
-
-# ADC ##############################################################
-# create the mcp object
-mcp = MCP.MCP3008(spi, cs)
-
-# create an analog input channel on pin 0
-manualSetpoint = AnalogIn(mcp, MCP.P0)
-# create an analog input channel on pin 1
-tempSensor = AnalogIn(mcp, MCP.P1)
-####################################################################
-
-# 7 Segment displays ###############################################
-# This creates a 7 segment 4 character display:
-setpointDisplay = segments.Seg7x4(i2c, 0x70)
-tempDisplay = segments.Seg7x4(i2c, 0x71)
-
-# Clear the display.
-setpointDisplay.fill(0)
-tempDisplay.fill(0)
-####################################################################
-
-# Inputs ###########################################################
-onButton = Button(23)
-webButton = Button(24)
-####################################################################
-
-# Outputs ##########################################################
-statusLED = LED(5)
-heater = LED(6)
-####################################################################
-
-# MQTT Client ######################################################
-# Create the MQTT client
-mqtt = MQTTClient()
-####################################################################
-
-# Initialize the Thermostat
-initialise()
+initialize()
+startup()
 
 ''' Main Loop '''
 while True:
     # Sleep to unburden the CPU
     sleep(sleepTime)
 
-    # Measure temperature
-    temperature = remap_temp(tempSensor.value)
+    measure_temperature()
 
     # Check if the heater is ON/OFF
     if not onButton.is_pressed or onButton.is_pressed and webButton.is_pressed and not mqtt.status:
@@ -149,7 +181,7 @@ while True:
     # Check if we are using the web controller to control the setpoint
     if not webButton.is_pressed:
         mqtt.status = True
-        setpoint = remap_temp(manualSetpoint.value)
+        measure_setpoint()
         mqtt.setpoint = setpoint
     else:
         setpoint = mqtt.setpoint
@@ -162,15 +194,9 @@ while True:
     if temperature > setpoint + temperatureTolerance:
         heater.off()
 
-    # Clear The dispalys
-    setpointDisplay.fill(0)
-    tempDisplay.fill(0)
+    display_setpoint()
 
-    # Display the current Setpoint
-    setpointDisplay.print(setpoint)
-
-    # Display the current Temperature
-    tempDisplay.print(temperature)
+    display_temperature()
 
     # Send Measurement Data
     if webButton.is_pressed:
