@@ -133,6 +133,16 @@ def display_setpoint():
     setpointDisplay.print(setpoint)
 
 
+def control_heater():
+    # Check if temperature is to far below the setpoint and turn on the heater
+    if temperature < setpoint - temperatureTolerance:
+        heater.on()
+
+    # Check if temperature is to far above the setpoint and turn off the heater
+    if temperature > setpoint + temperatureTolerance:
+        heater.off()
+
+
 def remap_range(value, left_min, left_max, right_min, right_max):
     # this remaps a value from original (left) range to new (right) range
     # Figure out how 'wide' each range is
@@ -186,13 +196,7 @@ while True:
     else:
         setpoint = mqtt.setpoint
 
-    # Check if temperature is to far below the setpoint and turn on the heater
-    if temperature < setpoint - temperatureTolerance:
-        heater.on()
-
-    # Check if temperature is to far above the setpoint and turn off the heater
-    if temperature > setpoint + temperatureTolerance:
-        heater.off()
+    control_heater()
 
     display_setpoint()
 
