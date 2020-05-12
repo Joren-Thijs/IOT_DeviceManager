@@ -119,8 +119,14 @@ def clear_displays():
 
 
 def display_off_status():
-    setpointDisplay.fill(0)
+    turn_off_leds()
+    clear_displays()
     setpointDisplay.print("0ff")
+    display_temperature()
+
+
+def display_on_status():
+    statusLED.on()
 
 
 def display_temperature():
@@ -160,6 +166,18 @@ def remap_temp(value):
     return remap_range(value, 0, 65535, -5, 40)
 
 
+def is_using_web():
+    return webButton.is_pressed
+
+
+def is_on():
+    return (onButton.is_pressed and not is_using_web()) or (is_using_web() and mqtt.status)
+
+
+def send_measurements():
+    mqtt.sendMeasurement(temperature)
+
+
 ''' Initialization '''
 
 initialize()
@@ -172,24 +190,16 @@ while True:
 
     measure_temperature()
 
-    # Check if the heater is ON/OFF
-    if not onButton.is_pressed or onButton.is_pressed and webButton.is_pressed and not mqtt.status:
-        statusLED.off()
-        heater.off()
-        # Clear The dispalys
-        setpointDisplay.fill(0)
-        tempDisplay.fill(0)
-        # Display the off status
-        setpointDisplay.print("0ff")
-        # Display the current Temperature
-        tempDisplay.print(temperature)
+    # Check if the thermostat is ON/OFF
+    if not is_on():
+        display_off_status()
         continue
 
     # If the thermostat is on
-    statusLED.on()
+    display_on_status()
 
     # Check if we are using the web controller to control the setpoint
-    if not webButton.is_pressed:
+    if not is_using_web():
         mqtt.status = True
         measure_setpoint()
         mqtt.setpoint = setpoint
@@ -202,6 +212,4 @@ while True:
 
     display_temperature()
 
-    # Send Measurement Data
-    if webButton.is_pressed:
-        mqtt.sendMeasurement(temperature)
+    send_measurements()
