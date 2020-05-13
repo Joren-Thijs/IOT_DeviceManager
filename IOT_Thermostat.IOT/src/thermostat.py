@@ -16,8 +16,6 @@ from mqtt_client import MQTTClient
 
 ''' Global Variables '''
 sleepTime = 1  # Sleep Time in seconds
-setpoint = 0  # Temperature setpoint
-temperature = 0  # Measured Temperature
 temperatureTolerance = 2  # Temperature Hysteris Area
 
 ''' Functions '''
@@ -88,11 +86,6 @@ def startup():
 
     measure_setpoint()
 
-    # Set values to mqqt client
-    mqtt.temperature = temperature
-    mqtt.setpoint = setpoint
-    mqtt.status = False
-
     turn_off_leds()
 
     display_off_status()
@@ -101,11 +94,11 @@ def startup():
 
 
 def measure_temperature():
-    temperature = remap_temp(tempSensor.value)
+    mqtt.temperature = remap_temp(tempSensor.value)
 
 
 def measure_setpoint():
-    setpoint = remap_temp(manualSetpoint.value)
+    mqtt.setpoint = remap_temp(manualSetpoint.value)
 
 
 def turn_off_leds():
@@ -131,21 +124,21 @@ def display_on_status():
 
 def display_temperature():
     tempDisplay.fill(0)
-    tempDisplay.print(temperature)
+    tempDisplay.print(mqtt.temperature)
 
 
 def display_setpoint():
     setpointDisplay.fill(0)
-    setpointDisplay.print(setpoint)
+    setpointDisplay.print(mqtt.setpoint)
 
 
 def control_heater():
     # Check if temperature is to far below the setpoint and turn on the heater
-    if temperature < setpoint - temperatureTolerance:
+    if mqtt.temperature < mqtt.setpoint - temperatureTolerance:
         heater.on()
 
     # Check if temperature is to far above the setpoint and turn off the heater
-    if temperature > setpoint + temperatureTolerance:
+    if mqtt.temperature > mqtt.setpoint + temperatureTolerance:
         heater.off()
 
 
@@ -175,7 +168,7 @@ def is_on():
 
 
 def send_measurements():
-    mqtt.sendMeasurement(temperature)
+    mqtt.sendMeasurement()
 
 
 ''' Initialization '''
@@ -202,9 +195,6 @@ while True:
     if not is_using_web():
         mqtt.status = True
         measure_setpoint()
-        mqtt.setpoint = setpoint
-    else:
-        setpoint = mqtt.setpoint
 
     control_heater()
 
