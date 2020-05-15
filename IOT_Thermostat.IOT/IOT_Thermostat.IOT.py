@@ -1,18 +1,22 @@
 ''' Imports '''
 
-from time import sleep
-# GPIO
-from gpiozero import LED, Button
-import busio
-import digitalio
-import board
-# ADC
-import adafruit_mcp3xxx.mcp3008 as MCP
-from adafruit_mcp3xxx.analog_in import AnalogIn
-# 7 Segment displays
-from adafruit_ht16k33 import segments
-# mqtt client
 from mqtt_client import MQTTClient
+from adafruit_ht16k33 import segments
+from adafruit_mcp3xxx.analog_in import AnalogIn
+import adafruit_mcp3xxx.mcp3008 as MCP
+import board
+import digitalio
+import busio
+from gpiozero import LED, Button
+from time import sleep
+# environment variables
+from dotenv import load_dotenv
+load_dotenv()
+# GPIO
+# ADC
+# 7 Segment displays
+# mqtt client
+
 
 ''' Global Variables '''
 sleepTime = 2  # Sleep Time in seconds
