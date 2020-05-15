@@ -75,7 +75,7 @@ class MQTTClient:
         try:
             command = json.loads(payload)
         except:
-            print("error while decoding")
+            print("error while decoding payload")
             return
         # Grab the status string from the payload dict
         self.lock.acquire()
@@ -98,7 +98,7 @@ class MQTTClient:
         try:
             command = json.loads(payload)
         except:
-            print("error while decoding")
+            print("error while decoding payload")
             return
         # Grab the setpoint string from the payload dict
         self.setpoint = command['setpoint']
