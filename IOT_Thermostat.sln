@@ -9,26 +9,6 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "IOT_Thermostat.IOT", "IOT_T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOT_Thermostat.API.Test", "IOT_Thermostat.API.Test\IOT_Thermostat.API.Test.csproj", "{C9FAD091-2A34-4809-80D8-EC73827FFE6B}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IOT_Thermostat.Web", "IOT_Thermostat.Web\", "{30D4A449-CE40-4506-B10F-49B2ADDF10AB}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_59247"
-		Debug.AspNetCompiler.PhysicalPath = "IOT_Thermostat.Web\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59247\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_59247"
-		Release.AspNetCompiler.PhysicalPath = "IOT_Thermostat.Web\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_59247\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "59247"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,10 +25,6 @@ Global
 		{C9FAD091-2A34-4809-80D8-EC73827FFE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9FAD091-2A34-4809-80D8-EC73827FFE6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9FAD091-2A34-4809-80D8-EC73827FFE6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{30D4A449-CE40-4506-B10F-49B2ADDF10AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30D4A449-CE40-4506-B10F-49B2ADDF10AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30D4A449-CE40-4506-B10F-49B2ADDF10AB}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{30D4A449-CE40-4506-B10F-49B2ADDF10AB}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
