@@ -80,25 +80,13 @@ def initialize():
     ####################################################################
 
 
-def startup():
-
-    measure_temperature()
-
-    measure_setpoint()
-
-    turn_off_leds()
-
-    display_off_status()
-
-    display_temperature()
-
-
 def measure_temperature():
     mqtt.temperature = remap_temp(tempSensor.value)
 
 
 def measure_setpoint():
-    mqtt.setpoint = remap_temp(manualSetpoint.value)
+    if not is_using_web():
+        mqtt.setpoint = remap_temp(manualSetpoint.value)
 
 
 def turn_off_leds():
@@ -120,6 +108,15 @@ def display_off_status():
 
 def display_on_status():
     statusLED.on()
+    display_temperature()
+    display_setpoint()
+
+
+def display_status():
+    if is_on():
+        display_on_status()
+    else:
+        display_off_status()
 
 
 def display_temperature():
@@ -133,6 +130,9 @@ def display_setpoint():
 
 
 def control_heater():
+    if not is_on():
+        return
+
     # Check if temperature is to far below the setpoint and turn on the heater
     if mqtt.temperature < mqtt.setpoint - temperatureTolerance:
         heater.on()
@@ -164,7 +164,12 @@ def is_using_web():
 
 
 def is_on():
-    return (onButton.is_pressed and not is_using_web()) or (is_using_web() and mqtt.status)
+    mqtt.lock.acquire()
+    on = onButton.is_pressed and not is_using_web()
+    on_web = is_using_web() and mqtt.status
+    mqtt.status = on or on_web
+    mqtt.lock.release()
+    return mqtt.status
 
 
 def send_measurements():
@@ -174,7 +179,6 @@ def send_measurements():
 ''' Initialization '''
 
 initialize()
-startup()
 
 ''' Main Loop '''
 while True:
@@ -183,23 +187,10 @@ while True:
 
     measure_temperature()
 
-    # Check if the thermostat is ON/OFF
-    if not is_on():
-        display_off_status()
-        continue
+    measure_setpoint()
 
-    # If the thermostat is on
-    display_on_status()
-
-    # Check if we are using the web controller to control the setpoint
-    if not is_using_web():
-        mqtt.status = True
-        measure_setpoint()
+    display_status()
 
     control_heater()
-
-    display_setpoint()
-
-    display_temperature()
 
     send_measurements()

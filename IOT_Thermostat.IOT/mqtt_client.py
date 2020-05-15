@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import devicename as deviceName
 import json
+import threading
 from time import sleep
 
 
@@ -10,6 +11,7 @@ class MQTTClient:
     """
 
     ''' Class Variables '''
+    lock = threading.RLock()
     status = False  # Thermostat ON/OFF status
     setpoint = 0  # Temperature setpoint
     temperature = 0  # Measured Temperature
@@ -18,7 +20,8 @@ class MQTTClient:
         # create mqtt client
         self._client = mqtt.Client(client_id=deviceName.getDeviceName(), clean_session=False,
                                    userdata=None, transport="tcp")
-        self._client.will_set("diconnect", payload=None, qos=0, retain=False)
+        self._client.will_set(
+            "diconnect", payload="disconnected", qos=1, retain=False)
 
         self._client.on_connect = self.on_connect
         self._client.on_disconnect = self.on_disconnect
@@ -29,7 +32,7 @@ class MQTTClient:
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect_async("192.168.0.178", 1883, 60)
+        self._client.connect("192.168.0.178", 1883, 30)
 
         self.startListening()
 
@@ -68,7 +71,9 @@ class MQTTClient:
         # Convert the string back to dictionary
         command = json.loads(payload)
         # Grab the status string from the payload dict
+        self.lock.acquire()
         self.status = command['status'] == 'True'
+        self.lock.release()
 
     def on_setpoint_message(self, client, userdata, msg):
         """
@@ -108,5 +113,4 @@ class MQTTClient:
             'st': self.status
         }
         payload = json.dumps(data)
-        print("Sending message with payload: " + str(payload))
         self._client.publish("ms", payload, 0, False)
