@@ -29,7 +29,7 @@ class MQTTClient:
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect_async("169.254.39.51", 1883, 60)
+        self._client.connect_async("192.168.0.178", 1883, 60)
 
         self.startListening()
 
@@ -108,4 +108,5 @@ class MQTTClient:
             'st': self.status
         }
         payload = json.dumps(data)
+        print("Sending message with payload: " + str(payload))
         self._client.publish("ms", payload, 0, False)
