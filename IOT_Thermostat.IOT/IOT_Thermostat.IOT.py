@@ -9,13 +9,6 @@ import digitalio
 import busio
 from gpiozero import LED, Button
 from time import sleep
-# environment variables
-from dotenv import load_dotenv
-load_dotenv()
-# GPIO
-# ADC
-# 7 Segment displays
-# mqtt client
 
 
 ''' Global Variables '''

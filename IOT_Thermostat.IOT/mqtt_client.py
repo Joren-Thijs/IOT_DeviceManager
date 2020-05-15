@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import devicename as deviceName
 import json
 import threading
+import settings
 from time import sleep
 
 
@@ -32,7 +33,8 @@ class MQTTClient:
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect_async("192.168.0.178", 1883, 30)
+        self._client.connect_async(
+            settings.MQTT_BROKER_NAME, settings.MQTT_BROKER_PORT, 30)
 
         self.startListening()
 
