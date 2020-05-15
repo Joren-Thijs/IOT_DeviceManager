@@ -1,8 +1,6 @@
 ﻿using IOT_Thermostat.API.Models;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace IOT_Thermostat.API.Test
 {
@@ -10,7 +8,7 @@ namespace IOT_Thermostat.API.Test
     {
 
         [Test]
-        public void CheckThermostatCanBeCreated_ReturnsFalse()
+        public void CheckThermostatCanBeCreated_ReturnsTrue()
         {
             Thermostat thermostat = new Thermostat();
             Assert.IsNotNull(thermostat);
