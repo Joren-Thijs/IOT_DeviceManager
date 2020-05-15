@@ -25,14 +25,14 @@ class MQTTClient:
 
         self._client.on_connect = self.on_connect
         self._client.on_disconnect = self.on_disconnect
-        self._client.reconnect_delay_set(min_delay=5, max_delay=120)
+        self._client.reconnect_delay_set(min_delay=5, max_delay=20)
 
         self._client.message_callback_add("cmd/status", self.on_status_message)
         self._client.message_callback_add(
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect_async("192.168.0.178", 1883, 30)
+        self._client.connect_async("192.168.0.178", 1883, 20)
 
         self.startListening()
 
@@ -53,8 +53,11 @@ class MQTTClient:
         self._client.subscribe("cmd/#")
 
     def on_disconnect(self, client, userdata, rc):
+        print(rc)
         if rc != 0:
+            self.lock.acquire()
             self.status = False
+            self.lock.release()
 
     def on_status_message(self, client, userdata, msg):
         """
