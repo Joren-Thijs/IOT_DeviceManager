@@ -32,7 +32,7 @@ class MQTTClient:
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect_async("192.168.0.178", 1883, 20)
+        self._client.connect_async("192.168.0.178", 1883, 30)
 
         self.startListening()
 
@@ -53,7 +53,6 @@ class MQTTClient:
         self._client.subscribe("cmd/#")
 
     def on_disconnect(self, client, userdata, rc):
-        print(rc)
         if rc != 0:
             self.lock.acquire()
             self.status = False
@@ -123,5 +122,10 @@ class MQTTClient:
             'sp': self.setpoint,
             'st': self.status
         }
-        payload = json.dumps(data)
+        try:
+            payload = json.dumps(data)
+        except:
+            print("error while encoding payload")
+            return
+
         self._client.publish("ms", payload, 0, False)
