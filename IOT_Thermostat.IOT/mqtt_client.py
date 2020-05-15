@@ -13,7 +13,7 @@ class MQTTClient:
     ''' Class Variables '''
     lock = threading.RLock()
     status = False  # Thermostat ON/OFF status
-    setpoint = 0  # Temperature setpoint
+    setpoint = 20  # Temperature setpoint
     temperature = 0  # Measured Temperature
 
     def __init__(self):
@@ -25,14 +25,14 @@ class MQTTClient:
 
         self._client.on_connect = self.on_connect
         self._client.on_disconnect = self.on_disconnect
-        self._client.reconnect_delay_set(min_delay=10, max_delay=120)
+        self._client.reconnect_delay_set(min_delay=5, max_delay=120)
 
         self._client.message_callback_add("cmd/status", self.on_status_message)
         self._client.message_callback_add(
             "cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
-        self._client.connect("192.168.0.178", 1883, 30)
+        self._client.connect_async("192.168.0.178", 1883, 30)
 
         self.startListening()
 
@@ -69,7 +69,11 @@ class MQTTClient:
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
         # Convert the string back to dictionary
-        command = json.loads(payload)
+        try:
+            command = json.loads(payload)
+        except:
+            print("error while decoding")
+            return
         # Grab the status string from the payload dict
         self.lock.acquire()
         self.status = command['status'] == 'True'
@@ -88,7 +92,11 @@ class MQTTClient:
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
         # Convert the string back to dictionary
-        command = json.loads(payload)
+        try:
+            command = json.loads(payload)
+        except:
+            print("error while decoding")
+            return
         # Grab the setpoint string from the payload dict
         self.setpoint = command['setpoint']
 
