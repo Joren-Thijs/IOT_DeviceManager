@@ -15,7 +15,7 @@ from adafruit_ht16k33 import segments
 from mqtt_client import MQTTClient
 
 ''' Global Variables '''
-sleepTime = 1  # Sleep Time in seconds
+sleepTime = 2  # Sleep Time in seconds
 temperatureTolerance = 2  # Temperature Hysteris Area
 
 ''' Functions '''
