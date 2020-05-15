@@ -341,3 +341,6 @@ healthchecksdb
 
 # .ropeproject related files
 .vscode/.ropeproject/
+
+# ignore environment files
+*.env
