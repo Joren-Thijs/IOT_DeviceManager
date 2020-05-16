@@ -19,7 +19,7 @@ class MQTTClient:
 
     def __init__(self):
         # create mqtt client
-        self._client = mqtt.Client(client_id=deviceName.getDeviceName(), clean_session=False,
+        self._client = mqtt.Client(client_id=settings.DEVICE_NAME, clean_session=False,
                                    userdata=None, transport="tcp")
         self._client.will_set(
             "diconnect", payload="disconnected", qos=1, retain=False)
@@ -28,9 +28,10 @@ class MQTTClient:
         self._client.on_disconnect = self.on_disconnect
         self._client.reconnect_delay_set(min_delay=5, max_delay=20)
 
-        self._client.message_callback_add("cmd/status", self.on_status_message)
         self._client.message_callback_add(
-            "cmd/setpoint", self.on_setpoint_message)
+            settings.DEVICE_NAME + "/cmd/status", self.on_status_message)
+        self._client.message_callback_add(
+            settings.DEVICE_NAME + "/cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
         self._client.connect_async(
@@ -52,7 +53,7 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe("cmd/#")
+        self._client.subscribe(settings.DEVICE_NAME + "/cmd/#")
 
     def on_disconnect(self, client, userdata, rc):
         if rc != 0:
@@ -80,7 +81,7 @@ class MQTTClient:
             return
         # Grab the status string from the payload dict
         self.lock.acquire()
-        self.status = command['status'] == 'True'
+        self.status = command['status'] == 'True' or command['status'] == 'true'
         self.lock.release()
 
     def on_setpoint_message(self, client, userdata, msg):
@@ -130,4 +131,4 @@ class MQTTClient:
             print("error while encoding payload")
             return
 
-        self._client.publish("ms", payload, 0, False)
+        self._client.publish(settings.DEVICE_NAME + "/ms", payload, 0, False)
