@@ -69,7 +69,6 @@ class MQTTClient:
         :param userdata: the private user data as set in Client() or user_data_set()
         :param msg: an instance of MQTTMessage. This is a class with members topic, payload, qos, retain.
         """
-        print(msg.topic+" "+str(msg.payload.decode('utf-8')))
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
@@ -92,7 +91,6 @@ class MQTTClient:
         :param userdata: the private user data as set in Client() or user_data_set()
         :param msg: an instance of MQTTMessage. This is a class with members topic, payload, qos, retain.
         """
-        print(msg.topic+" "+str(msg.payload.decode('utf-8')))
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
