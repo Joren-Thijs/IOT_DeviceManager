@@ -53,7 +53,7 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe(settings.DEVICE_NAME + "/cmd/#")
+        self._client.subscribe(settings.DEVICE_NAME + "/cmd/+")
 
     def on_disconnect(self, client, userdata, rc):
         if rc != 0:
@@ -82,6 +82,7 @@ class MQTTClient:
         self.lock.acquire()
         self.status = command['status'] == 'True' or command['status'] == 'true'
         self.lock.release()
+        self.sendStatusResponse()
 
     def on_setpoint_message(self, client, userdata, msg):
         """
@@ -130,3 +131,18 @@ class MQTTClient:
             return
 
         self._client.publish(settings.DEVICE_NAME + "/ms", payload, 0, False)
+
+    def sendStatusResponse(self):
+        data = {
+            'temp': self.temperature,
+            'sp': self.setpoint,
+            'st': self.status
+        }
+        try:
+            payload = json.dumps(data)
+        except:
+            print("error while encoding payload")
+            return
+
+        self._client.publish(settings.DEVICE_NAME +
+                             "/cmd/status/response", payload, 0, False)

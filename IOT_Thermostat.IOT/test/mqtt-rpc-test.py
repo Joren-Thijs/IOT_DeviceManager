@@ -10,7 +10,7 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("MQTTnet.RPC/#")
+    client.subscribe("#")
 
 
 def on_message(client, userdata, msg):
@@ -38,3 +38,4 @@ client.loop_start()
 
 while True:
     sleep(5)
+    #client.publish("test", 25, 0, False)
