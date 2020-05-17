@@ -1,5 +1,4 @@
-﻿using Mqtt.Client.AspNetCore.Options;
-using MQTTnet.Client.Options;
+﻿using MQTTnet.Client.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;

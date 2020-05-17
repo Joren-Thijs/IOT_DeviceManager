@@ -12,7 +12,7 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
 
         private IMqttClient client;
 
-        public AspMqttClient(IMqttClientOptions options)
+        public AspMqttClient()
         {
             Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
             client = new MqttFactory().CreateMqttClient();
