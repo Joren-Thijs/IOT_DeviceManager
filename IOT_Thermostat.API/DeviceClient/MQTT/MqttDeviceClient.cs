@@ -4,6 +4,8 @@ using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.Rpc;
 using MQTTnet.Extensions.Rpc.Options;
+using MQTTnet.Protocol;
+using System;
 using System.Threading.Tasks;
 
 namespace Mqtt.Client.AspNetCore.DeviceClient
@@ -23,8 +25,13 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
             Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
             rpcOptions = MqttDeviceClientOptionsLoader.LoadMqttRpcClientOptions();
             client = new MqttFactory().CreateMqttClient();
-            client.UseApplicationMessageReceivedHandler(OnMessage);
             rpcClient = new MqttRpcClient(client, rpcOptions);
+            SetupClient();
+        }
+
+        private void SetupClient()
+        {
+            client.UseApplicationMessageReceivedHandler(OnMessage);
         }
 
         public virtual void OnMessage(MqttApplicationMessageReceivedEventArgs eventArgs)
@@ -50,9 +57,11 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
             throw new System.NotImplementedException();
         }
 
-        public Task SetDeviceStatus()
+        public async Task SetDeviceStatus(string deviceName)
         {
-            throw new System.NotImplementedException();
+            string topic = deviceName + ".cmd.status";
+            string payload = "{\"status\":\"true\"}";
+            await rpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload, MqttQualityOfServiceLevel.AtLeastOnce);
         }
     }
 }
