@@ -1,4 +1,7 @@
-﻿using MQTTnet.Client.Options;
+﻿using IOT_Thermostat.API.DeviceClient.MQTT.MqttRpcClientDeviceTopicGenerationStrategies;
+using MQTTnet.Client.Options;
+using MQTTnet.Extensions.Rpc.Options;
+using MQTTnet.Extensions.Rpc.Options.TopicGeneration;
 using System;
 
 namespace IOT_Thermostat.API.DeviceClient.MQTT.Options
@@ -18,6 +21,15 @@ namespace IOT_Thermostat.API.DeviceClient.MQTT.Options
                 .WithClientId(clientId)
                 .WithCredentials(clientUsername, clientPassword)
                 .WithTcpServer(brokerServer, brokerPort)
+                .Build();
+        }
+
+        public static IMqttRpcClientOptions LoadMqttRpcClientOptions()
+        {
+            IMqttRpcClientTopicGenerationStrategy strategy = new MqttRpcClientDeviceTopicGenerationStrategy();
+
+            return new MqttRpcClientOptionsBuilder()
+                .WithTopicGenerationStrategy(strategy)
                 .Build();
         }
     }

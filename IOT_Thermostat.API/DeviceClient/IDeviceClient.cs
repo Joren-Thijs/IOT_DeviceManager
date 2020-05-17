@@ -6,6 +6,6 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
     {
         Task StartClientAsync();
         Task StopClientAsync();
-        Task SetDeviceStatus();
+        Task SetDeviceStatus(string deviceName);
     }
 }
