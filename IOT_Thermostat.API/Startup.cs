@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IOT_Thermostat.API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,8 @@ namespace IOT_Thermostat.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHostedService<MQTTHostService>();
+            services.AddScoped<IDeviceClient, MQTTCLientService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
