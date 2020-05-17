@@ -2,6 +2,8 @@
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
+using MQTTnet.Extensions.Rpc;
+using MQTTnet.Extensions.Rpc.Options;
 using System.Threading.Tasks;
 
 namespace Mqtt.Client.AspNetCore.DeviceClient
@@ -10,13 +12,19 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
     {
         private readonly IMqttClientOptions Options;
 
+        private readonly IMqttRpcClientOptions rpcOptions;
+
         private IMqttClient client;
+
+        private MqttRpcClient rpcClient;
 
         public MqttDeviceClient()
         {
             Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
+            rpcOptions = MqttDeviceClientOptionsLoader.LoadMqttRpcClientOptions();
             client = new MqttFactory().CreateMqttClient();
             client.UseApplicationMessageReceivedHandler(OnMessage);
+            rpcClient = new MqttRpcClient(client, rpcOptions);
         }
 
         public virtual void OnMessage(MqttApplicationMessageReceivedEventArgs eventArgs)
