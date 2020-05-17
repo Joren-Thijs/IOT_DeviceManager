@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Mqtt.Client.AspNetCore.DeviceClient
 {
-    public class AspMqttClient : IDeviceClient
+    public class MqttDeviceClient : IDeviceClient
     {
         private readonly IMqttClientOptions Options;
 
         private IMqttClient client;
 
-        public AspMqttClient()
+        public MqttDeviceClient()
         {
             Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
             client = new MqttFactory().CreateMqttClient();
@@ -29,7 +29,7 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
         {
             await client.ConnectAsync(Options);
             System.Console.WriteLine("Client is connected");
-            await client.SubscribeAsync("#");
+            await client.SubscribeAsync("+/ms");
             System.Console.WriteLine("Subscribed on a channel");
             if(!client.IsConnected)
             {

@@ -11,7 +11,7 @@ namespace Mqtt.Client.AspNetCore.Extensions
     {
         public static IServiceCollection AddDeviceClientHostedService(this IServiceCollection services)
         {
-            services.AddTransient<IDeviceClient, AspMqttClient>();
+            services.AddTransient<IDeviceClient, MqttDeviceClient>();
             services.AddSingleton<DeviceClientService>();
             services.AddSingleton<IHostedService>(serviceProvider =>
             {
