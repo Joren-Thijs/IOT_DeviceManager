@@ -31,13 +31,37 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
 
         private void SetupClient()
         {
-            client.UseApplicationMessageReceivedHandler(OnMessage);
+            client.UseApplicationMessageReceivedHandler(OnMessageAsync);
         }
 
-        public virtual void OnMessage(MqttApplicationMessageReceivedEventArgs eventArgs)
+        public virtual async Task OnMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
+            string topic = eventArgs.ApplicationMessage.Topic;
             System.Console.WriteLine("A message is received");
-            System.Console.WriteLine(eventArgs.ApplicationMessage.Topic);
+            System.Console.WriteLine(topic);
+            if (eventArgs.ApplicationMessage.Topic.EndsWith("/ping"))
+            {
+                await RespondToPing(topic);
+            }
+
+            if (eventArgs.ApplicationMessage.Topic.EndsWith("/ms"))
+            {
+                await HandleMeasurement(eventArgs.ApplicationMessage);
+            }
+        }
+
+        private async Task RespondToPing(string topic)
+        {
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic(topic + "/response")
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                .Build();
+            await client.PublishAsync(message);
+        }
+
+        private async Task HandleMeasurement(MqttApplicationMessage message)
+        {
+            
         }
 
         public async Task StartClientAsync()
@@ -45,6 +69,7 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
             await client.ConnectAsync(Options);
             System.Console.WriteLine("Client is connected");
             await client.SubscribeAsync("+/ms");
+            await client.SubscribeAsync("+/ping");
             System.Console.WriteLine("Subscribed on a channel");
             if(!client.IsConnected)
             {
