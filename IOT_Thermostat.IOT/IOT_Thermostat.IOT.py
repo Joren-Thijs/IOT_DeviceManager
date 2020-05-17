@@ -161,11 +161,11 @@ def is_using_web():
 
 
 def is_on():
-    mqtt.lock.acquire()
+    mqtt.status_lock.acquire()
     on = onButton.is_pressed and not is_using_web()
     on_web = is_using_web() and mqtt.status
     mqtt.status = on or on_web
-    mqtt.lock.release()
+    mqtt.status_lock.release()
     return mqtt.status
 
 

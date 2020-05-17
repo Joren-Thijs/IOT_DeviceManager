@@ -3,6 +3,7 @@ import devicename as deviceName
 import json
 import threading
 import settings
+import asyncio
 from time import sleep
 
 
@@ -12,8 +13,11 @@ class MQTTClient:
     """
 
     ''' Class Variables '''
-    lock = threading.RLock()
-    status = False  # Thermostat ON/OFF status
+    status_lock = threading.RLock()
+    _api_connection_lock = threading.RLock()
+    _api_answer_received_lock = threading.RLock()
+    _api_connection = True
+    _status = False  # Thermostat ON/OFF status
     setpoint = 20  # Temperature setpoint
     temperature = 0  # Measured Temperature
 
@@ -28,6 +32,8 @@ class MQTTClient:
         self._client.on_disconnect = self.on_disconnect
         self._client.reconnect_delay_set(min_delay=5, max_delay=20)
 
+        self._client.message_callback_add(
+            settings.DEVICE_NAME + "/ping/response", self.on_ping_message)
         self._client.message_callback_add(
             settings.DEVICE_NAME + "/cmd/status", self.on_status_message)
         self._client.message_callback_add(
@@ -53,13 +59,50 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
+        self._client.subscribe(settings.DEVICE_NAME + "/ping/response")
         self._client.subscribe(settings.DEVICE_NAME + "/cmd/+")
+        print("starting thread creation")
+        thread = threading.Thread(target=self.api_connection_handler_async)
+        thread.start()
+        print("Connection handler finished")
 
     def on_disconnect(self, client, userdata, rc):
         if rc != 0:
-            self.lock.acquire()
+            print("disconnected unexpectedly")
+            self.status_lock.acquire()
             self.status = False
-            self.lock.release()
+            self.status_lock.release()
+
+    def api_connection_handler_async(self):
+        print("api_connection_handler_async started")
+        while True:
+            self.ping_api()
+            sleep(10)
+            self.check_api_answer()
+            self.check_api_connection()
+
+    def ping_api(self):
+        self._api_answer_received_lock.acquire()
+        self._api_answer_received = False
+        self._api_answer_received_lock.release()
+        self._client.publish(settings.DEVICE_NAME + "/ping", "", 0, False)
+
+    def on_ping_message(self, client, userdata, msg):
+        self._api_answer_received_lock.acquire()
+        self._api_answer_received = True
+        self._api_answer_received_lock.release()
+
+    def check_api_answer(self):
+        self._api_connection_lock.acquire()
+        self._api_answer_received_lock.acquire()
+        self._api_connection = self._api_answer_received
+        self._api_answer_received_lock.release()
+        self._api_connection_lock.release()
+
+    def check_api_connection(self):
+        if not self._api_connection:
+            print("Lost connection to web api")
+            self._status = False
 
     def on_status_message(self, client, userdata, msg):
         """
@@ -79,9 +122,9 @@ class MQTTClient:
             print("error while decoding payload")
             return
         # Grab the status string from the payload dict
-        self.lock.acquire()
+        self.status_lock.acquire()
         self.status = command['status'] == 'True' or command['status'] == 'true'
-        self.lock.release()
+        self.status_lock.release()
         self.sendStatusResponse()
 
     def on_setpoint_message(self, client, userdata, msg):
@@ -146,3 +189,14 @@ class MQTTClient:
 
         self._client.publish(settings.DEVICE_NAME +
                              "/cmd/status/response", payload, 0, False)
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, value):
+        if not self._api_connection:
+            self._status = False
+        else:
+            self._status = value
