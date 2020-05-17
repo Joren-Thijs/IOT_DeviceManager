@@ -4,5 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MQTTnet" Version="3.0.11" />
+    <PackageReference Include="MQTTnet.AspNetCore" Version="3.0.11" />
+    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="3.0.11" />
+    <PackageReference Include="MQTTnet.Extensions.Rpc" Version="3.0.11" />
+  </ItemGroup>
 
 </Project>
