@@ -22,11 +22,11 @@
             "launchUrl": "iotthermostat",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
+                "MQTT_CLIENT_ID": "api",
                 "MQTT_CLIENT_USERNAME": "web_api",
-                "MQTT_BROKER_PORT": "1883",
                 "MQTT_CLIENT_PASSWORD": "Pass123$",
                 "MQTT_BROKER_SERVER": "localhost",
-                "MQTT_CLIENT_ID": "api"
+                "MQTT_BROKER_PORT": "1883"
             },
             "applicationUrl": "http://localhost:53967"
         }
