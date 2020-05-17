@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
 
-namespace Mqtt.Client.AspNetCore.Client
+namespace Mqtt.Client.AspNetCore.DeviceClient
 {
-    public interface IAspMqttClient
+    public interface IDeviceClient
     {
         Task StartClientAsync();
         Task StopClientAsync();
+        Task SetDeviceStatus();
     }
 }

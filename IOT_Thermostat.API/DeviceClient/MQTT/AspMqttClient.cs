@@ -1,11 +1,12 @@
-﻿using MQTTnet;
+﻿using IOT_Thermostat.API.DeviceClient.MQTT.Options;
+using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using System.Threading.Tasks;
 
-namespace Mqtt.Client.AspNetCore.Client
+namespace Mqtt.Client.AspNetCore.DeviceClient
 {
-    public class AspMqttClient : IAspMqttClient
+    public class AspMqttClient : IDeviceClient
     {
         private readonly IMqttClientOptions Options;
 
@@ -13,7 +14,7 @@ namespace Mqtt.Client.AspNetCore.Client
 
         public AspMqttClient(IMqttClientOptions options)
         {
-            Options = options;
+            Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
             client = new MqttFactory().CreateMqttClient();
             client.UseApplicationMessageReceivedHandler(OnMessage);
         }
@@ -37,6 +38,11 @@ namespace Mqtt.Client.AspNetCore.Client
         }
 
         public Task StopClientAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task SetDeviceStatus()
         {
             throw new System.NotImplementedException();
         }

@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Mqtt.Client.AspNetCore.Client;
+using Mqtt.Client.AspNetCore.DeviceClient;
 using MQTTnet.Client.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Mqtt.Client.AspNetCore.Services
 {
-    public class MqttClientService : IHostedService
+    public class DeviceClientService : IHostedService
     {
-        private AspMqttClient Client;
+        private IDeviceClient Client;
 
-        public MqttClientService(IMqttClientOptions options)
+        public DeviceClientService(IDeviceClient client)
         {
-            Client = new AspMqttClient(options);
+            Client = client;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -21,6 +21,11 @@ namespace Mqtt.Client.AspNetCore.Services
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
+        {
+            return Client.StopClientAsync();
+        }
+
+        public Task SetDeviceStatusAsync(CancellationToken cancellationToken)
         {
             return Client.StopClientAsync();
         }
