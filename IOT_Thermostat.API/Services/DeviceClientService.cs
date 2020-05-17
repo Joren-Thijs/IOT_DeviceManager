@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Mqtt.Client.AspNetCore.DeviceClient;
-using MQTTnet.Client.Options;
 using System.Threading;
 using System.Threading.Tasks;
 
