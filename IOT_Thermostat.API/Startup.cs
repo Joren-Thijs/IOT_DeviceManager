@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Mqtt.Client.AspNetCore.Extensions;
+using Mqtt.Client.AspNetCore.Settings;
 
 namespace IOT_Thermostat.API
 {
@@ -18,16 +20,36 @@ namespace IOT_Thermostat.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            MapConfiguration();
         }
 
         public IConfiguration Configuration { get; }
+
+        private void MapConfiguration()
+        {
+            MapBrokerHostSettings();
+            MapClientSettings();
+        }
+
+        private void MapBrokerHostSettings()
+        {
+            BrokerHostSettings brokerHostSettings = new BrokerHostSettings();
+            Configuration.GetSection(nameof(BrokerHostSettings)).Bind(brokerHostSettings);
+            AppSettingsProvider.BrokerHostSettings = brokerHostSettings;
+        }
+
+        private void MapClientSettings()
+        {
+            ClientSettings clientSettings = new ClientSettings();
+            Configuration.GetSection(nameof(ClientSettings)).Bind(clientSettings);
+            AppSettingsProvider.ClientSettings = clientSettings;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddHostedService<MQTTHostService>();
-            services.AddScoped<IDeviceClient, MQTTCLientService>();
+            services.AddMqttClientHostedService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
