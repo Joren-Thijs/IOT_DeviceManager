@@ -1,6 +1,5 @@
 ﻿using IOT_Thermostat.API.Models;
 using IOT_Thermostat.API.Services;
-using IOT_Thermostat.API.Test.TestHelpers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
@@ -38,14 +37,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -66,21 +65,21 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
@@ -101,28 +100,28 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 03:00:00")
@@ -143,35 +142,35 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 03:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
@@ -192,14 +191,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -227,14 +226,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -248,7 +247,7 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
@@ -269,14 +268,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -290,14 +289,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
@@ -318,14 +317,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -339,21 +338,21 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
@@ -374,14 +373,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -395,21 +394,21 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
@@ -437,14 +436,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -458,21 +457,21 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
@@ -486,7 +485,7 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 08:00:00")
@@ -507,14 +506,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
             {
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
@@ -528,21 +527,21 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
@@ -556,14 +555,14 @@ namespace IOT_Thermostat.API.Test.CalculationTests
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 08:00:00")
                 },
                 new ThermostatMeasurement
                 {
-                    Status = new DeviceStatusOnByDefault(),
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 09:00:00")

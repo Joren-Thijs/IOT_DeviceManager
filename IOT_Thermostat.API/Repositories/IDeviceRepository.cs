@@ -8,21 +8,21 @@ namespace IOT_Thermostat.API.Repositories
 {
     public interface IDeviceRepository
     {
-        IEnumerable<IDevice> GetDevices();
-        IEnumerable<IDevice> GetDevices(IEnumerable<string> deviceIds);
-        IDevice GetDevice(string deviceId);
-        IDevice AddDevice(IDevice device);
-        IDevice UpdateDevice(IDevice device);
-        void DeleteDevice(IDevice device);
-        bool DeviceExists(string device);
+        Task<IEnumerable<IDevice>> GetDevices();
+        Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds);
+        Task<IDevice> GetDevice(string deviceId);
+        Task<IDevice> AddDevice(IDevice device);
+        Task<IDevice> UpdateDevice(IDevice device);
+        Task DeleteDevice(IDevice device);
+        Task<bool> DeviceExists(string device);
 
-        IEnumerable<IDeviceMeasurement> GetMeasurements(string deviceId);
-        IDeviceMeasurement GetMeasurement(string deviceId, string measurementId);
-        IDeviceMeasurement AddMeasurement(string deviceId, IDeviceMeasurement measurement);
-        IDeviceMeasurement UpdateMeasurement(IDeviceMeasurement measurement);
-        void DeleteMeasurement(IDeviceMeasurement measurement);
-        bool MeasurementExists(string deviceId, string measurementId);
+        Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId);
+        Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId);
+        Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement);
+        Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement);
+        Task DeleteMeasurement(IDeviceMeasurement measurement);
+        Task<bool> MeasurementExists(string deviceId, string measurementId);
 
-        bool Save();
+        Task<bool> Save();
     }
 }

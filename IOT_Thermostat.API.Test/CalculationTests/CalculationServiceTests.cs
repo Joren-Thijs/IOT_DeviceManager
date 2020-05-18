@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace IOT_Thermostat.API.Test.CalculationTests
 {
+    [TestFixture]
     class CalculationServiceTests
     {
         [Test]

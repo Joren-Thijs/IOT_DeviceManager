@@ -4,6 +4,7 @@ using System;
 
 namespace IOT_Thermostat.API.Test
 {
+    [TestFixture]
     class MeasurementTests
     {
         [Test]

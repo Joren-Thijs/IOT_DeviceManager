@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace IOT_Thermostat.API.Test
 {
+    [TestFixture]
     public class ThermostatTests
     {
 
