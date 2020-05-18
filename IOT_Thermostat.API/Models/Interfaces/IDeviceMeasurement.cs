@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IOT_Thermostat.API.Models
 {
-    public class DeviceMeasurement
+    public interface IDeviceMeasurement
     {
         [Key]
         public string Id { get; set; }
-        public float Temperature { get; set; }
-        public float SetPoint { get; set; }
-        public DeviceStatus Status { get; set; }
-        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+        public IDeviceStatus Status { get; set; }
+        public DateTime TimeStamp { get; set; }
         [ForeignKey("DeviceId")]
         public IDevice Device { get; set; }
         public string DeviceId { get; set; }

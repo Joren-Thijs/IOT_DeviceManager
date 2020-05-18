@@ -11,7 +11,8 @@ namespace IOT_Thermostat.API.Models
         [Key]
         public string Id { get; set; }
         public string DeviceName { get; set; }
-        public DeviceStatus Status { get; set; }
-        public IEnumerable<DeviceMeasurement> Measurements { get; set; } = new List<DeviceMeasurement>();
+        public IDeviceStatus Status { get; set; }
+        public float SetPoint { get; set; }
+        public IEnumerable<IDeviceMeasurement> Measurements { get; set; } = new List<ThermostatMeasurement>();
     }
 }

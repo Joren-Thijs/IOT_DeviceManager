@@ -16,11 +16,11 @@ namespace IOT_Thermostat.API.Repositories
         void DeleteDevice(IDevice device);
         bool DeviceExists(string device);
 
-        IEnumerable<DeviceMeasurement> GetMeasurements(string deviceId);
-        DeviceMeasurement GetMeasurement(string deviceId, string measurementId);
-        DeviceMeasurement AddMeasurement(string deviceId, DeviceMeasurement measurement);
-        DeviceMeasurement UpdateMeasurement(DeviceMeasurement measurement);
-        void DeleteMeasurement(DeviceMeasurement measurement);
+        IEnumerable<IDeviceMeasurement> GetMeasurements(string deviceId);
+        IDeviceMeasurement GetMeasurement(string deviceId, string measurementId);
+        IDeviceMeasurement AddMeasurement(string deviceId, IDeviceMeasurement measurement);
+        IDeviceMeasurement UpdateMeasurement(IDeviceMeasurement measurement);
+        void DeleteMeasurement(IDeviceMeasurement measurement);
         bool MeasurementExists(string deviceId, string measurementId);
 
         bool Save();
