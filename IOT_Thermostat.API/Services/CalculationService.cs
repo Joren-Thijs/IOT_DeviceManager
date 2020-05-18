@@ -7,7 +7,7 @@ namespace IOT_Thermostat.API.Services
 {
     public class CalculationService
     {
-        public float CalculateAverageTemp(IEnumerable<Measurement> measurements)
+        public float CalculateAverageTemp(IEnumerable<DeviceMeasurement> measurements)
         {
             float averageTemp = 0.0f;
             // Sum the temperatures
@@ -21,7 +21,7 @@ namespace IOT_Thermostat.API.Services
             return averageTemp;
         }
 
-        public TimeSpan CalculateTotalOnTime(IEnumerable<Measurement> measurements)
+        public TimeSpan CalculateTotalOnTime(IEnumerable<DeviceMeasurement> measurements)
         {
             // Check for at least 2 measurements
             if (measurements.Count() < 2)
@@ -33,7 +33,7 @@ namespace IOT_Thermostat.API.Services
             for (int i = 0; i < measurements.Count() - 1; i++)
             {
                 // Check if thermostat was turned on during timespan
-                if (measurements.ToArray()[i].On && measurements.ToArray()[i + 1].On)
+                if (measurements.ToArray()[i].Status.On && measurements.ToArray()[i + 1].Status.On)
                 {
                     TimeSpan diff = measurements.ToArray()[i+1].TimeStamp - measurements.ToArray()[i].TimeStamp;
                     secondsTurnedOn += diff.TotalSeconds;

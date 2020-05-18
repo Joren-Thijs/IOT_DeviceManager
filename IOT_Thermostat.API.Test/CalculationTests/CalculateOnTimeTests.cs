@@ -14,9 +14,9 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -33,16 +33,16 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -61,23 +61,23 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -96,30 +96,30 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -138,37 +138,37 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 03:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -187,23 +187,23 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
@@ -222,30 +222,30 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -264,37 +264,37 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -313,44 +313,44 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -369,51 +369,51 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
@@ -432,58 +432,58 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 07:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
@@ -502,65 +502,65 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>
+            List<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 00:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 01:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 02:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 04:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 05:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 06:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = false,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 07:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = Convert.ToDateTime("2020-01-01 08:00:00")
                 },
-                new Measurement
+                new DeviceMeasurement
                 {
                     On = true,
                     SetPoint = 22f,

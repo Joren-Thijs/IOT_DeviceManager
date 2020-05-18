@@ -9,21 +9,21 @@ namespace IOT_Thermostat.API.Test
         [Test]
         public void CheckMeasurementCanBeCreated_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             Assert.IsNotNull(measurement);
         }
 
         [Test]
         public void CheckMeasurementOn_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             Assert.IsNotNull(measurement.On);
         }
 
         [Test]
         public void CheckMeasurementOnCanBeModified_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             measurement.On = true;
             Assert.IsTrue(measurement.On);
         }
@@ -31,14 +31,14 @@ namespace IOT_Thermostat.API.Test
         [Test]
         public void CheckMeasurementTimeStamp_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             Assert.IsNotNull(measurement.TimeStamp);
         }
 
         [Test]
         public void CheckMeasurementTimeStampIsAcurate_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             TimeSpan diff = DateTime.UtcNow - measurement.TimeStamp;
             Assert.IsTrue(diff > TimeSpan.FromSeconds(0));
         }
@@ -46,14 +46,14 @@ namespace IOT_Thermostat.API.Test
         [Test]
         public void CheckMeasurementSetPoint_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             Assert.IsNotNull(measurement.SetPoint);
         }
 
         [Test]
         public void CheckMeasurementSetPointCanBeSet_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             measurement.SetPoint = 20f;
             Assert.AreEqual(20f, measurement.SetPoint);
         }
@@ -61,14 +61,14 @@ namespace IOT_Thermostat.API.Test
         [Test]
         public void CheckMeasurementTemperature_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             Assert.IsNotNull(measurement.Temperature);
         }
 
         [Test]
         public void CheckMeasurementTemperatureCanBeSet_ReturnsTrue()
         {
-            Measurement measurement = new Measurement();
+            DeviceMeasurement measurement = new DeviceMeasurement();
             measurement.Temperature = 20f;
             Assert.AreEqual(20f, measurement.Temperature);
         }
