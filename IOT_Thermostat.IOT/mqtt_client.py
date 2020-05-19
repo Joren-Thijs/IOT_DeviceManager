@@ -163,9 +163,12 @@ class MQTTClient:
 
     def sendMeasurement(self):
         data = {
-            'temp': self.temperature,
-            'sp': self.setpoint,
-            'st': self.status
+            'temperature': self.temperature,
+            'setpoint': self.setpoint,
+            'deviceStatus':
+                {
+                    'onStatus': self.status
+                }
         }
         try:
             payload = json.dumps(data)
@@ -177,9 +180,12 @@ class MQTTClient:
 
     def sendStatusResponse(self):
         data = {
-            'temp': self.temperature,
-            'sp': self.setpoint,
-            'st': self.status
+            'temperature': self.temperature,
+            'setpoint': self.setpoint,
+            'deviceStatus':
+                {
+                    'onStatus': self.status
+                }
         }
         try:
             payload = json.dumps(data)
