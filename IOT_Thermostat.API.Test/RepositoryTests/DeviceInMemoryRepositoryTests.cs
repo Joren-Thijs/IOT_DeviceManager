@@ -47,6 +47,12 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         }
 
         [Test]
+        public async Task CheckChangesCanBeSaved_ReturnsTrue()
+        {
+            await repo.Save();
+        }
+
+        [Test]
         public async Task CheckDeviceCanBeAdded_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
