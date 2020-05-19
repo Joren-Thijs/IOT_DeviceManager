@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Mqtt.Client.AspNetCore.DeviceClient;
 using Mqtt.Client.AspNetCore.Services;
 
-namespace Mqtt.Client.AspNetCore.Extensions
+namespace IOT_Thermostat.API.Extensions
 {
     public static class ServiceCollectionExtension
     {
