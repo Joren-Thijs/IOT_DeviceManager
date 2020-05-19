@@ -1,5 +1,4 @@
 ﻿using IOT_Thermostat.API.DeviceClient.MqttClient;
-using IOT_Thermostat.API.DeviceClient.MqttClient;
 using IOT_Thermostat.API.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
