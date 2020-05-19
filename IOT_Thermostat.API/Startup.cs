@@ -28,6 +28,7 @@ namespace IOT_Thermostat.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddRepositoryService();
             services.AddDeviceClientHostedService();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

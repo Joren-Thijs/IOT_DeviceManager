@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using IOT_Thermostat.API.DeviceClient.MqttClient;
+using IOT_Thermostat.API.DeviceClient.MqttClient;
+using IOT_Thermostat.API.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mqtt.Client.AspNetCore.DeviceClient;
 using Mqtt.Client.AspNetCore.Services;
@@ -15,6 +18,12 @@ namespace Mqtt.Client.AspNetCore.Extensions
             {
                 return serviceProvider.GetService<DeviceClientService>();
             });
+            return services;
+        }
+
+        public static IServiceCollection AddRepositoryService(this IServiceCollection services)
+        {
+            services.AddTransient<IDeviceRepository, DeviceInMemoryRepository>();
             return services;
         }
     }
