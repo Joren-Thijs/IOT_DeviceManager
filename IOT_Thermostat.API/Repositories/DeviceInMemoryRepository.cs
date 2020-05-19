@@ -99,6 +99,9 @@ namespace IOT_Thermostat.API.Repositories
                 throw new ArgumentException("Measurement already exists");
             }
 
+            measurement.DeviceId = deviceId;
+            measurement.Device = device;
+
             measurementsList.Add(measurement);
             device.Measurements = measurementsList;
             return Task.FromResult(measurement);

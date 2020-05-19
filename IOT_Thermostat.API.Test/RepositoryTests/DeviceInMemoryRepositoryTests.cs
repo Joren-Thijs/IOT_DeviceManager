@@ -209,6 +209,20 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         }
 
         [Test]
+        public async Task CheckMeasurementCanBeRetrievedAndHasCorrectDeviceId_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            Assert.AreEqual(device.Id, retrievedMeasurement.DeviceId);
+            Assert.AreEqual(device, retrievedMeasurement.Device);
+        }
+
+        [Test]
         public async Task CheckMeasurementCanBeDeleted_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);

@@ -1,10 +1,10 @@
-﻿using IOT_Thermostat.API.DeviceClient.MQTT.MqttRpcClientDeviceTopicGenerationStrategies;
+﻿using System;
+using IOT_Thermostat.API.DeviceClient.MqttClient.MqttRpcClientDeviceTopicGenerationStrategies;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.Rpc.Options;
 using MQTTnet.Extensions.Rpc.Options.TopicGeneration;
-using System;
 
-namespace IOT_Thermostat.API.DeviceClient.MQTT.Options
+namespace IOT_Thermostat.API.DeviceClient.MqttClient.Options
 {
     public class MqttDeviceClientOptionsLoader
     {

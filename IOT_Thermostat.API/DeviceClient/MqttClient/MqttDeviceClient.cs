@@ -1,14 +1,17 @@
-﻿using IOT_Thermostat.API.DeviceClient.MQTT.Options;
+﻿using System;
+using System.Threading.Tasks;
+using IOT_Thermostat.API.DeviceClient.MqttClient.Helpers;
+using IOT_Thermostat.API.DeviceClient.MqttClient.Options;
+using IOT_Thermostat.API.Models;
+using Mqtt.Client.AspNetCore.DeviceClient;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.Rpc;
 using MQTTnet.Extensions.Rpc.Options;
 using MQTTnet.Protocol;
-using System;
-using System.Threading.Tasks;
 
-namespace Mqtt.Client.AspNetCore.DeviceClient
+namespace IOT_Thermostat.API.DeviceClient.MqttClient
 {
     public class MqttDeviceClient : IDeviceClient
     {
@@ -19,6 +22,8 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
         private IMqttClient client;
 
         private MqttRpcClient rpcClient;
+
+        public event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
 
         public MqttDeviceClient()
         {
@@ -46,7 +51,7 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
 
             if (eventArgs.ApplicationMessage.Topic.EndsWith("/ms"))
             {
-                await HandleMeasurement(eventArgs.ApplicationMessage);
+                HandleMeasurement(eventArgs.ApplicationMessage);
             }
         }
 
@@ -59,9 +64,12 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
             await client.PublishAsync(message);
         }
 
-        private async Task HandleMeasurement(MqttApplicationMessage message)
+        private void HandleMeasurement(MqttApplicationMessage message)
         {
-            
+            string deviceId = MqttApplicationMessageDeconstructor.GetDeviceIdFromMessage(message);
+            IDeviceMeasurement measurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceId, measurement);
+            OnDeviceMeasurementReceived(eventArgs);
         }
 
         public async Task StartClientAsync()
@@ -86,7 +94,13 @@ namespace Mqtt.Client.AspNetCore.DeviceClient
         {
             string topic = deviceName + ".cmd.status";
             string payload = "{\"status\":\"true\"}";
-            await rpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload, MqttQualityOfServiceLevel.AtLeastOnce);
+            await rpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
+                MqttQualityOfServiceLevel.AtLeastOnce);
+        }
+
+        public void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs)
+        {
+            DeviceMeasurementReceived?.Invoke(this, eventArgs);
         }
     }
 }
