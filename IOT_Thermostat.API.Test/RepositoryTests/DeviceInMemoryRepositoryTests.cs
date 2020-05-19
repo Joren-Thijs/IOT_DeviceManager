@@ -40,6 +40,15 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             };
         }
 
+        [TearDown]
+        public void CleanUp()
+        {
+            repo.DeleteMeasurement(measurement);
+            repo.DeleteMeasurement(measurement2);
+            repo.DeleteDevice(device);
+            repo.DeleteDevice(device2);
+        }
+
         [Test]
         public void CheckDeviceInMemoryRepositoryCanBeCreated_ReturnsTrue()
         {
@@ -278,6 +287,20 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
 
             Assert.AreEqual(2, retrievedMeasurements.Count());
+        }
+
+        [Test]
+        public async Task CheckMeasurementCanBeAddedAndGetsAnId_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, new ThermostatMeasurement());
+            await repo.Save();
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id);
+            var retrievedMeasurement = retrievedMeasurements.FirstOrDefault();
+            Assert.IsNotNull(retrievedMeasurement);
+            Assert.AreNotEqual(retrievedMeasurement.Id, null);
         }
 
         [Test]

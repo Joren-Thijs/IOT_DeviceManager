@@ -15,28 +15,28 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient
 {
     public class MqttDeviceClient : IDeviceClient
     {
-        private readonly IMqttClientOptions Options;
+        private readonly IMqttClientOptions _mqttClientOptions;
 
-        private readonly IMqttRpcClientOptions rpcOptions;
+        private readonly IMqttRpcClientOptions _mqttRpcClientOptions;
 
-        private IMqttClient client;
+        private IMqttClient _mqttClient;
 
-        private MqttRpcClient rpcClient;
+        private MqttRpcClient _mqttRpcClient;
 
         public event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
 
         public MqttDeviceClient()
         {
-            Options = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
-            rpcOptions = MqttDeviceClientOptionsLoader.LoadMqttRpcClientOptions();
-            client = new MqttFactory().CreateMqttClient();
-            rpcClient = new MqttRpcClient(client, rpcOptions);
+            _mqttClientOptions = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
+            _mqttRpcClientOptions = MqttDeviceClientOptionsLoader.LoadMqttRpcClientOptions();
+            _mqttClient = new MqttFactory().CreateMqttClient();
+            _mqttRpcClient = new MqttRpcClient(_mqttClient, _mqttRpcClientOptions);
             SetupClient();
         }
 
         private void SetupClient()
         {
-            client.UseApplicationMessageReceivedHandler(OnMessageAsync);
+            _mqttClient.UseApplicationMessageReceivedHandler(OnMessageAsync);
         }
 
         public virtual async Task OnMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
@@ -61,7 +61,7 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient
                 .WithTopic(topic + "/response")
                 .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
                 .Build();
-            await client.PublishAsync(message);
+            await _mqttClient.PublishAsync(message);
         }
 
         private void HandleMeasurement(MqttApplicationMessage message)
@@ -74,27 +74,26 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient
 
         public async Task StartClientAsync()
         {
-            await client.ConnectAsync(Options);
+            await _mqttClient.ConnectAsync(_mqttClientOptions);
             System.Console.WriteLine("Client is connected");
-            await client.SubscribeAsync("+/ms");
-            await client.SubscribeAsync("+/ping");
-            System.Console.WriteLine("Subscribed on a channel");
-            if(!client.IsConnected)
+            await _mqttClient.SubscribeAsync("+/ms");
+            await _mqttClient.SubscribeAsync("+/ping");
+            if(!_mqttClient.IsConnected)
             {
-                await client.ReconnectAsync();
+                await _mqttClient.ReconnectAsync();
             }
         }
 
         public Task StopClientAsync()
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public async Task SetDeviceStatus(string deviceName)
         {
             string topic = deviceName + ".cmd.status";
             string payload = "{\"status\":\"true\"}";
-            await rpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
+            await _mqttRpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
                 MqttQualityOfServiceLevel.AtLeastOnce);
         }
 
