@@ -165,7 +165,7 @@ class MQTTClient:
         data = {
             'temperature': self.temperature,
             'setpoint': self.setpoint,
-            'deviceStatus':
+            'status':
                 {
                     'onStatus': self.status
                 }
@@ -182,7 +182,7 @@ class MQTTClient:
         data = {
             'temperature': self.temperature,
             'setpoint': self.setpoint,
-            'deviceStatus':
+            'status':
                 {
                     'onStatus': self.status
                 }
