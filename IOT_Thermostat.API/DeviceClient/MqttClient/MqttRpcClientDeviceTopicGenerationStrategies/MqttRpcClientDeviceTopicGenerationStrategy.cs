@@ -1,11 +1,7 @@
 ﻿using MQTTnet.Extensions.Rpc.Options;
 using MQTTnet.Extensions.Rpc.Options.TopicGeneration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace IOT_Thermostat.API.DeviceClient.MQTT.MqttRpcClientDeviceTopicGenerationStrategies
+namespace IOT_Thermostat.API.DeviceClient.MqttClient.MqttRpcClientDeviceTopicGenerationStrategies
 {
     public class MqttRpcClientDeviceTopicGenerationStrategy : IMqttRpcClientTopicGenerationStrategy
     {

@@ -8,7 +8,7 @@ namespace IOT_Thermostat.API.Repositories
 {
     public class DeviceInMemoryRepository : IDeviceRepository
     {
-        private readonly List<IDevice> _devices = new List<IDevice>();
+        private static readonly List<IDevice> _devices = new List<IDevice>();
 
         public Task<IEnumerable<IDevice>> GetDevices()
         {
@@ -97,6 +97,13 @@ namespace IOT_Thermostat.API.Repositories
             if (existingMeasurement != null)
             {
                 throw new ArgumentException("Measurement already exists");
+            }
+
+            measurement.DeviceId = deviceId;
+            measurement.Device = device;
+            if (measurement.Id == null)
+            {
+                measurement.Id = Convert.ToString(measurementsList.Count + 1);
             }
 
             measurementsList.Add(measurement);

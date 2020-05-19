@@ -40,10 +40,25 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             };
         }
 
+        [TearDown]
+        public void CleanUp()
+        {
+            repo.DeleteMeasurement(measurement);
+            repo.DeleteMeasurement(measurement2);
+            repo.DeleteDevice(device);
+            repo.DeleteDevice(device2);
+        }
+
         [Test]
         public void CheckDeviceInMemoryRepositoryCanBeCreated_ReturnsTrue()
         {
             Assert.IsNotNull(repo);
+        }
+
+        [Test]
+        public async Task CheckChangesCanBeSaved_ReturnsTrue()
+        {
+            await repo.Save();
         }
 
         [Test]
@@ -209,6 +224,20 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         }
 
         [Test]
+        public async Task CheckMeasurementCanBeRetrievedAndHasCorrectDeviceId_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            Assert.AreEqual(device.Id, retrievedMeasurement.DeviceId);
+            Assert.AreEqual(device, retrievedMeasurement.Device);
+        }
+
+        [Test]
         public async Task CheckMeasurementCanBeDeleted_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -258,6 +287,20 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
 
             Assert.AreEqual(2, retrievedMeasurements.Count());
+        }
+
+        [Test]
+        public async Task CheckMeasurementCanBeAddedAndGetsAnId_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, new ThermostatMeasurement());
+            await repo.Save();
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id);
+            var retrievedMeasurement = retrievedMeasurements.FirstOrDefault();
+            Assert.IsNotNull(retrievedMeasurement);
+            Assert.AreNotEqual(retrievedMeasurement.Id, null);
         }
 
         [Test]
