@@ -16,6 +16,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         IDevice device;
         IDevice device2;
         private IDeviceMeasurement measurement;
+        private IDeviceMeasurement measurement2;
 
         [SetUp]
         public void Init()
@@ -32,6 +33,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             measurement = new ThermostatMeasurement
             {
                 Id = "1"
+            };
+            measurement2 = new ThermostatMeasurement
+            {
+                Id = "2"
             };
         }
 
@@ -54,7 +59,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             await repo.AddDevice(device);
             await repo.Save();
 
-            Assert.ThrowsAsync(typeof(ArgumentException), async delegate { await repo.AddDevice(device); await repo.Save(); });
+            Assert.ThrowsAsync(typeof(ArgumentException), async delegate
+            {
+                await repo.AddDevice(device); await repo.Save();
+            });
         }
 
         [Test]
@@ -110,10 +118,29 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var unChangedName = device.DeviceName;
             device.DeviceName = "newName";
 
-            var updatedDevice = await repo.UpdateDevice(device);
+            await repo.UpdateDevice(device);
+            await repo.Save();
+
+            var updatedDevice = await repo.GetDevice(device.Id);
             await repo.Save();
 
             Assert.AreNotEqual(unChangedName, updatedDevice.DeviceName);
+        }
+
+        [Test]
+        public async Task CheckDeviceExists_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+            var result = await repo.DeviceExists(device.Id);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task CheckDeviceDoesntExists_ReturnsFalseAsync()
+        {
+            var result = await repo.DeviceExists(device.Id);
+            Assert.IsFalse(result);
         }
 
         [Test]
@@ -122,6 +149,159 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             await repo.AddDevice(device);
             await repo.Save();
             await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+        }
+
+        [Test]
+        public async Task CheckMeasurementCannotBeAddedTwice_ReturnsArgumentException()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            Assert.ThrowsAsync(typeof(ArgumentException), async delegate
+            {
+                await repo.AddMeasurement(device.Id, measurement); await repo.Save();
+            });
+        }
+
+        [Test]
+        public async Task CheckMeasurementCannotBeAddedToNonExistingDevice_ReturnsArgumentException()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            Assert.ThrowsAsync(typeof(ArgumentException), async delegate
+            {
+                await repo.AddMeasurement(device2.Id, measurement); await repo.Save();
+            });
+        }
+
+        [Test]
+        public async Task CheckMeasurementCanBeRetrieved_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            Assert.AreEqual(measurement, retrievedMeasurement);
+        }
+
+        [Test]
+        public async Task CheckMeasurementCannotBeRetrievedFromNonExistingDevice_ReturnsArgumentException()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            Assert.ThrowsAsync(typeof(ArgumentException), async delegate
+            {
+                await repo.GetMeasurement(device2.Id, measurement.Id);
+                await repo.Save();
+            });
+        }
+
+        [Test]
+        public async Task CheckMeasurementCanBeDeleted_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            await repo.DeleteMeasurement(measurement);
+            await repo.Save();
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            Assert.IsNull(retrievedMeasurement);
+        }
+
+        [Test]
+        public async Task CheckMeasurementsCanBeRetrievedWithOne_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.AddDevice(device2);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device2.Id, measurement2);
+            await repo.Save();
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id);
+            var retrievedMeasurements2 = await repo.GetMeasurements(device2.Id);
+
+            Assert.AreEqual(measurement, retrievedMeasurements.First());
+            Assert.AreEqual(1, retrievedMeasurements.Count());
+            Assert.AreEqual(measurement2, retrievedMeasurements2.First());
+            Assert.AreEqual(1, retrievedMeasurements2.Count());
+        }
+
+        [Test]
+        public async Task CheckMeasurementsCanBeRetrievedWithTwo_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id);
+
+            Assert.AreEqual(2, retrievedMeasurements.Count());
+        }
+
+        [Test]
+        public async Task CheckMeasurementCanBeUpdated_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var unChangedStatus = measurement.Status;
+            measurement.Status = new DeviceStatus(true);
+
+            await repo.UpdateMeasurement(measurement);
+            await repo.Save();
+
+            var updatedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            await repo.Save();
+
+            Assert.AreNotEqual(unChangedStatus.OnStatus, updatedMeasurement.Status.OnStatus);
+        }
+
+        [Test]
+        public async Task CheckMeasurementExists_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var result = await repo.MeasurementExists(device.Id, measurement.Id);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task CheckMeasurementDoesntExists_ReturnsFalseAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            var result = await repo.MeasurementExists(device.Id, measurement.Id);
+            Assert.IsFalse(result);
         }
 
     }
