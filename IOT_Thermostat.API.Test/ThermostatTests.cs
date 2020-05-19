@@ -4,47 +4,48 @@ using System.Collections.Generic;
 
 namespace IOT_Thermostat.API.Test
 {
+    [TestFixture]
     public class ThermostatTests
     {
 
         [Test]
         public void CheckThermostatCanBeCreated_ReturnsTrue()
         {
-            Thermostat thermostat = new Thermostat();
+            ThermostatDevice thermostat = new ThermostatDevice();
             Assert.IsNotNull(thermostat);
         }
 
         [Test]
         public void CheckThermostatMeasurementsListIsInitialized_ReturnsTrue()
         {
-            Thermostat thermostat = new Thermostat();
+            ThermostatDevice thermostat = new ThermostatDevice();
 
-            Assert.IsTrue(((List<Measurement>)thermostat.Measurements).Count == 0);
+            Assert.IsTrue(((List<ThermostatMeasurement>)thermostat.Measurements).Count == 0);
         }
 
         [Test]
         public void CheckMeasurementsCanBeAdded_ReturnsTrue()
         {
-            Thermostat thermostat = new Thermostat();
-            var measurement1 = new Measurement();
-            var measurement2 = new Measurement();
+            ThermostatDevice thermostat = new ThermostatDevice();
+            var measurement1 = new ThermostatMeasurement();
+            var measurement2 = new ThermostatMeasurement();
 
-            ((List<Measurement>)thermostat.Measurements).Add(measurement1);
-            ((List<Measurement>)thermostat.Measurements).Add(measurement2);
-            Assert.IsTrue(((List<Measurement>)thermostat.Measurements).Count == 2);
+            ((List<ThermostatMeasurement>)thermostat.Measurements).Add(measurement1);
+            ((List<ThermostatMeasurement>)thermostat.Measurements).Add(measurement2);
+            Assert.IsTrue(((List<ThermostatMeasurement>)thermostat.Measurements).Count == 2);
         }
 
         [Test]
         public void CheckMeasurementsCanBeRemoved_ReturnsTrue()
         {
-            Thermostat thermostat = new Thermostat();
-            var measurement1 = new Measurement();
-            var measurement2 = new Measurement();
+            ThermostatDevice thermostat = new ThermostatDevice();
+            var measurement1 = new ThermostatMeasurement();
+            var measurement2 = new ThermostatMeasurement();
 
-            ((List<Measurement>)thermostat.Measurements).Add(measurement1);
-            ((List<Measurement>)thermostat.Measurements).Add(measurement2);
-            ((List<Measurement>)thermostat.Measurements).Remove(measurement2);
-            Assert.IsTrue(((List<Measurement>)thermostat.Measurements).Count == 1);
+            ((List<ThermostatMeasurement>)thermostat.Measurements).Add(measurement1);
+            ((List<ThermostatMeasurement>)thermostat.Measurements).Add(measurement2);
+            ((List<ThermostatMeasurement>)thermostat.Measurements).Remove(measurement2);
+            Assert.IsTrue(((List<ThermostatMeasurement>)thermostat.Measurements).Count == 1);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace IOT_Thermostat.API.Test.CalculationTests
 {
+    [TestFixture]
     class CalculateAverageTests
     {
 
@@ -13,12 +14,12 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         public void CalculatingAverageWithOne_ReturnsTrue()
         {
             CalculationService calculationService = new CalculationService();
-
-            List<Measurement> measurements = new List<Measurement>()
-            { 
-                new Measurement
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
+            {
+                
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
@@ -35,18 +36,18 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
@@ -63,25 +64,25 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 21f,
                     TimeStamp = DateTime.UtcNow
@@ -98,25 +99,25 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 21f,
                     TimeStamp = DateTime.UtcNow
@@ -133,32 +134,32 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 24f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 26f,
                     TimeStamp = DateTime.UtcNow
@@ -175,39 +176,39 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 24f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 26f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 23f,
                     TimeStamp = DateTime.UtcNow
@@ -224,46 +225,46 @@ namespace IOT_Thermostat.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            List<Measurement> measurements = new List<Measurement>()
+            List<ThermostatMeasurement> measurements = new List<ThermostatMeasurement>()
             {
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 20f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 22f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 24f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 26f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = false,
+                    Status = new DeviceStatus(),
                     SetPoint = 22f,
                     Temperature = 23f,
                     TimeStamp = DateTime.UtcNow
                 },
-                new Measurement
+                new ThermostatMeasurement
                 {
-                    On = true,
+                    Status = new DeviceStatus(true),
                     SetPoint = 22f,
                     Temperature = 23f,
                     TimeStamp = DateTime.UtcNow
