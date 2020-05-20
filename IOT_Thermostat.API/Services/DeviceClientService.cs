@@ -42,7 +42,7 @@ namespace IOT_Thermostat.API.Services
             return _deviceClient.StopClientAsync();
         }
 
-        private async Task DeviceClientOnDeviceMeasurementReceived(object? sender, DeviceMeasurementEventArgs e)
+        private async Task DeviceClientOnDeviceMeasurementReceived(object sender, DeviceMeasurementEventArgs e)
         {
             var device = await _deviceRepository.GetDevice(e.DeviceId);
             if (device == null)
