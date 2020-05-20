@@ -1,9 +1,9 @@
 ﻿using IOT_Thermostat.API.DeviceClient.MqttClient;
 using IOT_Thermostat.API.Repositories;
+using IOT_Thermostat.API.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mqtt.Client.AspNetCore.DeviceClient;
-using Mqtt.Client.AspNetCore.Services;
 
 namespace IOT_Thermostat.API.Extensions
 {
