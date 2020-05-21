@@ -71,10 +71,8 @@ class MQTTClient:
         # reconnect then subscriptions will be renewed.
         self._client.subscribe(self._deviceTopic + "/ping/response")
         self._client.subscribe(self._deviceTopic + "/cmd/+")
-        print("starting thread creation")
-        thread = threading.Thread(target=self.api_connection_handler_async)
-        thread.start()
-        print("Connection handler finished")
+        api_connection_handler_thread = threading.Thread(target=self.api_connection_handler_async)
+        api_connection_handler_thread.start()
 
     def on_disconnect(self, client, userdata, rc):
         if rc != 0:
@@ -84,7 +82,6 @@ class MQTTClient:
             self.status_lock.release()
 
     def api_connection_handler_async(self):
-        print("api_connection_handler_async started")
         while True:
             self.ping_api()
             sleep(10)
