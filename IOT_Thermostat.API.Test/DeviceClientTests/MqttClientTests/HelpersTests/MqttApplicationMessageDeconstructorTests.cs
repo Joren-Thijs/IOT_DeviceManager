@@ -13,10 +13,25 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
     class MqttApplicationMessageDeconstructorTests
     {
         [Test]
+        public void CheckDeviceTypeCanBeDeconstructedFromMessage_ReturnsTrue()
+        {
+            var deviceType = "thermostat";
+            var deviceId = "ABCD";
+            var messageTopic = deviceType + "/" + deviceId + "/ms";
+
+            var message = new MqttApplicationMessage();
+            message.Topic = messageTopic;
+
+            var deconstructedDeviceType = MqttApplicationMessageDeconstructor.GetDeviceTypeFromMessage(message);
+            Assert.AreEqual(deviceType, deconstructedDeviceType);
+        }
+
+        [Test]
         public void CheckDeviceIdCanBeDeconstructedFromMessage_ReturnsTrue()
         {
+            var deviceType = "thermostat";
             var deviceId = "ABCD";
-            var messageTopic = deviceId + "/ms";
+            var messageTopic = deviceType + "/" +deviceId + "/ms";
 
             var message = new MqttApplicationMessage();
             message.Topic = messageTopic;
@@ -28,6 +43,10 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
         [Test]
         public void CheckDeviceMeasurementCanBeDeconstructedFromMessage_ReturnsTrue()
         {
+            var deviceType = "thermostat";
+            var deviceId = "ABCD";
+            var messageTopic = deviceType + "/" + deviceId + "/ms";
+
             var measurement = new ThermostatMeasurement
             {
                 Status = new DeviceStatus(),
@@ -41,6 +60,7 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             var messagePayload = Encoding.ASCII.GetBytes(measurementString);
 
             var message = new MqttApplicationMessage();
+            message.Topic = messageTopic;
             message.Payload = messagePayload;
 
             var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
