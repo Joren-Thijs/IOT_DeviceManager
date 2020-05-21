@@ -26,18 +26,18 @@ class MQTTClient:
         self._client = mqtt.Client(client_id=settings.DEVICE_NAME, clean_session=False,
                                    userdata=None, transport="tcp")
         self._client.will_set(
-            "diconnect", payload="disconnected", qos=1, retain=False)
+            settings.DEVICE_TYPE + "/" + settings.DEVICE_NAME + "/diconnect", payload="disconnected", qos=1, retain=False)
 
         self._client.on_connect = self.on_connect
         self._client.on_disconnect = self.on_disconnect
         self._client.reconnect_delay_set(min_delay=5, max_delay=20)
 
         self._client.message_callback_add(
-            settings.DEVICE_NAME + "/ping/response", self.on_ping_message)
+            settings.DEVICE_TYPE + "/" + settings.DEVICE_NAME + "/ping/response", self.on_ping_message)
         self._client.message_callback_add(
-            settings.DEVICE_NAME + "/cmd/status", self.on_status_message)
+            settings.DEVICE_TYPE + "/" + settings.DEVICE_NAME + "/cmd/status", self.on_status_message)
         self._client.message_callback_add(
-            settings.DEVICE_NAME + "/cmd/setpoint", self.on_setpoint_message)
+            settings.DEVICE_TYPE + "/" + settings.DEVICE_NAME + "/cmd/setpoint", self.on_setpoint_message)
 
         # connect to mqtt broker. connect(ip adress, port, keep alive time)
         self._client.connect_async(
@@ -59,8 +59,10 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe(settings.DEVICE_NAME + "/ping/response")
-        self._client.subscribe(settings.DEVICE_NAME + "/cmd/+")
+        self._client.subscribe(settings.DEVICE_TYPE +
+                               "/" + settings.DEVICE_NAME + "/ping/response")
+        self._client.subscribe(settings.DEVICE_TYPE +
+                               "/" + settings.DEVICE_NAME + "/cmd/+")
         print("starting thread creation")
         thread = threading.Thread(target=self.api_connection_handler_async)
         thread.start()
@@ -176,7 +178,8 @@ class MQTTClient:
             print("error while encoding payload")
             return
 
-        self._client.publish(settings.DEVICE_NAME + "/ms", payload, 0, False)
+        self._client.publish(settings.DEVICE_TYPE + "/" +
+                             settings.DEVICE_NAME + "/ms", payload, 0, False)
 
     def sendStatusResponse(self):
         data = {
@@ -193,7 +196,7 @@ class MQTTClient:
             print("error while encoding payload")
             return
 
-        self._client.publish(settings.DEVICE_NAME +
+        self._client.publish(settings.DEVICE_TYPE + "/" + settings.DEVICE_NAME +
                              "/cmd/status/response", payload, 0, False)
 
     @property
