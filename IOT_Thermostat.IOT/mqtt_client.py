@@ -71,7 +71,8 @@ class MQTTClient:
         # reconnect then subscriptions will be renewed.
         self._client.subscribe(self._deviceTopic + "/ping/response")
         self._client.subscribe(self._deviceTopic + "/cmd/+")
-        api_connection_handler_thread = threading.Thread(target=self.api_connection_handler_async)
+        api_connection_handler_thread = threading.Thread(
+            target=self.api_connection_handler_async)
         api_connection_handler_thread.start()
 
     def on_disconnect(self, client, userdata, rc):
@@ -92,7 +93,7 @@ class MQTTClient:
         self._api_answer_received_lock.acquire()
         self._api_answer_received = False
         self._api_answer_received_lock.release()
-        self._client.publish(settings.DEVICE_NAME + "/ping", "", 0, False)
+        self._client.publish(self._deviceTopic + "/ping", "", 0, False)
 
     def on_ping_message(self, client, userdata, msg):
         self._api_answer_received_lock.acquire()
@@ -200,7 +201,8 @@ class MQTTClient:
             print("error while encoding payload")
             return
 
-        self._client.publish(self._deviceTopic + "/cmd/status/response", payload, 0, False)
+        self._client.publish(self._deviceTopic +
+                             "/cmd/status/response", payload, 0, False)
 
     @property
     def status(self):
