@@ -76,8 +76,8 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient
         {
             await _mqttClient.ConnectAsync(_mqttClientOptions);
             System.Console.WriteLine("Client is connected");
-            await _mqttClient.SubscribeAsync("+/ms");
-            await _mqttClient.SubscribeAsync("+/ping");
+            await _mqttClient.SubscribeAsync("+/+/ms");
+            await _mqttClient.SubscribeAsync("+/+/ping");
             if(!_mqttClient.IsConnected)
             {
                 await _mqttClient.ReconnectAsync();
