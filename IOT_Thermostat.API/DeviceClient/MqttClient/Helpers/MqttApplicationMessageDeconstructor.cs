@@ -8,17 +8,42 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient.Helpers
 {
     public class MqttApplicationMessageDeconstructor
     {
+        public static string GetDeviceTypeFromMessage(MqttApplicationMessage message)
+        {
+            var topic = message.Topic;
+            var deviceType = topic.GetUntilOrEmpty("/");
+
+            return deviceType;
+        }
+
         public static string GetDeviceIdFromMessage(MqttApplicationMessage message)
         {
             var topic = message.Topic;
-            var deviceId = topic.GetUntilOrEmpty("/");
+            var deviceType = GetDeviceTypeFromMessage(message);
+            var deviceId = topic.Substring(deviceType.Length + 1).GetUntilOrEmpty("/");
+
             return deviceId;
         }
 
         public static IDeviceMeasurement GetDeviceMeasurementFromMessage(MqttApplicationMessage message)
         {
+            var topic = message.Topic;
+            var deviceType = topic.GetUntilOrEmpty("/");
+
             var payload = Encoding.UTF8.GetString(message.Payload);
-            IDeviceMeasurement measurement = JsonConvert.DeserializeObject<ThermostatMeasurement>(payload);
+            IDeviceMeasurement measurement;
+
+            switch (deviceType)
+            {
+                case "thermostat":
+                    measurement = JsonConvert.DeserializeObject<ThermostatMeasurement>(payload);
+                    break;
+                default:
+                    measurement = null;
+                    break;
+            }
+            
+
             return measurement;
         }
     }
