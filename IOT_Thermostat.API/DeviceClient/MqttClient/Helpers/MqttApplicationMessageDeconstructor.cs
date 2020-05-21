@@ -18,7 +18,7 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient.Helpers
         public static IDeviceMeasurement GetDeviceMeasurementFromMessage(MqttApplicationMessage message)
         {
             var payload = Encoding.UTF8.GetString(message.Payload);
-            ThermostatMeasurement measurement = JsonConvert.DeserializeObject<ThermostatMeasurement>(payload);
+            IDeviceMeasurement measurement = JsonConvert.DeserializeObject<ThermostatMeasurement>(payload);
             return measurement;
         }
     }
