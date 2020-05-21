@@ -24,19 +24,19 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         public void Init()
         {
             repo = new DeviceInMemoryRepository();
-            device = new ThermostatDevice
+            device = new Device
             {
                 Id = "1"
             };
-            device2 = new ThermostatDevice
+            device2 = new Device
             {
                 Id = "2"
             };
-            measurement = new ThermostatMeasurement
+            measurement = new DeviceMeasurement
             {
                 Id = "1"
             };
-            measurement2 = new ThermostatMeasurement
+            measurement2 = new DeviceMeasurement
             {
                 Id = "2"
             };

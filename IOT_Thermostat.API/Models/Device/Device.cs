@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IOT_Thermostat.API.Models.Device
 {
-    public class Device
+    public class Device : IDevice
     {
         [Key]
         public string Id { get; set; }
