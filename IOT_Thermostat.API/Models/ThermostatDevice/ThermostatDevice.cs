@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace IOT_Thermostat.API.Models
+namespace IOT_Thermostat.API.Models.ThermostatDevice
 {
     public class ThermostatDevice : IDevice
     {

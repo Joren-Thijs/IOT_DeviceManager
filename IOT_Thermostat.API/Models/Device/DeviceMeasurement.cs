@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace IOT_Thermostat.API.Models
+namespace IOT_Thermostat.API.Models.Device
 {
-    public class ThermostatMeasurement : IDeviceMeasurement
+    public class DeviceMeasurement : IDeviceMeasurement
     {
         [Key]
         public string Id { get; set; }
-        public float Temperature { get; set; }
-        public float SetPoint { get; set; }
         public IDeviceStatus Status { get; set; } = new DeviceStatus();
         public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
         [ForeignKey("DeviceId")]
@@ -20,10 +21,8 @@ namespace IOT_Thermostat.API.Models
         {
             if (obj == null || GetType() != obj.GetType())
                 return false;
-            var objectToCompare = (ThermostatMeasurement)obj;
+            var objectToCompare = (DeviceMeasurement)obj;
             return objectToCompare.Id == Id &&
-                   objectToCompare.Temperature == Temperature &&
-                   objectToCompare.SetPoint == SetPoint &&
                    objectToCompare.Status.OnStatus == Status.OnStatus &&
                    objectToCompare.TimeStamp == TimeStamp &&
                    objectToCompare.Device == Device &&

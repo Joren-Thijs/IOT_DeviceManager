@@ -1,6 +1,7 @@
 ﻿using IOT_Thermostat.API.Models;
 using NUnit.Framework;
 using System;
+using IOT_Thermostat.API.Models.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Test
 {

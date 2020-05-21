@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IOT_Thermostat.API.Models.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Services
 {
