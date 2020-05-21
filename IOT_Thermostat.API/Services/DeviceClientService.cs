@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using IOT_Thermostat.API.DeviceClient;
 using IOT_Thermostat.API.Models;
+using IOT_Thermostat.API.Models.Interfaces;
 using IOT_Thermostat.API.Models.ThermostatDevice;
 using IOT_Thermostat.API.Repositories;
 using Microsoft.Extensions.Hosting;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace IOT_Thermostat.API.Models
+namespace IOT_Thermostat.API.Models.Interfaces
 {
     public interface IDevice
     {

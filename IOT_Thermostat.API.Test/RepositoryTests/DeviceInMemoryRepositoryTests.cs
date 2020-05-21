@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using IOT_Thermostat.API.Models.Device;
+using IOT_Thermostat.API.Models.Interfaces;
 using IOT_Thermostat.API.Models.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Test.RepositoryTests

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using IOT_Thermostat.API.Models.Interfaces;
 
 namespace IOT_Thermostat.API.Models.Device
 {

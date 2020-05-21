@@ -1,4 +1,6 @@
-﻿namespace IOT_Thermostat.API.Models.Device
+﻿using IOT_Thermostat.API.Models.Interfaces;
+
+namespace IOT_Thermostat.API.Models.Device
 {
     public class DeviceStatus : IDeviceStatus
     {
