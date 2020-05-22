@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using IOT_Thermostat.API.DeviceClient.MqttClient.Helpers;
-using IOT_Thermostat.API.Models;
-using IOT_Thermostat.API.Models.Device;
-using IOT_Thermostat.API.Models.ThermostatDevice;
 using MQTTnet;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using FluentAssertions;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
 {

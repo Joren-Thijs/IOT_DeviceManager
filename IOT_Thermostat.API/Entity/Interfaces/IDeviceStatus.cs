@@ -1,4 +1,4 @@
-﻿namespace IOT_Thermostat.API.Models.Interfaces
+﻿namespace IOT_Thermostat.API.Entity.Interfaces
 {
     public interface IDeviceStatus
     {

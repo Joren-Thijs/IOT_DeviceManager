@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using IOT_Thermostat.API.Models.Interfaces;
+using IOT_Thermostat.API.Entity.Interfaces;
 
-namespace IOT_Thermostat.API.Models.Device
+namespace IOT_Thermostat.API.Entity.Device
 {
     public class DeviceMeasurement : IDeviceMeasurement
     {

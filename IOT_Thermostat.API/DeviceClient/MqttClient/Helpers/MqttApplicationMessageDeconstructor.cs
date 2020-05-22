@@ -1,9 +1,8 @@
 ﻿using System.Text;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 using IOT_Thermostat.API.Extensions;
-using IOT_Thermostat.API.Models;
-using IOT_Thermostat.API.Models.Device;
-using IOT_Thermostat.API.Models.Interfaces;
-using IOT_Thermostat.API.Models.ThermostatDevice;
 using MQTTnet;
 using Newtonsoft.Json;
 

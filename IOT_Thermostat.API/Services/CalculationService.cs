@@ -1,8 +1,7 @@
-﻿using IOT_Thermostat.API.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IOT_Thermostat.API.Models.ThermostatDevice;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Services
 {

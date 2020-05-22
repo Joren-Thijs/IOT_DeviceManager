@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using IOT_Thermostat.API.DeviceClient.MqttClient.Helpers;
 using IOT_Thermostat.API.DeviceClient.MqttClient.Options;
-using IOT_Thermostat.API.Models.Interfaces;
-using Mqtt.Client.AspNetCore.DeviceClient;
+using IOT_Thermostat.API.Entity.Interfaces;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;

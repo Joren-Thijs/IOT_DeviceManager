@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IOT_Thermostat.API.DTO;
 using IOT_Thermostat.API.DTO.Interfaces;
-using IOT_Thermostat.API.Models.Interfaces;
-using IOT_Thermostat.API.Models.ThermostatDevice;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Profiles
 {
@@ -15,10 +16,10 @@ namespace IOT_Thermostat.API.Profiles
         public IDeviceProfile()
         {
             CreateMap<IDevice, IDeviceDto>()
-                .Include<Models.Device.Device, DeviceDto>()
+                .Include<Device, DeviceDto>()
                 .Include<ThermostatDevice, ThermostatDeviceDto>();
 
-            CreateMap<Models.Device.Device, DeviceDto>();
+            CreateMap<Device, DeviceDto>();
             CreateMap<ThermostatDevice, ThermostatDeviceDto>();
         }
     }

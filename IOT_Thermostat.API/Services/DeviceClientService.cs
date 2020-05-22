@@ -2,12 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IOT_Thermostat.API.DeviceClient;
-using IOT_Thermostat.API.Models.Device;
-using IOT_Thermostat.API.Models.Interfaces;
-using IOT_Thermostat.API.Models.ThermostatDevice;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 using IOT_Thermostat.API.Repositories;
 using Microsoft.Extensions.Hosting;
-using Mqtt.Client.AspNetCore.DeviceClient;
 
 namespace IOT_Thermostat.API.Services
 {
@@ -70,7 +69,8 @@ namespace IOT_Thermostat.API.Services
             IDevice device = e.DeviceType switch
             {
                 "device" => new Device(),
-                "thermostat" => new ThermostatDevice()
+                "thermostat" => new ThermostatDevice(),
+                _ => new Device()
             };
             device.Id = e.DeviceId;
             device.Status = e.DeviceMeasurement.Status;

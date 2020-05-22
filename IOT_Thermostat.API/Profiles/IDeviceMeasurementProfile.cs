@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IOT_Thermostat.API.DTO;
 using IOT_Thermostat.API.DTO.Interfaces;
-using IOT_Thermostat.API.Models.Device;
-using IOT_Thermostat.API.Models.Interfaces;
-using IOT_Thermostat.API.Models.ThermostatDevice;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Profiles
 {

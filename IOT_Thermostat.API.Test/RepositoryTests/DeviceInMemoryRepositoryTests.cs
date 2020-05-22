@@ -1,15 +1,12 @@
-﻿using IOT_Thermostat.API.Models;
-using IOT_Thermostat.API.Repositories;
+﻿using IOT_Thermostat.API.Repositories;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using IOT_Thermostat.API.Models.Device;
-using IOT_Thermostat.API.Models.Interfaces;
-using IOT_Thermostat.API.Models.ThermostatDevice;
 using FluentAssertions;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
 
 
 namespace IOT_Thermostat.API.Test.RepositoryTests

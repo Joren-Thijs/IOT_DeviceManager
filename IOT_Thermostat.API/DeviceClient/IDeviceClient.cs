@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IOT_Thermostat.API.DeviceClient;
-using IOT_Thermostat.API.Models;
 
-namespace Mqtt.Client.AspNetCore.DeviceClient
+namespace IOT_Thermostat.API.DeviceClient
 {
     public interface IDeviceClient
     {
