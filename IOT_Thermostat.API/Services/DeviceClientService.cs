@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using IOT_Thermostat.API.DeviceClient;
-using IOT_Thermostat.API.Models;
+using IOT_Thermostat.API.Models.Device;
 using IOT_Thermostat.API.Models.Interfaces;
 using IOT_Thermostat.API.Models.ThermostatDevice;
 using IOT_Thermostat.API.Repositories;
@@ -67,11 +67,13 @@ namespace IOT_Thermostat.API.Services
 
         private async Task<IDevice> AddDeviceToDeviceRepository(DeviceMeasurementEventArgs e)
         {
-            IDevice device = new ThermostatDevice
+            IDevice device = e.DeviceType switch
             {
-                Id = e.DeviceId,
-                Status = e.DeviceMeasurement.Status
+                "device" => new Device(),
+                "thermostat" => new ThermostatDevice()
             };
+            device.Id = e.DeviceId;
+            device.Status = e.DeviceMeasurement.Status;
 
             device = await _deviceRepository.AddDevice(device);
             await _deviceRepository.Save();

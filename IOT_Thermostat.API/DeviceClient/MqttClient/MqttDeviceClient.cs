@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using IOT_Thermostat.API.DeviceClient.MqttClient.Helpers;
 using IOT_Thermostat.API.DeviceClient.MqttClient.Options;
-using IOT_Thermostat.API.Models;
 using IOT_Thermostat.API.Models.Interfaces;
 using Mqtt.Client.AspNetCore.DeviceClient;
 using MQTTnet;
@@ -67,9 +66,10 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient
 
         private void HandleMeasurement(MqttApplicationMessage message)
         {
-            string deviceId = MqttApplicationMessageDeconstructor.GetDeviceIdFromMessage(message);
+            var deviceType = MqttApplicationMessageDeconstructor.GetDeviceTypeFromMessage(message);
+            var deviceId = MqttApplicationMessageDeconstructor.GetDeviceIdFromMessage(message);
             IDeviceMeasurement measurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
-            DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceId, measurement);
+            DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceType, deviceId, measurement);
             OnDeviceMeasurementReceived(eventArgs);
         }
 

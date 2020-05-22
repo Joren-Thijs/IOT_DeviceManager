@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IOT_Thermostat.API.DTO.Interfaces;
 
-namespace IOT_Thermostat.API.DTO
+namespace IOT_Thermostat.API.DTO.Interfaces
 {
-    public class ThermostatDeviceStatusDto : IDeviceStatusDto
+    public interface IDeviceStatusDto
     {
         public bool OnStatus { get; set; }
     }
