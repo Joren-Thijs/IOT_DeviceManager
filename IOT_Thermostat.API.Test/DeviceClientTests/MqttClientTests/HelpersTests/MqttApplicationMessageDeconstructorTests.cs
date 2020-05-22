@@ -8,6 +8,7 @@ using IOT_Thermostat.API.Models.ThermostatDevice;
 using MQTTnet;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using FluentAssertions;
 
 namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
 {
@@ -66,7 +67,7 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             message.Payload = messagePayload;
 
             var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
-            Assert.AreEqual(measurement, deconstructedMeasurement);
+            deconstructedMeasurement.Should().BeEquivalentTo(measurement);
         }
     }
 }

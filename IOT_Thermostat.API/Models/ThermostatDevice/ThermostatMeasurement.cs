@@ -17,19 +17,5 @@ namespace IOT_Thermostat.API.Models.ThermostatDevice
         [ForeignKey("DeviceId")]
         public IDevice Device { get; set; }
         public string DeviceId { get; set; }
-
-        public override bool Equals(object? obj)
-        {
-            if (obj == null || GetType() != obj.GetType())
-                return false;
-            var objectToCompare = (ThermostatMeasurement)obj;
-            return objectToCompare.Id == Id &&
-                   objectToCompare.Temperature == Temperature &&
-                   objectToCompare.SetPoint == SetPoint &&
-                   objectToCompare.Status.OnStatus == Status.OnStatus &&
-                   objectToCompare.TimeStamp == TimeStamp &&
-                   objectToCompare.Device == Device &&
-                   objectToCompare.DeviceId == DeviceId;
-        }
     }
 }
