@@ -7,7 +7,7 @@ namespace IOT_Thermostat.API.Profiles.Device
     {
         public DeviceProfile()
         {
-            CreateMap<Device, DeviceDto>();
+            CreateMap<Models.Device.Device, DeviceDto>();
         }
     }
 }
