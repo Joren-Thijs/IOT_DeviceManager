@@ -50,7 +50,7 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             var deviceId = "ABCD";
             var messageTopic = deviceType + "/" + deviceId + "/ms";
 
-            var measurement = new ThermostatMeasurement
+            var measurement = new ThermostatDeviceMeasurement
             {
                 Status = new DeviceStatus(),
                 DeviceId = "1",

@@ -6,7 +6,7 @@ using IOT_Thermostat.API.Models.Interfaces;
 
 namespace IOT_Thermostat.API.Models.ThermostatDevice
 {
-    public class ThermostatMeasurement : IDeviceMeasurement
+    public class ThermostatDeviceMeasurement : IDeviceMeasurement
     {
         [Key]
         public string Id { get; set; }

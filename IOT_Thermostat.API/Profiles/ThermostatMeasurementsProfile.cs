@@ -11,7 +11,7 @@ namespace IOT_Thermostat.API.Profiles
     {
         public ThermostatMeasurementsProfile()
         {
-            CreateMap<ThermostatMeasurement, DTO.ThermostatMeasurementDto>();
+            CreateMap<ThermostatDeviceMeasurement, DTO.ThermostatMeasurementDto>();
         }
     }
 }

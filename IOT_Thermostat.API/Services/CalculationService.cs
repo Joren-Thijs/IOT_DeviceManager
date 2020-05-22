@@ -8,7 +8,7 @@ namespace IOT_Thermostat.API.Services
 {
     public class CalculationService
     {
-        public float CalculateAverageTemp(IEnumerable<ThermostatMeasurement> measurements)
+        public float CalculateAverageTemp(IEnumerable<ThermostatDeviceMeasurement> measurements)
         {
             float averageTemp = 0.0f;
             // Sum the temperatures
@@ -22,7 +22,7 @@ namespace IOT_Thermostat.API.Services
             return averageTemp;
         }
 
-        public TimeSpan CalculateTotalOnTime(IEnumerable<ThermostatMeasurement> measurements)
+        public TimeSpan CalculateTotalOnTime(IEnumerable<ThermostatDeviceMeasurement> measurements)
         {
             // Check for at least 2 measurements
             if (measurements.Count() < 2)

@@ -35,7 +35,7 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient.Helpers
             var payload = Encoding.UTF8.GetString(message.Payload);
             IDeviceMeasurement measurement = deviceType switch
             {
-                "thermostat" => JsonConvert.DeserializeObject<ThermostatMeasurement>(payload),
+                "thermostat" => JsonConvert.DeserializeObject<ThermostatDeviceMeasurement>(payload),
                 _ => null,
             };
             return measurement;

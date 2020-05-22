@@ -49,7 +49,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             {
                 Id = "2"
             };
-            measurement3 = new ThermostatMeasurement
+            measurement3 = new ThermostatDeviceMeasurement
             {
                 Id = "3"
             };
@@ -260,7 +260,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
 
             retrievedMeasurement.Should().BeOfType<DeviceMeasurement>();
             retrievedMeasurement2.Should().BeOfType<DeviceMeasurement>();
-            retrievedMeasurement3.Should().BeOfType<ThermostatMeasurement>();
+            retrievedMeasurement3.Should().BeOfType<ThermostatDeviceMeasurement>();
         }
 
         [Test]
@@ -351,7 +351,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         {
             await repo.AddDevice(device);
             await repo.Save();
-            await repo.AddMeasurement(device.Id, new ThermostatMeasurement());
+            await repo.AddMeasurement(device.Id, new ThermostatDeviceMeasurement());
             await repo.Save();
 
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
