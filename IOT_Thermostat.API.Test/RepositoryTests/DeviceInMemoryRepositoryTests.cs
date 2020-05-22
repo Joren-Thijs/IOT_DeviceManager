@@ -20,8 +20,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         DeviceInMemoryRepository repo;
         IDevice device;
         IDevice device2;
+        IDevice device3;
         private IDeviceMeasurement measurement;
         private IDeviceMeasurement measurement2;
+        private IDeviceMeasurement measurement3;
 
         [SetUp]
         public void Init()
@@ -35,6 +37,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             {
                 Id = "2"
             };
+            device3 = new ThermostatDevice
+            {
+                Id = "3"
+            };
             measurement = new DeviceMeasurement
             {
                 Id = "1"
@@ -43,6 +49,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             {
                 Id = "2"
             };
+            measurement3 = new ThermostatMeasurement
+            {
+                Id = "3"
+            };
         }
 
         [TearDown]
@@ -50,8 +60,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         {
             repo.DeleteMeasurement(measurement);
             repo.DeleteMeasurement(measurement2);
+            repo.DeleteMeasurement(measurement3);
             repo.DeleteDevice(device);
             repo.DeleteDevice(device2);
+            repo.DeleteDevice(device3);
         }
 
         [Test]
@@ -133,10 +145,6 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         [Test]
         public async Task CheckDevicesRetrievedHasCorrectClass_ReturnsTrueAsync()
         {
-            var device3 = new ThermostatDevice
-            {
-                Id = "3"
-            };
             await repo.AddDevice(device);
             await repo.AddDevice(device2);
             await repo.AddDevice(device3);
@@ -231,6 +239,28 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
             retrievedMeasurement.Should().BeEquivalentTo(measurement);
+        }
+
+        [Test]
+        public async Task CheckMeasurementsRetrievedHaveCorrectClass_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.AddDevice(device2);
+            await repo.AddDevice(device3);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.AddMeasurement(device2.Id, measurement2);
+            await repo.AddMeasurement(device3.Id, measurement3);
+            await repo.Save();
+
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            var retrievedMeasurement2 = await repo.GetMeasurement(device2.Id, measurement2.Id);
+            var retrievedMeasurement3 = await repo.GetMeasurement(device3.Id, measurement3.Id);
+
+            retrievedMeasurement.Should().BeOfType<DeviceMeasurement>();
+            retrievedMeasurement2.Should().BeOfType<DeviceMeasurement>();
+            retrievedMeasurement3.Should().BeOfType<ThermostatMeasurement>();
         }
 
         [Test]
