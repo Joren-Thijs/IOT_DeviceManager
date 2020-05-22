@@ -7,11 +7,11 @@ using IOT_Thermostat.API.Models.ThermostatDevice;
 
 namespace IOT_Thermostat.API.Profiles
 {
-    public class ThermostatMeasurementsProfile : Profile
+    public class ThermostatDeviceProfile : Profile
     {
-        public ThermostatMeasurementsProfile()
+        public ThermostatDeviceProfile()
         {
-            CreateMap<ThermostatDeviceMeasurement, DTO.ThermostatDeviceMeasurementDto>();
+            CreateMap<ThermostatDevice, DTO.ThermostatDeviceDto>();
         }
     }
 }
