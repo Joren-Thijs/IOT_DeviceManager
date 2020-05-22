@@ -7,7 +7,7 @@ using IOT_Thermostat.API.Models.Interfaces;
 
 namespace IOT_Thermostat.API.DTO
 {
-    public class ThermostatMeasurementDto
+    public class ThermostatDeviceMeasurementDto
     {
         public string Id { get; set; }
         public float Temperature { get; set; }

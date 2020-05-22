@@ -26,7 +26,7 @@ namespace IOT_Thermostat.API.Controllers
         public async Task<IActionResult> ReturnTestData([FromRoute] string deviceId)
         {
             var measurements = await _deviceRepository.GetMeasurements(deviceId);
-            var measurementsDto = _mapper.Map<IEnumerable<ThermostatMeasurementDto>>(measurements);
+            var measurementsDto = _mapper.Map<IEnumerable<ThermostatDeviceMeasurementDto>>(measurements);
 
             return Ok(new JsonResult(measurementsDto));
         }

@@ -70,6 +70,7 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             deconstructedMeasurement.Should().BeEquivalentTo(measurement);
         }
 
+        [Test]
         public void CheckDeviceMeasurementDeconstructedFromMessageHasCorrectClassDevice_ReturnsTrue()
         {
             var deviceType = "device";
@@ -121,6 +122,7 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             deconstructedMeasurement.Should().BeOfType<ThermostatDeviceMeasurement>();
         }
 
+        [Test]
         public void CheckDeviceMeasurementDeconstructedFromMessageHasCorrectClassDeviceByDefault_ReturnsTrue()
         {
             var deviceType = "";
