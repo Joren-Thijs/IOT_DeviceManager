@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using IOT_Thermostat.API.DTO;
+using IOT_Thermostat.API.DTO.Interfaces;
+using IOT_Thermostat.API.Extensions;
 using IOT_Thermostat.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,9 @@ namespace IOT_Thermostat.API.Controllers
         public async Task<IActionResult> GetDevices()
         {
             var devices = await _deviceRepository.GetDevices();
-            var devicesDto = _mapper.Map<IEnumerable<ThermostatDeviceDto>>(devices);
+            var devicesDto = _mapper.Map<IEnumerable<IDeviceDto>>(devices);
 
-            return Ok(new JsonResult(devicesDto));
+            return Ok(devicesDto.SerializeJson());
         }
     }
 }

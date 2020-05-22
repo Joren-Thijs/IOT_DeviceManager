@@ -1,8 +1,8 @@
-﻿using IOT_Thermostat.API.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IOT_Thermostat.API.Entity.Interfaces;
 
 namespace IOT_Thermostat.API.Repositories
 {
@@ -71,7 +71,7 @@ namespace IOT_Thermostat.API.Repositories
 
         public Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId)
         {
-            var device = (ThermostatDevice)_devices.FirstOrDefault(dev => dev.Id == deviceId);
+            var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
                 throw new ArgumentException($"No device exists with id: {deviceId}");
@@ -85,7 +85,7 @@ namespace IOT_Thermostat.API.Repositories
 
         public Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement)
         {
-            var device = (ThermostatDevice)_devices.FirstOrDefault(dev => dev.Id == deviceId);
+            var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
                 throw new ArgumentException($"No device exists with id: {deviceId}");
@@ -140,7 +140,7 @@ namespace IOT_Thermostat.API.Repositories
 
         public Task<bool> MeasurementExists(string deviceId, string measurementId)
         {
-            var device = (ThermostatDevice)_devices.FirstOrDefault(dev => dev.Id == deviceId);
+            var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
                 throw new ArgumentException($"No device exists with id: {deviceId}");

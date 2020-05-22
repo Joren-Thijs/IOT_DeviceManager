@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using IOT_Thermostat.API.DTO;
+using IOT_Thermostat.API.DTO.Interfaces;
+using IOT_Thermostat.API.Extensions;
 using IOT_Thermostat.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace IOT_Thermostat.API.Controllers
 {
@@ -26,9 +29,9 @@ namespace IOT_Thermostat.API.Controllers
         public async Task<IActionResult> ReturnTestData([FromRoute] string deviceId)
         {
             var measurements = await _deviceRepository.GetMeasurements(deviceId);
-            var measurementsDto = _mapper.Map<IEnumerable<ThermostatMeasurementDto>>(measurements);
+            var measurementsDto = _mapper.Map<IEnumerable<IDeviceMeasurementDto>>(measurements);
 
-            return Ok(new JsonResult(measurementsDto));
+            return Ok(measurementsDto.SerializeJson());
         }
     }
 }

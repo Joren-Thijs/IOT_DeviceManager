@@ -1,11 +1,13 @@
-﻿using IOT_Thermostat.API.Models;
-using IOT_Thermostat.API.Repositories;
+﻿using IOT_Thermostat.API.Repositories;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using FluentAssertions;
+using IOT_Thermostat.API.Entity.Device;
+using IOT_Thermostat.API.Entity.Interfaces;
+using IOT_Thermostat.API.Entity.ThermostatDevice;
+
 
 namespace IOT_Thermostat.API.Test.RepositoryTests
 {
@@ -15,28 +17,38 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         DeviceInMemoryRepository repo;
         IDevice device;
         IDevice device2;
+        IDevice device3;
         private IDeviceMeasurement measurement;
         private IDeviceMeasurement measurement2;
+        private IDeviceMeasurement measurement3;
 
         [SetUp]
         public void Init()
         {
             repo = new DeviceInMemoryRepository();
-            device = new ThermostatDevice
+            device = new Device
             {
                 Id = "1"
             };
-            device2 = new ThermostatDevice
+            device2 = new Device
             {
                 Id = "2"
             };
-            measurement = new ThermostatMeasurement
+            device3 = new ThermostatDevice
+            {
+                Id = "3"
+            };
+            measurement = new DeviceMeasurement
             {
                 Id = "1"
             };
-            measurement2 = new ThermostatMeasurement
+            measurement2 = new DeviceMeasurement
             {
                 Id = "2"
+            };
+            measurement3 = new ThermostatDeviceMeasurement
+            {
+                Id = "3"
             };
         }
 
@@ -45,8 +57,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         {
             repo.DeleteMeasurement(measurement);
             repo.DeleteMeasurement(measurement2);
+            repo.DeleteMeasurement(measurement3);
             repo.DeleteDevice(device);
             repo.DeleteDevice(device2);
+            repo.DeleteDevice(device3);
         }
 
         [Test]
@@ -86,7 +100,8 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             await repo.AddDevice(device);
             await repo.Save();
             var retrievedDevice = await repo.GetDevice(device.Id);
-            Assert.AreEqual(device, retrievedDevice);
+
+            retrievedDevice.Should().BeEquivalentTo(device);
         }
 
         [Test]
@@ -108,7 +123,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
 
             var retrievedDevices = await repo.GetDevices();
 
-            Assert.AreEqual(device, retrievedDevices.First());
+            retrievedDevices.First().Should().BeEquivalentTo(device);
             Assert.AreEqual(1, retrievedDevices.Count());
         }
 
@@ -122,6 +137,22 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices();
 
             Assert.AreEqual(2, retrievedDevices.Count());
+        }
+
+        [Test]
+        public async Task CheckDevicesRetrievedHasCorrectClass_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.AddDevice(device2);
+            await repo.AddDevice(device3);
+            await repo.Save();
+
+            var retrievedDevice1 = await repo.GetDevice(device.Id);
+            var retrievedDevice2 = await repo.GetDevice(device2.Id);
+            var retrievedDevice3 = await repo.GetDevice(device3.Id);
+            retrievedDevice1.Should().BeOfType<Device>();
+            retrievedDevice2.Should().BeOfType<Device>();
+            retrievedDevice3.Should().BeOfType<ThermostatDevice>();
         }
 
         [Test]
@@ -204,7 +235,29 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             await repo.Save();
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
-            Assert.AreEqual(measurement, retrievedMeasurement);
+            retrievedMeasurement.Should().BeEquivalentTo(measurement);
+        }
+
+        [Test]
+        public async Task CheckMeasurementsRetrievedHaveCorrectClass_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.AddDevice(device2);
+            await repo.AddDevice(device3);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.AddMeasurement(device2.Id, measurement2);
+            await repo.AddMeasurement(device3.Id, measurement3);
+            await repo.Save();
+
+            var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
+            var retrievedMeasurement2 = await repo.GetMeasurement(device2.Id, measurement2.Id);
+            var retrievedMeasurement3 = await repo.GetMeasurement(device3.Id, measurement3.Id);
+
+            retrievedMeasurement.Should().BeOfType<DeviceMeasurement>();
+            retrievedMeasurement2.Should().BeOfType<DeviceMeasurement>();
+            retrievedMeasurement3.Should().BeOfType<ThermostatDeviceMeasurement>();
         }
 
         [Test]
@@ -234,7 +287,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
             Assert.AreEqual(device.Id, retrievedMeasurement.DeviceId);
-            Assert.AreEqual(device, retrievedMeasurement.Device);
+            retrievedMeasurement.Device.Should().BeEquivalentTo(device);
         }
 
         [Test]
@@ -267,9 +320,10 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
             var retrievedMeasurements2 = await repo.GetMeasurements(device2.Id);
 
-            Assert.AreEqual(measurement, retrievedMeasurements.First());
+            retrievedMeasurements.First().Should().BeEquivalentTo(measurement);
             Assert.AreEqual(1, retrievedMeasurements.Count());
-            Assert.AreEqual(measurement2, retrievedMeasurements2.First());
+
+            retrievedMeasurements2.First().Should().BeEquivalentTo(measurement2);
             Assert.AreEqual(1, retrievedMeasurements2.Count());
         }
 
@@ -294,7 +348,7 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
         {
             await repo.AddDevice(device);
             await repo.Save();
-            await repo.AddMeasurement(device.Id, new ThermostatMeasurement());
+            await repo.AddMeasurement(device.Id, new ThermostatDeviceMeasurement());
             await repo.Save();
 
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
