@@ -69,5 +69,80 @@ namespace IOT_Thermostat.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
             var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
             deconstructedMeasurement.Should().BeEquivalentTo(measurement);
         }
+
+        public void CheckDeviceMeasurementDeconstructedFromMessageHasCorrectClassDevice_ReturnsTrue()
+        {
+            var deviceType = "device";
+            var deviceId = "ABCD";
+            var messageTopic = deviceType + "/" + deviceId + "/ms";
+
+            var measurement = new DeviceMeasurement
+            {
+                Status = new DeviceStatus(),
+                DeviceId = "1",
+                TimeStamp = DateTime.Now
+            };
+
+            var measurementString = JsonConvert.SerializeObject(measurement);
+            var messagePayload = Encoding.ASCII.GetBytes(measurementString);
+
+            var message = new MqttApplicationMessage();
+            message.Topic = messageTopic;
+            message.Payload = messagePayload;
+
+            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
+        }
+
+        [Test]
+        public void CheckDeviceMeasurementDeconstructedFromMessageHasCorrectClassThermostat_ReturnsTrue()
+        {
+            var deviceType = "thermostat";
+            var deviceId = "ABCD";
+            var messageTopic = deviceType + "/" + deviceId + "/ms";
+
+            var measurement = new ThermostatDeviceMeasurement
+            {
+                Status = new DeviceStatus(),
+                DeviceId = "1",
+                SetPoint = 22f,
+                Temperature = 20f,
+                TimeStamp = DateTime.Now
+            };
+
+            var measurementString = JsonConvert.SerializeObject(measurement);
+            var messagePayload = Encoding.ASCII.GetBytes(measurementString);
+
+            var message = new MqttApplicationMessage();
+            message.Topic = messageTopic;
+            message.Payload = messagePayload;
+
+            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            deconstructedMeasurement.Should().BeOfType<ThermostatDeviceMeasurement>();
+        }
+
+        public void CheckDeviceMeasurementDeconstructedFromMessageHasCorrectClassDeviceByDefault_ReturnsTrue()
+        {
+            var deviceType = "";
+            var deviceId = "ABCD";
+            var messageTopic = deviceType + "/" + deviceId + "/ms";
+
+            var measurement = new DeviceMeasurement
+            {
+                Status = new DeviceStatus(),
+                DeviceId = "1",
+                TimeStamp = DateTime.Now
+            };
+
+            var measurementString = JsonConvert.SerializeObject(measurement);
+            var messagePayload = Encoding.ASCII.GetBytes(measurementString);
+
+            var message = new MqttApplicationMessage();
+            message.Topic = messageTopic;
+            message.Payload = messagePayload;
+
+            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
+        }
     }
 }

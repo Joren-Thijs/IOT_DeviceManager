@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using IOT_Thermostat.API.Extensions;
 using IOT_Thermostat.API.Models;
+using IOT_Thermostat.API.Models.Device;
 using IOT_Thermostat.API.Models.Interfaces;
 using IOT_Thermostat.API.Models.ThermostatDevice;
 using MQTTnet;
@@ -36,7 +37,8 @@ namespace IOT_Thermostat.API.DeviceClient.MqttClient.Helpers
             IDeviceMeasurement measurement = deviceType switch
             {
                 "thermostat" => JsonConvert.DeserializeObject<ThermostatDeviceMeasurement>(payload),
-                _ => null,
+                "device" => JsonConvert.DeserializeObject<DeviceMeasurement>(payload),
+                _ => JsonConvert.DeserializeObject<DeviceMeasurement>(payload),
             };
             return measurement;
         }
