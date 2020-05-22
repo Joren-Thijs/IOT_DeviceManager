@@ -146,8 +146,8 @@ namespace IOT_Thermostat.API.Test.RepositoryTests
             var retrievedDevice2 = await repo.GetDevice(device2.Id);
             var retrievedDevice3 = await repo.GetDevice(device3.Id);
             retrievedDevice1.Should().BeOfType<Device>();
-            retrievedDevice1.Should().BeOfType<Device>();
-            retrievedDevice1.Should().BeOfType<ThermostatDevice>();
+            retrievedDevice2.Should().BeOfType<Device>();
+            retrievedDevice3.Should().BeOfType<ThermostatDevice>();
         }
 
         [Test]
