@@ -1,0 +1,14 @@
+{
+  "name": "mock-devices",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mock-device.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mqtt": "^4.1.0"
+  }
+}
