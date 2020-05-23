@@ -2,7 +2,9 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using IOT_DeviceManager.API.Entity.Device;
+using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 namespace IOT_DeviceManager.API.Test.CalculationTests
@@ -10,6 +12,47 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
     [TestFixture]
     class CalculateAverageTests
     {
+        [Test]
+        public void CalculatingAverageWithPropertyName_ReturnsTrue()
+        {
+            CalculationService calculationService = new CalculationService();
+            IEnumerable<ThermostatDeviceMeasurement> measurements = new List<ThermostatDeviceMeasurement>()
+            {
+
+                new ThermostatDeviceMeasurement
+                {
+                    Status = new DeviceStatus(true),
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                }
+            };
+
+            var result = calculationService.CalculateAverage(measurements, "Temperature");
+
+            Assert.AreEqual(20f, result);
+        }
+
+        [Test]
+        public void CalculatingAverageWithPropertyNameTwo_ReturnsTrue()
+        {
+            CalculationService calculationService = new CalculationService();
+            IEnumerable<ThermostatDeviceMeasurement> measurements = new List<ThermostatDeviceMeasurement>()
+            {
+
+                new ThermostatDeviceMeasurement
+                {
+                    Status = new DeviceStatus(true),
+                    SetPoint = 22f,
+                    Temperature = 20f,
+                    TimeStamp = DateTime.UtcNow
+                }
+            };
+
+            var result = calculationService.CalculateAverage(measurements, "temperature");
+
+            Assert.AreEqual(20f, result);
+        }
 
         [Test]
         public void CalculatingAverageWithOne_ReturnsTrue()
