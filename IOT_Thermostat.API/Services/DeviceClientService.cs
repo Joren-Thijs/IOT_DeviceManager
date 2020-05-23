@@ -12,8 +12,8 @@ namespace IOT_Thermostat.API.Services
 {
     public class DeviceClientService : IHostedService
     {
-        private IDeviceClient _deviceClient;
-        private IDeviceRepository _deviceRepository;
+        private readonly IDeviceClient _deviceClient;
+        private readonly IDeviceRepository _deviceRepository;
 
         public DeviceClientService(IDeviceClient deviceClient, IDeviceRepository deviceRepository)
         {
