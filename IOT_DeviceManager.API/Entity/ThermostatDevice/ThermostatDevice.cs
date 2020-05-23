@@ -10,7 +10,6 @@ namespace IOT_DeviceManager.API.Entity.ThermostatDevice
         public string Id { get; set; }
         public string DeviceName { get; set; }
         public IDeviceStatus Status { get; set; }
-        public double SetPoint { get; set; }
         public IEnumerable<IDeviceMeasurement> Measurements { get; set; } = new List<ThermostatDeviceMeasurement>();
     }
 }

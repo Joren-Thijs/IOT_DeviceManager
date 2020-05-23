@@ -11,5 +11,6 @@ namespace IOT_DeviceManager.API.Entity.ThermostatDevice
         }
 
         public bool OnStatus { get; set; }
+        public double SetPoint { get; set; }
     }
 }
