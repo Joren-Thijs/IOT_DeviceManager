@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Options;
 using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Extensions;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
@@ -16,11 +17,16 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
     {
         private readonly IMqttClientOptions _mqttClientOptions;
 
-        private readonly IMqttRpcClientOptions _mqttRpcClientOptions;
+        private IMqttClientOptions _mqttRpcClientOptions;
+
+        private readonly IMqttRpcClientOptions _mqttRpcClientOptionsRpc;
 
         private IMqttClient _mqttClient;
 
-        private MqttRpcClient _mqttRpcClient;
+        private IMqttClient _mqttRpcClient;
+
+        private MqttRpcClient _mqttRpcClientRpc;
+        
 
         public event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
 
@@ -28,8 +34,10 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         {
             _mqttClientOptions = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
             _mqttRpcClientOptions = MqttDeviceClientOptionsLoader.LoadMqttRpcClientOptions();
+            _mqttRpcClientOptionsRpc = MqttDeviceClientOptionsLoader.LoadMqttRpcClientRpcOptions();
             _mqttClient = new MqttFactory().CreateMqttClient();
-            _mqttRpcClient = new MqttRpcClient(_mqttClient, _mqttRpcClientOptions);
+            _mqttRpcClient = new MqttFactory().CreateMqttClient();
+            _mqttRpcClientRpc = new MqttRpcClient(_mqttRpcClient, _mqttRpcClientOptionsRpc);
             SetupClient();
         }
 
@@ -75,13 +83,15 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         public async Task StartClientAsync()
         {
             await _mqttClient.ConnectAsync(_mqttClientOptions);
-            System.Console.WriteLine("Client is connected");
+            System.Console.WriteLine("MQTT Client is connected");
             await _mqttClient.SubscribeAsync("+/+/ms");
             await _mqttClient.SubscribeAsync("+/+/ping");
             if (!_mqttClient.IsConnected)
             {
                 await _mqttClient.ReconnectAsync();
             }
+            await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
+            System.Console.WriteLine("MQTT Rpc Client is connected");
         }
 
         public Task StopClientAsync()
@@ -89,11 +99,11 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             return Task.CompletedTask;
         }
 
-        public async Task SetDeviceStatus(string deviceName)
+        public async Task SetDeviceStatus(IDevice device, IDeviceStatus status)
         {
-            string topic = deviceName + ".cmd.status";
-            string payload = "{\"status\":\"true\"}";
-            await _mqttRpcClient.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
+            var topic = MqttApplicationMessageConstructor.GetSetDeviceStatusRpcTopic(device);
+            var payload = status.SerializeJson();
+            await _mqttRpcClientRpc.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
                 MqttQualityOfServiceLevel.AtLeastOnce);
         }
 
