@@ -24,7 +24,23 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Options
                 .Build();
         }
 
-        public static IMqttRpcClientOptions LoadMqttRpcClientOptions()
+        public static IMqttClientOptions LoadMqttRpcClientOptions()
+        {
+            string clientId = Environment.GetEnvironmentVariable("MQTT_RPC_CLIENT_ID");
+            string clientUsername = Environment.GetEnvironmentVariable("MQTT_RPC_CLIENT_USERNAME");
+            string clientPassword = Environment.GetEnvironmentVariable("MQTT_RPC_CLIENT_PASSWORD");
+
+            string brokerServer = Environment.GetEnvironmentVariable("MQTT_BROKER_SERVER");
+            int brokerPort = Convert.ToInt32(Environment.GetEnvironmentVariable("MQTT_BROKER_PORT"));
+
+            return new MqttClientOptionsBuilder()
+                .WithClientId(clientId)
+                .WithCredentials(clientUsername, clientPassword)
+                .WithTcpServer(brokerServer, brokerPort)
+                .Build();
+        }
+
+        public static IMqttRpcClientOptions LoadMqttRpcClientRpcOptions()
         {
             IMqttRpcClientTopicGenerationStrategy strategy = new MqttRpcClientDeviceTopicGenerationStrategy();
 
