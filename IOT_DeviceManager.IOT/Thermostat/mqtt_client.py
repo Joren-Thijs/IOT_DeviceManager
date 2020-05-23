@@ -123,7 +123,7 @@ class MQTTClient:
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
-        print(payload)
+
         # Convert the string back to dictionary
         try:
             command = json.loads(payload)
@@ -188,14 +188,7 @@ class MQTTClient:
         self._client.publish(self._deviceTopic + "/ms", payload, 0, False)
 
     def sendStatusResponse(self):
-        data = {
-            'temperature': self.temperature,
-            'setpoint': self.setpoint,
-            'status':
-                {
-                    'onStatus': self.status
-                }
-        }
+        data = {'onStatus': self.status}
         try:
             payload = json.dumps(data)
         except:
