@@ -123,15 +123,16 @@ class MQTTClient:
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
+        print(payload)
         # Convert the string back to dictionary
         try:
             command = json.loads(payload)
         except:
             print("error while decoding payload")
             return
-        # Grab the status string from the payload dict
+        # Grab the status from the payload dict
         self.status_lock.acquire()
-        self.status = command['status'] == 'True' or command['status'] == 'true'
+        self.status = command['OnStatus'] == True
         self.status_lock.release()
         self.sendStatusResponse()
 
