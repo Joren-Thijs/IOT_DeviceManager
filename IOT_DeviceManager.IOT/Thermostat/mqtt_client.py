@@ -188,7 +188,7 @@ class MQTTClient:
         self._client.publish(self._deviceTopic + "/ms", payload, 0, False)
 
     def sendStatusResponse(self):
-        data = {'onStatus': self.status}
+        data = {'OnStatus': self.status}
         try:
             payload = json.dumps(data)
         except:
