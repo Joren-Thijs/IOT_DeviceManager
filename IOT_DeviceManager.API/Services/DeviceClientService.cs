@@ -38,9 +38,9 @@ namespace IOT_DeviceManager.API.Services
             return _deviceClient.StopClientAsync();
         }
 
-        public async Task SetDeviceStatusAsync(IDevice device, IDeviceStatus status)
+        public async Task<IDeviceStatus> SetDeviceStatusAsync(IDevice device, IDeviceStatus status)
         {
-            await _deviceClient.SetDeviceStatus(device, status);
+            return await _deviceClient.SetDeviceStatus(device, status);
         }
 
         private async Task DeviceClientOnDeviceMeasurementReceived(object sender, DeviceMeasurementEventArgs e)

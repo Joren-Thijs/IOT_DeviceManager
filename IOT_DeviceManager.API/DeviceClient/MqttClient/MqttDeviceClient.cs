@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Options;
@@ -99,12 +100,14 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             return Task.CompletedTask;
         }
 
-        public async Task SetDeviceStatus(IDevice device, IDeviceStatus status)
+        public async Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status)
         {
             var topic = MqttApplicationMessageConstructor.GetSetDeviceStatusRpcTopic(device);
             var payload = status.SerializeJson();
-            await _mqttRpcClientRpc.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
+            var rcpAnswer = await _mqttRpcClientRpc.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
                 MqttQualityOfServiceLevel.AtLeastOnce);
+            var newStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(device, rcpAnswer);
+            return newStatus;
         }
 
         public void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs)

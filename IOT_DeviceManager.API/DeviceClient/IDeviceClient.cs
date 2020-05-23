@@ -8,7 +8,7 @@ namespace IOT_DeviceManager.API.DeviceClient
     {
         Task StartClientAsync();
         Task StopClientAsync();
-        Task SetDeviceStatus(IDevice device, IDeviceStatus status);
+        Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status);
         event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
         void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs);
     }

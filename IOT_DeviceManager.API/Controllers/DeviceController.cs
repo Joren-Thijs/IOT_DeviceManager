@@ -34,22 +34,5 @@ namespace IOT_DeviceManager.API.Controllers
 
             return Ok(devicesDto.SerializeJson());
         }
-
-        [HttpPost("{deviceId}/status/onstatus/toggle")]
-        public async Task<IActionResult> ToggleDeviceOnStatus([FromRoute] string deviceId)
-        {
-            var device = await _deviceRepository.GetDevice(deviceId);
-            if (device == null)
-            {
-                return NotFound();
-            }
-
-            var newStatus = device.Status;
-            newStatus.OnStatus = !device.Status.OnStatus;
-
-            await _deviceClientService.SetDeviceStatusAsync(device, newStatus);
-
-            return Ok();
-        }
     }
 }
