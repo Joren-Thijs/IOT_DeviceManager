@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/IOT_Thermostat.API/IOT_Thermostat.API.csproj",
+                "${workspaceFolder}/IOT_DeviceManager.API/IOT_DeviceManager.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/IOT_Thermostat.API/IOT_Thermostat.API.csproj",
+                "${workspaceFolder}/IOT_DeviceManager.API/IOT_DeviceManager.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +32,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/IOT_Thermostat.API/IOT_Thermostat.API.csproj",
+                "${workspaceFolder}/IOT_DeviceManager.API/IOT_DeviceManager.API.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
