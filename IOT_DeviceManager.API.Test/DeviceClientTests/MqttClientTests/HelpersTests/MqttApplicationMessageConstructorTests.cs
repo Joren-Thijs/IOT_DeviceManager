@@ -55,5 +55,37 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var newStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(device, statusStringBytes);
             newStatus.Should().BeEquivalentTo(status);
         }
+
+        [Test]
+        public void CheckDeviceStatusConstructedFromRpcAnswerHasCorrectClass_ReturnsTrue()
+        {
+            var device = new Device
+            {
+                Id = "1"
+            };
+            var deviceStatus = new DeviceStatus
+            {
+                OnStatus = true
+            };
+
+            var deviceStatusString = deviceStatus.SerializeJson();
+            var deviceStatusStringBytes = Encoding.ASCII.GetBytes(deviceStatusString);
+            var newDeviceStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(device, deviceStatusStringBytes);
+            newDeviceStatus.Should().BeOfType<DeviceStatus>();
+
+            var thermostatDevice = new ThermostatDevice()
+            {
+                Id = "2"
+            };
+            var thermostatDevicestatus = new ThermostatDeviceStatus()
+            {
+                OnStatus = true
+            };
+
+            var thermostatDeviceStatusString = deviceStatus.SerializeJson();
+            var thermostatDeviceStatusStringBytes = Encoding.ASCII.GetBytes(deviceStatusString);
+            var newThermostatDeviceStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(thermostatDevice, deviceStatusStringBytes);
+            newThermostatDeviceStatus.Should().BeOfType<ThermostatDeviceStatus>();
+        }
     }
 }
