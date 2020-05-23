@@ -52,8 +52,6 @@ class MQTTClient:
             self._deviceTopic + "/ping/response", self.on_ping_message)
         self._client.message_callback_add(
             self._deviceTopic + "/cmd/status", self.on_status_message)
-        self._client.message_callback_add(
-            self._deviceTopic + "/cmd/setpoint", self.on_setpoint_message)
 
     def on_connect(self, client, userdata, flags, rc):
         """
@@ -123,7 +121,7 @@ class MQTTClient:
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
-
+        print(payload)
         # Convert the string back to dictionary
         try:
             command = json.loads(payload)
@@ -134,27 +132,8 @@ class MQTTClient:
         self.status_lock.acquire()
         self.status = command['OnStatus'] == True
         self.status_lock.release()
+        self.setpoint = command['SetPoint']
         self.sendStatusResponse()
-
-    def on_setpoint_message(self, client, userdata, msg):
-        """
-        The callback for when a PUBLISH message is received from the server.
-
-        :param client: the client instance for this callback
-        :param userdata: the private user data as set in Client() or user_data_set()
-        :param msg: an instance of MQTTMessage. This is a class with members topic, payload, qos, retain.
-        """
-
-        # Decode the bytes string into a unicode string
-        payload = msg.payload.decode('utf-8')
-        # Convert the string back to dictionary
-        try:
-            command = json.loads(payload)
-        except:
-            print("error while decoding payload")
-            return
-        # Grab the setpoint string from the payload dict
-        self.setpoint = command['setpoint']
 
     def startListening(self):
         """
@@ -172,11 +151,11 @@ class MQTTClient:
 
     def sendMeasurement(self):
         data = {
-            'temperature': self.temperature,
-            'setpoint': self.setpoint,
-            'status':
+            'Temperature': self.temperature,
+            'Status':
                 {
-                    'onStatus': self.status
+                    'OnStatus': self.status,
+                    'Setpoint': self.setpoint
                 }
         }
         try:
@@ -188,7 +167,10 @@ class MQTTClient:
         self._client.publish(self._deviceTopic + "/ms", payload, 0, False)
 
     def sendStatusResponse(self):
-        data = {'OnStatus': self.status}
+        data = {
+            'OnStatus': self.status,
+            'Setpoint': self.setpoint
+        }
         try:
             payload = json.dumps(data)
         except:
