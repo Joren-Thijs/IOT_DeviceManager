@@ -6,7 +6,6 @@ using AutoMapper;
 using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Extensions;
 using IOT_DeviceManager.API.Repositories;
-using IOT_DeviceManager.API.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IOT_DeviceManager.API.Controllers
