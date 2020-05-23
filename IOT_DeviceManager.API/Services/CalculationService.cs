@@ -21,28 +21,15 @@ namespace IOT_DeviceManager.API.Services
                     throw new ArgumentException($"{ propertyName.FirstCharToUpper() } does not exist on {measurement.GetType()}");
                 }
 
-                var propertyValue = property.GetValue(measurement) 
+                var propertyValue = property.GetValue(measurement)
                                     ?? throw new NullReferenceException(($"{ propertyName.FirstCharToUpper() } has no value"));
                 average += (double)propertyValue;
             }
+            average /= measurements.Count();
             return average;
         }
 
-        public double CalculateAverageTemp(IEnumerable<ThermostatDeviceMeasurement> measurements)
-        {
-            double averageTemp = 0.0f;
-            // Sum the temperatures
-            foreach (var measurement in measurements)
-            {
-                averageTemp += measurement.Temperature;
-            }
-            // Devide by the amount
-            averageTemp /= measurements.Count();
-
-            return averageTemp;
-        }
-
-        public TimeSpan CalculateTotalOnTime(IEnumerable<ThermostatDeviceMeasurement> measurements)
+        public TimeSpan CalculateTotalOnTime(IEnumerable<IDeviceMeasurement> measurements)
         {
             // Check for at least 2 measurements
             if (measurements.Count() < 2)
