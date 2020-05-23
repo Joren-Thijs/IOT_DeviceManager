@@ -9,8 +9,8 @@ namespace IOT_DeviceManager.API.Entity.ThermostatDevice
     {
         [Key]
         public string Id { get; set; }
-        public float Temperature { get; set; }
-        public float SetPoint { get; set; }
+        public double Temperature { get; set; }
+        public double SetPoint { get; set; }
         public IDeviceStatus Status { get; set; } = new ThermostatDeviceStatus();
         public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
         [ForeignKey("DeviceId")]
