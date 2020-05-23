@@ -15,13 +15,11 @@ namespace IOT_DeviceManager.API.Controllers
     [Route("api/devices")]
     public class DeviceController : ControllerBase
     {
-        private readonly DeviceClientService _deviceClientService;
         private readonly IDeviceRepository _deviceRepository;
         private readonly IMapper _mapper;
 
-        public DeviceController(DeviceClientService deviceClientService, IDeviceRepository deviceRepository, IMapper mapper)
+        public DeviceController(IDeviceRepository deviceRepository, IMapper mapper)
         {
-            _deviceClientService = deviceClientService;
             _deviceRepository = deviceRepository;
             _mapper = mapper;
         }
