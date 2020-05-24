@@ -4,30 +4,59 @@ var client = mqtt.connect('mqtt://127.0.0.1');
 
 var deviceType = 'mock-device';
 var deviceId = 'C3P0';
-var mqqtMessageTopic = deviceType + '/' + deviceId + '/ms';
+var deviceTopicString = deviceType + '/' + deviceId;
+var onStatus = false;
 
-var message = {
-    Status: {
-        OnStatus: true,
+client.on('connect', function () {
+    client.subscribe(deviceTopicString + '/cmd/+');
+    setInterval(sendMeasurement, 3000);
+});
+
+function sendMeasurement() {
+    let message = {
+        Status: {
+            OnStatus: onStatus,
+            Settings: {
+                referenceVoltage: 5,
+                operatingMode: 'auto',
+            },
+        },
+        Values: {
+            sensor_1: getRandomInt(15, 25),
+            sensor_2: getRandomInt(15, 25),
+            sensor_3: getRandomInt(15, 25),
+        },
+        TimeStamp: new Date(),
+    };
+    let payload = JSON.stringify(message);
+    client.publish(deviceTopicString + '/ms', payload);
+}
+
+client.on('message', function (topic, message) {
+    context = topic.toString() + ' : ' + message.toString();
+    console.log(context);
+
+    if (topic.endsWith('cmd/status')) {
+        let payload = JSON.parse(message);
+        onStatus = payload.OnStatus;
+        sendStatusMessage();
+    }
+});
+
+function sendStatusMessage() {
+    let message = {
+        OnStatus: onStatus,
         Settings: {
             referenceVoltage: 5,
             operatingMode: 'auto',
         },
-    },
-    Values: {
-        sensor_1: 20,
-        sensor_2: 25,
-        sensor_3: 23.65,
-    },
-    TimeStamp: new Date(),
-};
+    };
+    let payload = JSON.stringify(message);
+    client.publish(deviceTopicString + '/cmd/status/response', payload);
+}
 
-var payload = JSON.stringify(message);
-
-client.on('connect', function () {
-    console.log('Connected!');
-    setInterval(function () {
-        client.publish(mqqtMessageTopic, payload);
-        console.log('Messages Sent');
-    }, 5000);
-});
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
