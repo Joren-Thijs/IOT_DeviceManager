@@ -30,6 +30,7 @@ namespace IOT_DeviceManager.API
             services.AddControllersWithInputOutputFormatters();
             services.AddRepositoryService();
             services.AddDeviceClientHostedService();
+            services.AddCalculationService();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 

@@ -21,9 +21,9 @@ namespace IOT_DeviceManager.API.Controllers
 
         public DeviceStatusController(DeviceClientService deviceClientService, IDeviceRepository deviceRepository, IMapper mapper)
         {
-            _deviceClientService = deviceClientService;
-            _deviceRepository = deviceRepository;
-            _mapper = mapper;
+            _deviceClientService = deviceClientService ?? throw new ArgumentNullException(nameof(deviceClientService));
+            _deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpPost]

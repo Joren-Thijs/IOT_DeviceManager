@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Services.Interfaces;
 
 namespace IOT_DeviceManager.API.Services
 {
-    public class CalculationService
+    public class CalculationService : ICalculationService
     {
         public double CalculateAverage(IEnumerable<IDeviceMeasurement> measurements, string propertyName)
         {
