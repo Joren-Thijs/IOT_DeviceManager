@@ -42,7 +42,7 @@ namespace IOT_DeviceManager.API.Test
         {
             DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             TimeSpan diff = DateTime.UtcNow - deviceMeasurement.TimeStamp;
-            Assert.IsTrue(diff > TimeSpan.FromSeconds(0));
+            Assert.IsTrue(diff >= TimeSpan.FromSeconds(0));
         }
 
         [Test]
