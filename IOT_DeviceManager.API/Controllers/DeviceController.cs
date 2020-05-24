@@ -19,8 +19,8 @@ namespace IOT_DeviceManager.API.Controllers
 
         public DeviceController(IDeviceRepository deviceRepository, IMapper mapper)
         {
-            _deviceRepository = deviceRepository;
-            _mapper = mapper;
+            _deviceRepository = deviceRepository ?? throw new ArgumentNullException(nameof(deviceRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet]

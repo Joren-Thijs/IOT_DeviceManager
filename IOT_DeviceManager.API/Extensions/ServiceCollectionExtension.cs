@@ -2,6 +2,7 @@
 using IOT_DeviceManager.API.DeviceClient.MqttClient;
 using IOT_DeviceManager.API.Repositories;
 using IOT_DeviceManager.API.Services;
+using IOT_DeviceManager.API.Services.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
@@ -35,6 +36,11 @@ namespace IOT_DeviceManager.API.Extensions
             services.AddSingleton<DeviceClientService>();
             services.AddSingleton<IHostedService>(serviceProvider => serviceProvider.GetService<DeviceClientService>());
             return services;
+        }
+
+        public static IServiceCollection AddCalculationService(this IServiceCollection services)
+        {
+            return services.AddTransient<ICalculationService, CalculationService>();
         }
     }
 }
