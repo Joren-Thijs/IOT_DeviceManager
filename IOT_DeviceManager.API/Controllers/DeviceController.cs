@@ -31,5 +31,19 @@ namespace IOT_DeviceManager.API.Controllers
 
             return Ok(devicesDto.SerializeJson());
         }
+
+        [HttpGet("{deviceId}")]
+        public async Task<IActionResult> GetDevice([FromRoute] string deviceId)
+        {
+            var device = await _deviceRepository.GetDevice(deviceId);
+            if (device == null)
+            {
+                return NotFound();
+            }
+
+            var deviceDto = _mapper.Map<IDeviceDto>(device);
+
+            return Ok(deviceDto.SerializeJson());
+        }
     }
 }
