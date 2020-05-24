@@ -9,6 +9,7 @@ namespace IOT_DeviceManager.API.DTO
     public class ThermostatDeviceStatusDto : IDeviceStatusDto
     {
         public bool OnStatus { get; set; }
+        public IDictionary<string, object> Settings { get; set; }
         public double SetPoint { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using IOT_DeviceManager.API.Entity.Interfaces;
+﻿using System.Collections.Generic;
+using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Entity.ThermostatDevice
 {
@@ -11,6 +12,7 @@ namespace IOT_DeviceManager.API.Entity.ThermostatDevice
         }
 
         public bool OnStatus { get; set; }
+        public IDictionary<string, object> Settings { get; set; }
         public double SetPoint { get; set; }
     }
 }

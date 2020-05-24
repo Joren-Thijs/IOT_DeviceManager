@@ -1,4 +1,5 @@
-﻿using IOT_DeviceManager.API.Entity.Interfaces;
+﻿using System.Collections.Generic;
+using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Entity.Device
 {
@@ -11,5 +12,6 @@ namespace IOT_DeviceManager.API.Entity.Device
         }
 
         public bool OnStatus { get; set; }
+        public IDictionary<string, object> Settings { get; set; } = new Dictionary<string, object>();
     }
 }
