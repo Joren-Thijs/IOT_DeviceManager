@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 
 namespace IOT_DeviceManager.API.Test.RepositoryTests
@@ -34,7 +33,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             {
                 Id = "2"
             };
-            device3 = new ThermostatDevice
+            device3 = new Device
             {
                 Id = "3"
             };
@@ -46,7 +45,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             {
                 Id = "2"
             };
-            measurement3 = new ThermostatDeviceMeasurement
+            measurement3 = new DeviceMeasurement
             {
                 Id = "3"
             };
@@ -152,7 +151,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevice3 = await repo.GetDevice(device3.Id);
             retrievedDevice1.Should().BeOfType<Device>();
             retrievedDevice2.Should().BeOfType<Device>();
-            retrievedDevice3.Should().BeOfType<ThermostatDevice>();
+            retrievedDevice3.Should().BeOfType<Device>();
         }
 
         [Test]
@@ -257,7 +256,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
 
             retrievedMeasurement.Should().BeOfType<DeviceMeasurement>();
             retrievedMeasurement2.Should().BeOfType<DeviceMeasurement>();
-            retrievedMeasurement3.Should().BeOfType<ThermostatDeviceMeasurement>();
+            retrievedMeasurement3.Should().BeOfType<DeviceMeasurement>();
         }
 
         [Test]
@@ -348,7 +347,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         {
             await repo.AddDevice(device);
             await repo.Save();
-            await repo.AddMeasurement(device.Id, new ThermostatDeviceMeasurement());
+            await repo.AddMeasurement(device.Id, new DeviceMeasurement());
             await repo.Save();
 
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);

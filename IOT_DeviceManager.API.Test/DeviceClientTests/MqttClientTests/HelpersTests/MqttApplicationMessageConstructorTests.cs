@@ -4,7 +4,6 @@ using System.Text;
 using FluentAssertions;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 using IOT_DeviceManager.API.Extensions;
 using NUnit.Framework;
 
@@ -29,9 +28,10 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
         [Test]
         public void CheckDeviceStatusRpcTopicCanBeConstructedFromThermostatDevice_ReturnsTrue()
         {
-            var device = new ThermostatDevice
+            var device = new Device
             {
-                Id = "1"
+                Id = "1",
+                DeviceType = "thermostat"
             };
 
             var topic = MqttApplicationMessageConstructor.GetSetDeviceStatusRpcTopic(device);
@@ -73,11 +73,12 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var newDeviceStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(device, deviceStatusStringBytes);
             newDeviceStatus.Should().BeOfType<DeviceStatus>();
 
-            var thermostatDevice = new ThermostatDevice()
+            var thermostatDevice = new Device()
             {
-                Id = "2"
+                Id = "2",
+                DeviceType = "thermostat"
             };
-            var thermostatDevicestatus = new ThermostatDeviceStatus()
+            var thermostatDevicestatus = new DeviceStatus()
             {
                 OnStatus = true
             };
@@ -85,7 +86,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var thermostatDeviceStatusString = deviceStatus.SerializeJson();
             var thermostatDeviceStatusStringBytes = Encoding.ASCII.GetBytes(deviceStatusString);
             var newThermostatDeviceStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(thermostatDevice, deviceStatusStringBytes);
-            newThermostatDeviceStatus.Should().BeOfType<ThermostatDeviceStatus>();
+            newThermostatDeviceStatus.Should().BeOfType<DeviceStatus>();
         }
     }
 }

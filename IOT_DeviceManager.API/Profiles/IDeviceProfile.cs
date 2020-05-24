@@ -7,7 +7,6 @@ using IOT_DeviceManager.API.DTO;
 using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 namespace IOT_DeviceManager.API.Profiles
 {
@@ -16,11 +15,9 @@ namespace IOT_DeviceManager.API.Profiles
         public IDeviceProfile()
         {
             CreateMap<IDevice, IDeviceDto>()
-                .Include<Device, DeviceDto>()
-                .Include<ThermostatDevice, ThermostatDeviceDto>();
+                .Include<Device, DeviceDto>();
 
             CreateMap<Device, DeviceDto>();
-            CreateMap<ThermostatDevice, ThermostatDeviceDto>();
         }
     }
 }

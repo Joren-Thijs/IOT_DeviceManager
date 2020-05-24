@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
-using IOT_DeviceManager.API.Extensions;
 
 namespace IOT_DeviceManager.API.Services
 {
@@ -11,22 +9,23 @@ namespace IOT_DeviceManager.API.Services
     {
         public double CalculateAverage(IEnumerable<IDeviceMeasurement> measurements, string propertyName)
         {
-            double average = 0;
-            
-            foreach (var measurement in measurements)
-            {
-                var property = measurement.GetType().GetProperty(propertyName.FirstCharToUpper());
-                if (property == null)
+            propertyName = propertyName.ToLower();
+            return measurements
+                .Where(x => x.Values.ToDictionary(k => k.Key.ToLower(), k => k.Value).ContainsKey(propertyName))
+                .Select(x =>
                 {
-                    throw new ArgumentException($"{ propertyName.FirstCharToUpper() } does not exist on {measurement.GetType()}");
-                }
-
-                var propertyValue = property.GetValue(measurement)
-                                    ?? throw new NullReferenceException(($"{ propertyName.FirstCharToUpper() } has no value"));
-                average += (double)propertyValue;
-            }
-            average /= measurements.Count();
-            return average;
+                    try
+                    {
+                        return (double?)Convert.ToDouble(x.Values.ToDictionary(k => k.Key.ToLower(), k => k.Value)[propertyName]);
+                    }
+                    catch (Exception)
+                    {
+                        return null;
+                    }
+                })
+                .Where(x => x != null)
+                .Cast<double>()
+                .Average();
         }
 
         public TimeSpan CalculateTotalOnTime(IEnumerable<IDeviceMeasurement> measurements)
