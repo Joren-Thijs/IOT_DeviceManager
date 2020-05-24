@@ -92,7 +92,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
                 await _mqttClient.ReconnectAsync();
             }
             await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
-            System.Console.WriteLine("MQTT Rpc Client is connected");
+            System.Console.WriteLine("MQTT RPC Client is connected");
         }
 
         public Task StopClientAsync()

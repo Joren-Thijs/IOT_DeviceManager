@@ -33,10 +33,7 @@ namespace IOT_DeviceManager.API.Extensions
         {
             services.AddTransient<IDeviceClient, MqttDeviceClient>();
             services.AddSingleton<DeviceClientService>();
-            services.AddSingleton<IHostedService>(serviceProvider =>
-            {
-                return serviceProvider.GetService<DeviceClientService>();
-            });
+            services.AddSingleton<IHostedService>(serviceProvider => serviceProvider.GetService<DeviceClientService>());
             return services;
         }
     }
