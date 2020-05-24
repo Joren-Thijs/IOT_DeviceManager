@@ -5,6 +5,7 @@ import threading
 import settings
 import asyncio
 from time import sleep
+from datetime import datetime
 
 
 class MQTTClient:
@@ -132,7 +133,7 @@ class MQTTClient:
         self.status_lock.acquire()
         self.status = command['OnStatus'] == True
         self.status_lock.release()
-        self.setpoint = command['SetPoint']
+        self.setpoint = command['Settings']['setpoint']
         self.sendStatusResponse()
 
     def startListening(self):
@@ -151,15 +152,20 @@ class MQTTClient:
 
     def sendMeasurement(self):
         data = {
-            'Temperature': self.temperature,
             'Status':
-                {
-                    'OnStatus': self.status,
-                    'Setpoint': self.setpoint
+            {
+                'OnStatus': self.status,
+                'Settings': {
+                    'setpoint': self.setpoint
                 }
+            },
+            'Values': {
+                'temperature': self.temperature
+            },
+            'TimeStamp': datetime.now(tz=None)
         }
         try:
-            payload = json.dumps(data)
+            payload = json.dumps(data, default=str)
         except:
             print("error while encoding payload")
             return
@@ -169,7 +175,9 @@ class MQTTClient:
     def sendStatusResponse(self):
         data = {
             'OnStatus': self.status,
-            'Setpoint': self.setpoint
+            'Settings': {
+                'setpoint': self.setpoint
+            }
         }
         try:
             payload = json.dumps(data)
