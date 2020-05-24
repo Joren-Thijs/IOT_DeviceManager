@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 namespace IOT_DeviceManager.API.Test.CalculationTests
 {
@@ -20,16 +19,18 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
 
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 }
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(20, result);
         }
@@ -41,25 +42,52 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
-                },
+                }
+            };
+
+            var result = calculationService.CalculateAverage(measurements, "temperature");
+
+            Assert.AreEqual(21, result);
+        }
+
+        [Test]
+        public void CalculatingAverageWithPropertyNameWithMissmatchingCase_ReturnsTrue()
+        {
+            CalculationService calculationService = new CalculationService();
+            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            {
+
+                new DeviceMeasurement
+                {
+                    Status = new DeviceStatus(true),
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
+                    TimeStamp = DateTime.UtcNow
+                }
             };
 
             var result = calculationService.CalculateAverage(measurements, "Temperature");
 
-            Assert.AreEqual(21, result);
+            Assert.AreEqual(20, result);
         }
 
         [Test]
@@ -69,30 +97,36 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 21,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 21}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(21, result);
         }
@@ -104,30 +138,36 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 21,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 21}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(21, result);
         }
@@ -139,37 +179,45 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 24,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 24}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 26,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 26}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(23, result);
         }
@@ -181,44 +229,54 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 24,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 24}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 26,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 26}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 23,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 23}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(23, result);
         }
@@ -230,51 +288,63 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
 
             IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
             {
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 20,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 20}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 22,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 22}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 24,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 24}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 26,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 26}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    SetPoint = 22,
-                    Temperature = 23,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 23}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
-                new ThermostatDeviceMeasurement
+                new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    SetPoint = 22,
-                    Temperature = 23,
+                    Values = new Dictionary<string, object>
+                    {
+                        {"temperature", 23}
+                    },
                     TimeStamp = DateTime.UtcNow
                 },
             };
 
-            var result = calculationService.CalculateAverage(measurements, "Temperature");
+            var result = calculationService.CalculateAverage(measurements, "temperature");
 
             Assert.AreEqual(23, result);
         }

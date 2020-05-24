@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 using IOT_DeviceManager.API.Repositories;
 using Microsoft.Extensions.Hosting;
 
@@ -66,14 +65,12 @@ namespace IOT_DeviceManager.API.Services
 
         private async Task<IDevice> AddDeviceToDeviceRepository(DeviceMeasurementEventArgs e)
         {
-            IDevice device = e.DeviceType switch
+            IDevice device = new Device()
             {
-                "device" => new Device(),
-                "thermostat" => new ThermostatDevice(),
-                _ => new Device()
+                Id = e.DeviceId,
+                DeviceType = e.DeviceType,
+                Status = e.DeviceMeasurement.Status
             };
-            device.Id = e.DeviceId;
-            device.Status = e.DeviceMeasurement.Status;
 
             device = await _deviceRepository.AddDevice(device);
             await _deviceRepository.Save();

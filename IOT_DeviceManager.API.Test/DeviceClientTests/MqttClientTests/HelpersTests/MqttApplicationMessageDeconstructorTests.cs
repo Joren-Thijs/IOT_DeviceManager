@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using MQTTnet;
@@ -6,7 +7,6 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using FluentAssertions;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
 {
@@ -48,12 +48,21 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var deviceId = "ABCD";
             var messageTopic = deviceType + "/" + deviceId + "/ms";
 
-            var measurement = new ThermostatDeviceMeasurement
+            var measurement = new DeviceMeasurement
             {
-                Status = new DeviceStatus(),
+                Status = new DeviceStatus
+                {
+                    OnStatus = false,
+                    Settings = new Dictionary<string, object>
+                    {
+                        {"setpoint", 22}
+                    }
+                },
                 DeviceId = "1",
-                SetPoint = 22f,
-                Temperature = 20f,
+                Values = new Dictionary<string, object>
+                {
+                    {"temperature", 20}
+                },
                 TimeStamp = DateTime.Now
             };
 
@@ -77,7 +86,10 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
 
             var measurement = new DeviceMeasurement
             {
-                Status = new DeviceStatus(),
+                Status = new DeviceStatus
+                {
+                    OnStatus = false,
+                },
                 DeviceId = "1",
                 TimeStamp = DateTime.Now
             };
@@ -100,12 +112,21 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var deviceId = "ABCD";
             var messageTopic = deviceType + "/" + deviceId + "/ms";
 
-            var measurement = new ThermostatDeviceMeasurement
+            var measurement = new DeviceMeasurement
             {
-                Status = new DeviceStatus(),
+                Status = new DeviceStatus
+                {
+                    OnStatus = false,
+                    Settings = new Dictionary<string, object>
+                    {
+                        {"setpoint", 22}
+                    }
+                },
                 DeviceId = "1",
-                SetPoint = 22f,
-                Temperature = 20f,
+                Values = new Dictionary<string, object>
+                {
+                    {"temperature", 20}
+                },
                 TimeStamp = DateTime.Now
             };
 
@@ -117,7 +138,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             message.Payload = messagePayload;
 
             var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
-            deconstructedMeasurement.Should().BeOfType<ThermostatDeviceMeasurement>();
+            deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
         }
 
         [Test]

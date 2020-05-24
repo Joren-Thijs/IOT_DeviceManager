@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 
 namespace IOT_DeviceManager.API.Test.CalculationTests
 {

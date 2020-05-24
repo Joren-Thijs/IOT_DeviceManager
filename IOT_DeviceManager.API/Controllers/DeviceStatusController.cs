@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Extensions;
 using IOT_DeviceManager.API.Repositories;
 using IOT_DeviceManager.API.Services;
@@ -28,7 +27,7 @@ namespace IOT_DeviceManager.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetDeviceStatus([FromRoute] string deviceId, [FromBody] string deviceStatus)
+        public async Task<IActionResult> SetDeviceStatus([FromRoute] string deviceId, [FromBody] DeviceStatus newStatus)
         {
             var device = await _deviceRepository.GetDevice(deviceId);
             if (device == null)
@@ -36,7 +35,6 @@ namespace IOT_DeviceManager.API.Controllers
                 return NotFound();
             }
 
-            var newStatus = deviceStatus.DeserializeJson<ThermostatDeviceStatus>();
             var statusAnswer = await _deviceClientService.SetDeviceStatusAsync(device, newStatus);
 
             return Ok(statusAnswer.SerializeJson());

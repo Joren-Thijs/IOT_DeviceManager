@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
 using IOT_DeviceManager.API.Extensions;
 using MQTTnet;
 using Newtonsoft.Json;
@@ -33,12 +32,8 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers
             var deviceType = topic.GetUntilOrEmpty("/");
 
             var payload = Encoding.UTF8.GetString(message.Payload);
-            IDeviceMeasurement measurement = deviceType switch
-            {
-                "thermostat" => JsonConvert.DeserializeObject<ThermostatDeviceMeasurement>(payload),
-                "device" => JsonConvert.DeserializeObject<DeviceMeasurement>(payload),
-                _ => JsonConvert.DeserializeObject<DeviceMeasurement>(payload),
-            };
+            IDeviceMeasurement measurement = JsonConvert.DeserializeObject<DeviceMeasurement>(payload);
+            
             return measurement;
         }
     }

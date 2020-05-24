@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
-using IOT_DeviceManager.API.Entity.ThermostatDevice;
+using System.Collections.Generic;
+using IOT_DeviceManager.API.Entity.Device;
 
 namespace IOT_DeviceManager.API.Test
 {
@@ -10,21 +11,21 @@ namespace IOT_DeviceManager.API.Test
         [Test]
         public void CheckMeasurementCanBeCreated_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             Assert.IsNotNull(deviceMeasurement);
         }
 
         [Test]
         public void CheckMeasurementOn_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             Assert.IsNotNull(deviceMeasurement.Status.OnStatus);
         }
 
         [Test]
         public void CheckMeasurementOnCanBeModified_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             deviceMeasurement.Status.OnStatus = true;
             Assert.IsTrue(deviceMeasurement.Status.OnStatus);
         }
@@ -32,46 +33,34 @@ namespace IOT_DeviceManager.API.Test
         [Test]
         public void CheckMeasurementTimeStamp_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             Assert.IsNotNull(deviceMeasurement.TimeStamp);
         }
 
         [Test]
         public void CheckMeasurementTimeStampIsAcurate_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
             TimeSpan diff = DateTime.UtcNow - deviceMeasurement.TimeStamp;
-            Assert.IsTrue(diff > TimeSpan.FromSeconds(0));
+            Assert.IsTrue(diff >= TimeSpan.FromSeconds(0));
         }
 
         [Test]
-        public void CheckMeasurementSetPoint_ReturnsTrue()
+        public void CheckMeasurementValues_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
-            Assert.IsNotNull(deviceMeasurement.SetPoint);
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
+            Assert.IsNotNull(deviceMeasurement.Values);
         }
 
         [Test]
-        public void CheckMeasurementSetPointCanBeSet_ReturnsTrue()
+        public void CheckMeasurementValuesCanBeSet_ReturnsTrue()
         {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
-            deviceMeasurement.SetPoint = 20f;
-            Assert.AreEqual(20f, deviceMeasurement.SetPoint);
-        }
-
-        [Test]
-        public void CheckMeasurementTemperature_ReturnsTrue()
-        {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
-            Assert.IsNotNull(deviceMeasurement.Temperature);
-        }
-
-        [Test]
-        public void CheckMeasurementTemperatureCanBeSet_ReturnsTrue()
-        {
-            ThermostatDeviceMeasurement deviceMeasurement = new ThermostatDeviceMeasurement();
-            deviceMeasurement.Temperature = 20f;
-            Assert.AreEqual(20f, deviceMeasurement.Temperature);
+            DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
+            deviceMeasurement.Values = new Dictionary<string, object>
+            {
+                {"setpoint", 20}
+            };
+            Assert.AreEqual(20, deviceMeasurement.Values["setpoint"]);
         }
     }
 }
