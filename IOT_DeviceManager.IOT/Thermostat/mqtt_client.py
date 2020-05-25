@@ -50,7 +50,7 @@ class MQTTClient:
 
     def setup_message_callbacks(self):
         self._client.message_callback_add(
-            self._deviceTopic + "/ping/response", self.on_ping_message)
+            self._deviceTopic + "/request/ping/response", self.on_ping_message)
         self._client.message_callback_add(
             self._deviceTopic + "/cmd/status", self.on_status_message)
 
@@ -68,7 +68,7 @@ class MQTTClient:
 
         # Subscribing in on_connect() means that if we lose the connection and
         # reconnect then subscriptions will be renewed.
-        self._client.subscribe(self._deviceTopic + "/ping/response")
+        self._client.subscribe(self._deviceTopic + "/request/ping/response")
         self._client.subscribe(self._deviceTopic + "/cmd/+")
         api_connection_handler_thread = threading.Thread(
             target=self.api_connection_handler_async)
@@ -92,7 +92,7 @@ class MQTTClient:
         self._api_answer_received_lock.acquire()
         self._api_answer_received = False
         self._api_answer_received_lock.release()
-        self._client.publish(self._deviceTopic + "/ping", "", 0, False)
+        self._client.publish(self._deviceTopic + "/request/ping", "", 0, False)
 
     def on_ping_message(self, client, userdata, msg):
         self._api_answer_received_lock.acquire()
@@ -122,7 +122,6 @@ class MQTTClient:
 
         # Decode the bytes string into a unicode string
         payload = msg.payload.decode('utf-8')
-        print(payload)
         # Convert the string back to dictionary
         try:
             command = json.loads(payload)
