@@ -1,18 +1,60 @@
 //mock-device.js
+// require('dotenv').config();
+const { v4: uuidV4 } = require('uuid');
 var mqtt = require('mqtt');
 var client = mqtt.connect(process.env.MQTT_BROKER_NAME, {
     port: process.env.MQTT_BROKER_PORT,
     protocol: 'mqtt',
 });
+var deviceIdRequestDto;
 var deviceType = process.env.DEVICE_TYPE;
-var deviceId = 'C3P0';
+var deviceId = 'no-id';
 var deviceTopicString = deviceType + '/' + deviceId;
 var onStatus = false;
 
 client.on('connect', function () {
-    client.subscribe(deviceTopicString + '/cmd/+');
-    setInterval(sendMeasurement, 3000);
+    if (deviceId == 'no-id') {
+        requestDeviceId();
+    }
 });
+
+function finishClientSetup() {
+    reloadDevicetopicString();
+    setInterval(sendMeasurement, 3000);
+    client.subscribe(deviceTopicString + '/cmd/+');
+}
+
+function requestDeviceId() {
+    client.subscribe(deviceTopicString + '/request/id/response');
+    deviceIdRequestDto = {
+        DeviceType: deviceType,
+        TransactionKey: uuidV4(),
+        TimeStamp: new Date(),
+    };
+    let payload = JSON.stringify(deviceIdRequestDto);
+    client.publish(deviceTopicString + '/request/id', payload);
+}
+
+function handleNewDeviceIdReceived(deviceIdRequestResponseDto) {
+    if (isDeviceIdRequestResponseDtoCorrect(deviceIdRequestResponseDto)) {
+        client.unsubscribe(deviceTopicString + '/request/id/response');
+        deviceId = deviceIdRequestResponseDto.DeviceId;
+    }
+    finishClientSetup();
+}
+
+function isDeviceIdRequestResponseDtoCorrect(deviceIdRequestResponseDto) {
+    return (
+        deviceIdRequestDto.DeviceType ==
+            deviceIdRequestResponseDto.DeviceType &&
+        deviceIdRequestDto.TransactionKey ==
+            deviceIdRequestResponseDto.TransactionKey
+    );
+}
+
+function reloadDevicetopicString() {
+    deviceTopicString = deviceType + '/' + deviceId;
+}
 
 function sendMeasurement() {
     let message = {
@@ -28,19 +70,21 @@ function sendMeasurement() {
             sensor_2: getRandomInt(15, 25),
             sensor_3: getRandomInt(15, 25),
         },
-        TimeStamp: new Date(),
     };
     let payload = JSON.stringify(message);
     client.publish(deviceTopicString + '/ms', payload);
 }
 
-client.on('message', function (topic, message) {
-    context = topic.toString() + ' : ' + message.toString();
-    console.log(context);
+client.on('message', function (topic, payload) {
+    let message = JSON.parse(payload);
+
+    if (topic.endsWith('request/id/response') && deviceId == 'no-id') {
+        handleNewDeviceIdReceived(message);
+    }
 
     if (topic.endsWith('cmd/status')) {
-        let payload = JSON.parse(message);
-        onStatus = payload.OnStatus;
+        onStatus = message.OnStatus;
+
         sendStatusMessage();
     }
 });

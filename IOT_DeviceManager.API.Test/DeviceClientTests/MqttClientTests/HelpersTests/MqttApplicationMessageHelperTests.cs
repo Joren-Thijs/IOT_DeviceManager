@@ -7,11 +7,12 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using FluentAssertions;
 using IOT_DeviceManager.API.Entity.Device;
+using IOT_DeviceManager.API.Extensions;
 
 namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
 {
     [TestFixture]
-    class MqttApplicationMessageDeconstructorTests
+    class MqttApplicationMessageHelperTests
     {
         [Test]
         public void CheckDeviceTypeCanBeDeconstructedFromMessage_ReturnsTrue()
@@ -23,7 +24,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var message = new MqttApplicationMessage();
             message.Topic = messageTopic;
 
-            var deconstructedDeviceType = MqttApplicationMessageDeconstructor.GetDeviceTypeFromMessage(message);
+            var deconstructedDeviceType = MqttApplicationMessageHelper.GetDeviceTypeFromMessage(message);
             Assert.AreEqual(deviceType, deconstructedDeviceType);
         }
 
@@ -37,7 +38,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             var message = new MqttApplicationMessage();
             message.Topic = messageTopic;
 
-            var deconstructedDeviceId = MqttApplicationMessageDeconstructor.GetDeviceIdFromMessage(message);
+            var deconstructedDeviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
             Assert.AreEqual(deviceId, deconstructedDeviceId);
         }
 
@@ -73,7 +74,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             message.Topic = messageTopic;
             message.Payload = messagePayload;
 
-            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            var deconstructedMeasurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             deconstructedMeasurement.Should().BeEquivalentTo(measurement);
         }
 
@@ -101,7 +102,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             message.Topic = messageTopic;
             message.Payload = messagePayload;
 
-            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            var deconstructedMeasurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
         }
 
@@ -137,7 +138,7 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             message.Topic = messageTopic;
             message.Payload = messagePayload;
 
-            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            var deconstructedMeasurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
         }
 
@@ -162,8 +163,99 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
             message.Topic = messageTopic;
             message.Payload = messagePayload;
 
-            var deconstructedMeasurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            var deconstructedMeasurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             deconstructedMeasurement.Should().BeOfType<DeviceMeasurement>();
+        }
+
+        [Test]
+        public void CheckDeviceStatusRpcTopicCanBeConstructedFromDevice_ReturnsTrue()
+        {
+            var device = new Device
+            {
+                Id = "1"
+            };
+
+            var topic = MqttApplicationMessageHelper.GetSetDeviceStatusRpcTopicFromDevice(device);
+            var correctTopic = $"device.{device.Id}.cmd.status";
+            Assert.AreEqual(topic, correctTopic);
+        }
+
+        [Test]
+        public void CheckDeviceStatusRpcTopicCanBeConstructedFromThermostatDevice_ReturnsTrue()
+        {
+            var device = new Device
+            {
+                Id = "1",
+                DeviceType = "thermostat"
+            };
+
+            var topic = MqttApplicationMessageHelper.GetSetDeviceStatusRpcTopicFromDevice(device);
+            var correctTopic = $"thermostat.{device.Id}.cmd.status";
+            Assert.AreEqual(topic, correctTopic);
+        }
+
+        [Test]
+        public void CheckDeviceStatusCanBeConstructedFromRpcAnswer_ReturnsTrue()
+        {
+            var device = new Device
+            {
+                Id = "1"
+            };
+            var status = new DeviceStatus
+            {
+                OnStatus = true
+            };
+            var statusString = status.SerializeJson();
+            var statusStringBytes = Encoding.ASCII.GetBytes(statusString);
+            var newStatus = MqttApplicationMessageHelper.GetDeviceStatusFromRcpAnswer(device, statusStringBytes);
+            newStatus.Should().BeEquivalentTo(status);
+        }
+
+        [Test]
+        public void CheckDeviceStatusConstructedFromRpcAnswerHasCorrectClass_ReturnsTrue()
+        {
+            var device = new Device
+            {
+                Id = "1"
+            };
+            var deviceStatus = new DeviceStatus
+            {
+                OnStatus = true
+            };
+
+            var deviceStatusString = deviceStatus.SerializeJson();
+            var deviceStatusStringBytes = Encoding.ASCII.GetBytes(deviceStatusString);
+            var newDeviceStatus = MqttApplicationMessageHelper.GetDeviceStatusFromRcpAnswer(device, deviceStatusStringBytes);
+            newDeviceStatus.Should().BeOfType<DeviceStatus>();
+
+            var thermostatDevice = new Device()
+            {
+                Id = "2",
+                DeviceType = "thermostat"
+            };
+            var thermostatDevicestatus = new DeviceStatus()
+            {
+                OnStatus = true
+            };
+
+            var thermostatDeviceStatusString = deviceStatus.SerializeJson();
+            var thermostatDeviceStatusStringBytes = Encoding.ASCII.GetBytes(deviceStatusString);
+            var newThermostatDeviceStatus = MqttApplicationMessageHelper.GetDeviceStatusFromRcpAnswer(thermostatDevice, deviceStatusStringBytes);
+            newThermostatDeviceStatus.Should().BeOfType<DeviceStatus>();
+        }
+
+        [Test]
+        public void CheckDeviceRequestIdRpcTopicCanBeConstructedFromMessage_ReturnsTrue()
+        {
+            var messageTopic = "device/deviceId/request/id";
+            var message = new MqttApplicationMessage
+            {
+                Topic = messageTopic
+            };
+
+            var topic = MqttApplicationMessageHelper.GetDeviceIdRequestResponseTopicFromMessage(message);
+            var correctTopic = (messageTopic + "/response");
+            Assert.AreEqual(topic, correctTopic);
         }
     }
 }
