@@ -7,7 +7,7 @@ var client = mqtt.connect(process.env.MQTT_BROKER_NAME, {
 });
 var deviceIdRequestDto;
 var deviceType = process.env.DEVICE_TYPE;
-var deviceId = 'no-id';
+var deviceId = 'C3P0';
 var deviceTopicString = deviceType + '/' + deviceId;
 var onStatus = false;
 

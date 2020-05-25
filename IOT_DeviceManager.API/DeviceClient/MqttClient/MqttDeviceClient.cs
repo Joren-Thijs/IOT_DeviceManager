@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Options;
@@ -52,15 +51,34 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             string topic = eventArgs.ApplicationMessage.Topic;
             System.Console.WriteLine("A message is received");
             System.Console.WriteLine(topic);
-            if (eventArgs.ApplicationMessage.Topic.EndsWith("/ping"))
+
+            if (eventArgs.ApplicationMessage.Topic.EndsWith("/request/id"))
             {
-                await RespondToPing(topic);
+                await RespondToRequestId(eventArgs.ApplicationMessage);
+            }
+
+            if (eventArgs.ApplicationMessage.Topic.EndsWith("/request/ping"))
+            {
+                await RespondToPing(eventArgs.ApplicationMessage.Topic);
             }
 
             if (eventArgs.ApplicationMessage.Topic.EndsWith("/ms"))
             {
                 HandleMeasurement(eventArgs.ApplicationMessage);
             }
+        }
+
+        private async Task RespondToRequestId(MqttApplicationMessage message)
+        {
+            var requestResponseDto = MqttApplicationMessageHelper.GetDeviceIdRequestResponseFromMessage(message);
+            var topic = MqttApplicationMessageHelper.GetDeviceIdRequestResponseTopicFromMessage(message);
+            var payload = requestResponseDto.SerializeJson();
+            var responseMessage = new MqttApplicationMessageBuilder()
+                .WithTopic(topic)
+                .WithPayload(payload)
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtMostOnce)
+                .Build();
+            await _mqttClient.PublishAsync(responseMessage);
         }
 
         private async Task RespondToPing(string topic)
@@ -72,11 +90,12 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             await _mqttClient.PublishAsync(message);
         }
 
+
         private void HandleMeasurement(MqttApplicationMessage message)
         {
-            var deviceType = MqttApplicationMessageDeconstructor.GetDeviceTypeFromMessage(message);
-            var deviceId = MqttApplicationMessageDeconstructor.GetDeviceIdFromMessage(message);
-            IDeviceMeasurement measurement = MqttApplicationMessageDeconstructor.GetDeviceMeasurementFromMessage(message);
+            var deviceType = MqttApplicationMessageHelper.GetDeviceTypeFromMessage(message);
+            var deviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
+            IDeviceMeasurement measurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceType, deviceId, measurement);
             OnDeviceMeasurementReceived(eventArgs);
         }
@@ -85,8 +104,8 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         {
             await _mqttClient.ConnectAsync(_mqttClientOptions);
             System.Console.WriteLine("MQTT Client is connected");
+            await _mqttClient.SubscribeAsync("+/+/request/+");
             await _mqttClient.SubscribeAsync("+/+/ms");
-            await _mqttClient.SubscribeAsync("+/+/ping");
             if (!_mqttClient.IsConnected)
             {
                 await _mqttClient.ReconnectAsync();
@@ -102,11 +121,11 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         public async Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status)
         {
-            var topic = MqttApplicationMessageConstructor.GetSetDeviceStatusRpcTopic(device);
+            var topic = MqttApplicationMessageHelper.GetSetDeviceStatusRpcTopicFromDevice(device);
             var payload = status.SerializeJson();
             var rcpAnswer = await _mqttRpcClientRpc.ExecuteAsync(TimeSpan.FromSeconds(5), topic, payload,
                 MqttQualityOfServiceLevel.AtLeastOnce);
-            var newStatus = MqttApplicationMessageConstructor.GetDeviceStatusFromRcpAnswer(device, rcpAnswer);
+            var newStatus = MqttApplicationMessageHelper.GetDeviceStatusFromRcpAnswer(device, rcpAnswer);
             return newStatus;
         }
 
