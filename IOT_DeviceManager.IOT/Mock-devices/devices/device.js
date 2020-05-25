@@ -1,8 +1,10 @@
 //mock-device.js
 var mqtt = require('mqtt');
-var client = mqtt.connect('mqtt://127.0.0.1');
-
-var deviceType = 'mock-device';
+var client = mqtt.connect(process.env.MQTT_BROKER_NAME, {
+    port: process.env.MQTT_BROKER_PORT,
+    protocol: 'mqtt',
+});
+var deviceType = process.env.DEVICE_TYPE;
 var deviceId = 'C3P0';
 var deviceTopicString = deviceType + '/' + deviceId;
 var onStatus = false;

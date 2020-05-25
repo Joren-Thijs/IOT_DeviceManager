@@ -1,13 +1,13 @@
+require('dotenv').config();
 const fs = require('fs');
 const exec = require('child_process').exec;
-
 const async = require('async');
 
 const scriptsFolder = './devices/';
 
 const files = fs.readdirSync(scriptsFolder);
 const funcs = files.map(function (file) {
-    return exec.bind(null, `nodemon ${scriptsFolder}${file}`);
+    return exec.bind(null, `node ${scriptsFolder}${file}`);
 });
 
 function getResults(err, data) {
