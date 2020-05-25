@@ -57,7 +57,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
                 await RespondToRequestId(eventArgs.ApplicationMessage);
             }
 
-            if (eventArgs.ApplicationMessage.Topic.EndsWith("/ping"))
+            if (eventArgs.ApplicationMessage.Topic.EndsWith("/request/ping"))
             {
                 await RespondToPing(eventArgs.ApplicationMessage.Topic);
             }
@@ -105,7 +105,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             await _mqttClient.ConnectAsync(_mqttClientOptions);
             System.Console.WriteLine("MQTT Client is connected");
             await _mqttClient.SubscribeAsync("+/+/request/+");
-            await _mqttClient.SubscribeAsync("+/+/ping");
             await _mqttClient.SubscribeAsync("+/+/ms");
             if (!_mqttClient.IsConnected)
             {
