@@ -7,7 +7,7 @@ const scriptsFolder = './devices/';
 
 const files = fs.readdirSync(scriptsFolder);
 const funcs = files.map(function (file) {
-    return exec.bind(null, `node ${scriptsFolder}${file}`);
+    return exec.bind(null, `nodemon ${scriptsFolder}${file}`);
 });
 
 function getResults(err, data) {
