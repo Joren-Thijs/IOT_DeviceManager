@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using FluentAssertions;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Extensions;
+using IOT_DeviceManager.API.Helpers.Extensions;
 
 namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTests
 {

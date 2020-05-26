@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IOT_DeviceManager.API.DTO.Calculations;
 using IOT_DeviceManager.API.DTO.Interfaces;
-using IOT_DeviceManager.API.Extensions;
+using IOT_DeviceManager.API.Helpers.Extensions;
 using IOT_DeviceManager.API.Repositories;
 using IOT_DeviceManager.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;

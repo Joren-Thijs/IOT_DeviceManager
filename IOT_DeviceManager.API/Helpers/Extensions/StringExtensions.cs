@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace IOT_DeviceManager.API.Extensions
+namespace IOT_DeviceManager.API.Helpers.Extensions
 {
     public static class StringExtensions
     {
