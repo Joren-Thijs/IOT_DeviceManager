@@ -6,6 +6,8 @@ using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Extensions;
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Client.Connecting;
+using MQTTnet.Client.Disconnecting;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.Rpc;
 using MQTTnet.Extensions.Rpc.Options;
@@ -38,37 +40,87 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             _mqttClient = new MqttFactory().CreateMqttClient();
             _mqttRpcClient = new MqttFactory().CreateMqttClient();
             _mqttRpcClientRpc = new MqttRpcClient(_mqttRpcClient, _mqttRpcClientOptionsRpc);
-            SetupClient();
+            SetupClients();
         }
 
-        private void SetupClient()
+        private void SetupClients()
         {
-            _mqttClient.UseApplicationMessageReceivedHandler(OnMessageAsync);
+            _mqttClient.UseConnectedHandler(OnMqttClientConnectedAsync);
+            _mqttRpcClient.UseConnectedHandler(OnMqttRpcClientConnectedAsync);
+            _mqttClient.UseApplicationMessageReceivedHandler(OnMqttClientMessageReceivedAsync);
         }
 
-        public virtual async Task OnMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+        private async Task OnMqttClientConnectedAsync(MqttClientConnectedEventArgs arg)
+        {
+            Console.WriteLine("MQTT Client is connected");
+            _mqttClient.UseDisconnectedHandler(OnMqttClientDisconnectedAsync);
+            await MqttClientSubscribeToTopicsAsync();
+            await Task.CompletedTask;
+        }
+
+        private Task OnMqttRpcClientConnectedAsync(MqttClientConnectedEventArgs arg)
+        {
+            Console.WriteLine("MQTT RPC Client is connected");
+            _mqttRpcClient.UseDisconnectedHandler(OnMqttRpcClientDisconnectedAsync);
+            return Task.CompletedTask;
+        }
+
+        private async Task OnMqttClientDisconnectedAsync(MqttClientDisconnectedEventArgs arg)
+        {
+            Console.WriteLine("Error: Mqtt client connection to MQTT Broker failed");
+            Console.WriteLine("Attempting reconnection...");
+            try
+            {
+                await _mqttClient.ReconnectAsync();
+            }
+            catch (Exception)
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task OnMqttRpcClientDisconnectedAsync(MqttClientDisconnectedEventArgs arg)
+        {
+            Console.WriteLine("Error: Mqtt Rpc client connection to MQTT Broker failed");
+            Console.WriteLine("Attempting reconnection...");
+            try
+            {
+                await _mqttRpcClient.ReconnectAsync();
+            }
+            catch (Exception)
+            {
+                await Task.CompletedTask;
+            }
+        }
+
+        private async Task OnMqttClientMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
             string topic = eventArgs.ApplicationMessage.Topic;
             System.Console.WriteLine("A message is received");
             System.Console.WriteLine(topic);
 
-            if (eventArgs.ApplicationMessage.Topic.EndsWith("/request/id"))
+            await DistributeReceivedMessageToCorrectHandler(eventArgs.ApplicationMessage);
+        }
+
+        private async Task DistributeReceivedMessageToCorrectHandler(MqttApplicationMessage message)
+        {
+            if (message.Topic.EndsWith("/request/id"))
             {
-                await RespondToRequestId(eventArgs.ApplicationMessage);
+                await HandleRespondToRequestId(message);
             }
 
-            if (eventArgs.ApplicationMessage.Topic.EndsWith("/request/ping"))
+            if (message.Topic.EndsWith("/request/ping"))
             {
-                await RespondToPing(eventArgs.ApplicationMessage.Topic);
+                await HandleRespondToRequestPing(message.Topic);
             }
 
-            if (eventArgs.ApplicationMessage.Topic.EndsWith("/ms"))
+            if (message.Topic.EndsWith("/ms"))
             {
-                HandleMeasurement(eventArgs.ApplicationMessage);
+                HandleMeasurementReceived(message);
             }
         }
 
-        private async Task RespondToRequestId(MqttApplicationMessage message)
+        private async Task HandleRespondToRequestId(MqttApplicationMessage message)
         {
             var requestResponseDto = MqttApplicationMessageHelper.GetDeviceIdRequestResponseFromMessage(message);
             var topic = MqttApplicationMessageHelper.GetDeviceIdRequestResponseTopicFromMessage(message);
@@ -81,7 +133,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             await _mqttClient.PublishAsync(responseMessage);
         }
 
-        private async Task RespondToPing(string topic)
+        private async Task HandleRespondToRequestPing(string topic)
         {
             var message = new MqttApplicationMessageBuilder()
                 .WithTopic(topic + "/response")
@@ -91,7 +143,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         }
 
 
-        private void HandleMeasurement(MqttApplicationMessage message)
+        private void HandleMeasurementReceived(MqttApplicationMessage message)
         {
             var deviceType = MqttApplicationMessageHelper.GetDeviceTypeFromMessage(message);
             var deviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
@@ -102,21 +154,35 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         public async Task StartClientAsync()
         {
-            await _mqttClient.ConnectAsync(_mqttClientOptions);
-            System.Console.WriteLine("MQTT Client is connected");
-            await _mqttClient.SubscribeAsync("+/+/request/+");
-            await _mqttClient.SubscribeAsync("+/+/ms");
-            if (!_mqttClient.IsConnected)
-            {
-                await _mqttClient.ReconnectAsync();
-            }
-            await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
-            System.Console.WriteLine("MQTT RPC Client is connected");
+            await ConnectToMqttBrokerServer();
         }
 
         public Task StopClientAsync()
         {
             return Task.CompletedTask;
+        }
+
+        private async Task ConnectToMqttBrokerServer()
+        {
+            while (!_mqttClient.IsConnected)
+            {
+                try
+                {
+                    await _mqttClient.ConnectAsync(_mqttClientOptions);
+                    await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error: Connection to MQTT Broker failed");
+                    Console.WriteLine("Attempting reconnection...");
+                }
+            }
+        }
+
+        private async Task MqttClientSubscribeToTopicsAsync()
+        {
+            await _mqttClient.SubscribeAsync("+/+/request/+");
+            await _mqttClient.SubscribeAsync("+/+/ms");
         }
 
         public async Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status)
