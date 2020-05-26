@@ -45,6 +45,8 @@ namespace IOT_DeviceManager.API
 
             app.UseAuthorization();
 
+            app.UseExceptionMiddleware();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
