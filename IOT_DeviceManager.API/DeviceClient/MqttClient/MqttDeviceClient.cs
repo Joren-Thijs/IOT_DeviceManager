@@ -102,16 +102,34 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         public async Task StartClientAsync()
         {
-            await _mqttClient.ConnectAsync(_mqttClientOptions);
-            System.Console.WriteLine("MQTT Client is connected");
+            await ConnectToMqttBroker();
+            
             await _mqttClient.SubscribeAsync("+/+/request/+");
             await _mqttClient.SubscribeAsync("+/+/ms");
             if (!_mqttClient.IsConnected)
             {
                 await _mqttClient.ReconnectAsync();
             }
-            await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
-            System.Console.WriteLine("MQTT RPC Client is connected");
+            
+        }
+
+        private async Task ConnectToMqttBroker()
+        {
+            while (!_mqttClient.IsConnected)
+            {
+                try
+                {
+                    await _mqttClient.ConnectAsync(_mqttClientOptions);
+                    System.Console.WriteLine("MQTT Client is connected");
+                    await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
+                    System.Console.WriteLine("MQTT RPC Client is connected");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Error: Connection to MQTT Broker failed");
+                    Console.WriteLine("Attempting reconnection...");
+                }
+            }
         }
 
         public Task StopClientAsync()
