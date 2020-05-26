@@ -4,7 +4,7 @@ using IOT_DeviceManager.API.DeviceClient.MqttClient.Requests;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Requests.DeviceId;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Extensions;
+using IOT_DeviceManager.API.Helpers.Extensions;
 using MQTTnet;
 using Newtonsoft.Json;
 

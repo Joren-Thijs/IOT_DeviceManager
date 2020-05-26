@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Options;
 using IOT_DeviceManager.API.Entity.Interfaces;
-using IOT_DeviceManager.API.Extensions;
+using IOT_DeviceManager.API.Helpers.Extensions;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Connecting;
