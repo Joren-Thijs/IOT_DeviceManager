@@ -40,10 +40,10 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             _mqttClient = new MqttFactory().CreateMqttClient();
             _mqttRpcClient = new MqttFactory().CreateMqttClient();
             _mqttRpcClientRpc = new MqttRpcClient(_mqttRpcClient, _mqttRpcClientOptionsRpc);
-            SetupClient();
+            SetupClients();
         }
 
-        private void SetupClient()
+        private void SetupClients()
         {
             _mqttClient.UseConnectedHandler(OnMqttClientConnectedAsync);
             _mqttRpcClient.UseConnectedHandler(OnMqttRpcClientConnectedAsync);
@@ -154,7 +154,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         public async Task StartClientAsync()
         {
-            await ConnectToMqttBroker();
+            await ConnectToMqttBrokerServer();
         }
 
         public Task StopClientAsync()
@@ -162,7 +162,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             return Task.CompletedTask;
         }
 
-        private async Task ConnectToMqttBroker()
+        private async Task ConnectToMqttBrokerServer()
         {
             while (!_mqttClient.IsConnected)
             {
