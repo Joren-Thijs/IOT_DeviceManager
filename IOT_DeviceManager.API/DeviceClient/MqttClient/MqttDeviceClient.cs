@@ -6,6 +6,7 @@ using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Extensions;
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Client.Connecting;
 using MQTTnet.Client.Options;
 using MQTTnet.Extensions.Rpc;
 using MQTTnet.Extensions.Rpc.Options;
@@ -43,10 +44,23 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         private void SetupClient()
         {
-            _mqttClient.UseApplicationMessageReceivedHandler(OnMessageAsync);
+            _mqttClient.UseConnectedHandler(OnMqttClientConnectedAsync);
+            _mqttRpcClient.UseConnectedHandler(OnMqttRpcClientConnectedAsync);
+            _mqttClient.UseApplicationMessageReceivedHandler(OnMqttClientMessageReceivedAsync);
         }
 
-        public virtual async Task OnMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+        private  Task OnMqttClientConnectedAsync(MqttClientConnectedEventArgs arg)
+        {
+            Console.WriteLine("MQTT Client is connected");
+            return Task.CompletedTask;
+        }
+        private Task OnMqttRpcClientConnectedAsync(MqttClientConnectedEventArgs arg)
+        {
+            Console.WriteLine("MQTT RPC Client is connected");
+            return Task.CompletedTask;
+        }
+
+        public virtual async Task OnMqttClientMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
             string topic = eventArgs.ApplicationMessage.Topic;
             System.Console.WriteLine("A message is received");
@@ -120,9 +134,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
                 try
                 {
                     await _mqttClient.ConnectAsync(_mqttClientOptions);
-                    System.Console.WriteLine("MQTT Client is connected");
                     await _mqttRpcClient.ConnectAsync(_mqttRpcClientOptions);
-                    System.Console.WriteLine("MQTT RPC Client is connected");
                 }
                 catch (Exception)
                 {
