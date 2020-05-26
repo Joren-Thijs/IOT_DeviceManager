@@ -28,7 +28,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         private IMqttClient _mqttRpcClient;
 
         private MqttRpcClient _mqttRpcClientRpc;
-        
 
         public event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
 
