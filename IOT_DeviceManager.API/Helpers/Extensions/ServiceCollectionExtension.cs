@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
 
-namespace IOT_DeviceManager.API.Extensions
+namespace IOT_DeviceManager.API.Helpers.Extensions
 {
     public static class ServiceCollectionExtension
     {

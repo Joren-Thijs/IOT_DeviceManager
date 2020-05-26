@@ -1,7 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace IOT_DeviceManager.API.Extensions
+namespace IOT_DeviceManager.API.Helpers.Extensions
 {
     public static class ObjectExtensions
     {
