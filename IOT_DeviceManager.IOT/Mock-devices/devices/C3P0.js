@@ -30,7 +30,6 @@ function requestDeviceId() {
     deviceIdRequestDto = {
         DeviceType: deviceType,
         TransactionKey: uuidV4(),
-        TimeStamp: new Date(),
     };
     let payload = JSON.stringify(deviceIdRequestDto);
     client.publish(deviceTopicString + '/request/id', payload);

@@ -63,7 +63,7 @@ namespace IOT_DeviceManager.API.Controllers
                 return NotFound();
             }
 
-            if (!measurements.FirstOrDefault().Values.ToDictionary(k => k.Key.ToLower(), k => k.Value).ContainsKey(propertyName))
+            if (!measurements.FirstOrDefault().Values.ToDictionary(k => k.Key.ToLower(), k => k.Value).ContainsKey(propertyName.ToLower()))
             {
                 return BadRequest();
             }
