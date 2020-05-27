@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Helpers.Web;
 
 namespace IOT_DeviceManager.API.Repositories
 {
     public interface IDeviceRepository
     {
         Task<IEnumerable<IDevice>> GetDevices();
+        Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters);
         Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds);
         Task<IDevice> GetDevice(string deviceId);
         Task<IDevice> AddDevice(IDevice device);
@@ -15,6 +17,7 @@ namespace IOT_DeviceManager.API.Repositories
         Task<bool> DeviceExists(string device);
 
         Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId);
+        Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters);
         Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId);
         Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement);
         Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement);

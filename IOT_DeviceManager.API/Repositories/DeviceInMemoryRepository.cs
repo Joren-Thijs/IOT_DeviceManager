@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Helpers.Exceptions;
+using IOT_DeviceManager.API.Helpers.Reflection;
+using IOT_DeviceManager.API.Helpers.Web;
 
 namespace IOT_DeviceManager.API.Repositories
 {
@@ -13,6 +17,39 @@ namespace IOT_DeviceManager.API.Repositories
         public Task<IEnumerable<IDevice>> GetDevices()
         {
             return Task.FromResult<IEnumerable<IDevice>>(_devices);
+        }
+
+        public Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters)
+        {
+            _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
+            var enumerableDevices = _devices as IEnumerable<IDevice>;
+            var devices = enumerableDevices.AsQueryable();
+
+            // Filter on search
+            if (!string.IsNullOrWhiteSpace(resourceParameters.SearchQuery))
+            {
+                var searchQuery = resourceParameters.SearchQuery.Trim();
+                devices = devices.Where(a => a.DeviceName.Contains(searchQuery, StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Order on OrderBy
+            if (!string.IsNullOrWhiteSpace(resourceParameters.OrderBy))
+            {
+                var orderBy = resourceParameters.OrderBy.Trim();
+                Expression<Func<IDevice, object>> orderByLambda;
+                try
+                {
+                    orderByLambda = PropertyHelpers.GetPropertySelector<IDevice>(orderBy);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new BadInputException(e.Message, $"The property {orderBy} does not exist");
+                }
+
+                devices = resourceParameters.SortDirection == "desc" ? devices.OrderByDescending(orderByLambda) : devices.OrderBy(orderByLambda);
+            }
+
+            return Task.FromResult(Paginator<IDevice>.Create(devices, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
         public Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds)
@@ -67,6 +104,17 @@ namespace IOT_DeviceManager.API.Repositories
             }
 
             return Task.FromResult(device.Measurements);
+        }
+
+        public Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
+        {
+            var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
+            if (device == null)
+            {
+                throw new ArgumentException($"No device exists with id: {deviceId}");
+            }
+
+            return Task.FromResult(Paginator<IDeviceMeasurement>.Create(device.Measurements.AsQueryable(), resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
         public Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId)
