@@ -33,7 +33,7 @@ namespace IOT_DeviceManager.API.Controllers
             var deviceExists = await _deviceRepository.DeviceExists(deviceId);
             if (!deviceExists) return NotFound();
 
-                var measurements = await _deviceRepository.GetMeasurements(deviceId);
+            var measurements = await _deviceRepository.GetMeasurements(deviceId);
 
             var calculationResult = _calculationService.CalculateTotalOnTime(measurements);
 
