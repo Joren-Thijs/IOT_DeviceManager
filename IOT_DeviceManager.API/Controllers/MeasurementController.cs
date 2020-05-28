@@ -6,6 +6,7 @@ using AutoMapper;
 using IOT_DeviceManager.API.DTO;
 using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Helpers.Extensions;
+using IOT_DeviceManager.API.Helpers.Web;
 using IOT_DeviceManager.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -25,10 +26,16 @@ namespace IOT_DeviceManager.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ReturnTestData([FromRoute] string deviceId)
+        [HttpGet(Name = "GetMeasurements")]
+        public async Task<IActionResult> GetMeasurements([FromRoute] string deviceId, [FromQuery] ResourceParameters resourceParameters)
         {
-            var measurements = await _deviceRepository.GetMeasurements(deviceId);
+            var deviceExists = await _deviceRepository.DeviceExists(deviceId);
+            if (!deviceExists) return NotFound();
+
+            var measurements = await _deviceRepository.GetMeasurements(deviceId, resourceParameters);
+
+            this.SetXPaginationResponseHeaders("GetMeasurements", measurements, resourceParameters);
+
             var measurementsDto = _mapper.Map<IEnumerable<IDeviceMeasurementDto>>(measurements);
 
             return Ok(measurementsDto.SerializeJson());

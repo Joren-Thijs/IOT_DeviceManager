@@ -6,9 +6,6 @@ namespace IOT_DeviceManager.API.Helpers.Web
 {
     public class Paginator<T> : List<T>
     {
-        public string PreviousPageUrl { get; set; }
-        public string CurrentPageUrl { get; set; }
-        public string NextPageUrl { get; set; }
         public int CurrentPage { get; private set; }
         public int TotalPages { get; private set; }
         public int PageSize { get; private set; }
