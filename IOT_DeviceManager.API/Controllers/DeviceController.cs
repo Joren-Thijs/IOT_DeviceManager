@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Helpers.Extensions;
+using IOT_DeviceManager.API.Helpers.Web;
 using IOT_DeviceManager.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,10 +24,13 @@ namespace IOT_DeviceManager.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDevices()
+        [HttpGet(Name = "GetDevices")]
+        public async Task<IActionResult> GetDevices([FromQuery] ResourceParameters resourceParameters)
         {
-            var devices = await _deviceRepository.GetDevices();
+            var devices = await _deviceRepository.GetDevices(resourceParameters);
+
+            this.SetXPaginationResponseHeaders("GetDevices", devices, resourceParameters);
+
             var devicesDto = _mapper.Map<IEnumerable<IDeviceDto>>(devices);
 
             return Ok(devicesDto.SerializeJson());

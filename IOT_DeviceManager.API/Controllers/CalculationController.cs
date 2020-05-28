@@ -31,10 +31,7 @@ namespace IOT_DeviceManager.API.Controllers
         public async Task<IActionResult> GetTotalOnTime([FromRoute] string deviceId)
         {
             var deviceExists = await _deviceRepository.DeviceExists(deviceId);
-            if (!deviceExists)
-            {
-                return NotFound();
-            }
+            if (!deviceExists) return NotFound();
 
             var measurements = await _deviceRepository.GetMeasurements(deviceId);
 
