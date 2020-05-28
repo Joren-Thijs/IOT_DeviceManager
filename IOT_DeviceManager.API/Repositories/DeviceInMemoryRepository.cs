@@ -108,13 +108,41 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
         {
+            _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
                 throw new ArgumentException($"No device exists with id: {deviceId}");
             }
 
-            return Task.FromResult(Paginator<IDeviceMeasurement>.Create(device.Measurements.AsQueryable(), resourceParameters.PageNumber, resourceParameters.PageSize));
+            var measurements = device.Measurements.AsQueryable();
+
+            // Filter on search
+            if (!string.IsNullOrWhiteSpace(resourceParameters.SearchQuery))
+            {
+                var searchQuery = resourceParameters.SearchQuery.Trim();
+                measurements = measurements.Where(a => a.Values.Any(kvp => kvp.Key.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            // Order on OrderBy
+            if (!string.IsNullOrWhiteSpace(resourceParameters.OrderBy))
+            {
+                var orderBy = resourceParameters.OrderBy.Trim();
+                Expression<Func<IDeviceMeasurement, object>> orderByLambda;
+                try
+                {
+                    orderByLambda = PropertyHelpers.GetPropertySelector<IDeviceMeasurement>(orderBy);
+                }
+                catch (ArgumentException e)
+                {
+                    throw new BadInputException(e.Message, $"The property {orderBy} does not exist");
+                }
+
+                measurements = resourceParameters.SortDirection == "desc" ? measurements.OrderByDescending(orderByLambda) : measurements.OrderBy(orderByLambda);
+            }
+
+            return Task.FromResult(Paginator<IDeviceMeasurement>.Create(measurements, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
         public Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId)

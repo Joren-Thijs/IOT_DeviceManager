@@ -11,7 +11,7 @@ namespace IOT_DeviceManager.API.Helpers.Web
         private int _pageSize = 10;
 
         public string SearchQuery { get; set; }
-        public string OrderBy { get; set; } = "DeviceName";
+        public string OrderBy { get; set; }
         public string SortDirection { get; set; } = "asc";
         public int PageNumber { get; set; } = 1;
         public int PageSize

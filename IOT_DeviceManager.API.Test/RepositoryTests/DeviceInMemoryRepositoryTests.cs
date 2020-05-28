@@ -1,6 +1,7 @@
 ﻿using IOT_DeviceManager.API.Repositories;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -47,15 +48,27 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             };
             measurement = new DeviceMeasurement
             {
-                Id = "1"
+                Id = "1",
+                Values = new Dictionary<string, object>
+                {
+                    {"sensor 1", 21},
+                }
             };
             measurement2 = new DeviceMeasurement
             {
-                Id = "2"
+                Id = "2",
+                Values = new Dictionary<string, object>
+                {
+                    {"sensor 2", 22},
+                }
             };
             measurement3 = new DeviceMeasurement
             {
-                Id = "3"
+                Id = "3",
+                Values = new Dictionary<string, object>
+                {
+                    {"sensor 3", 23},
+                }
             };
         }
 
@@ -222,6 +235,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(0, retrievedDevices.TotalCount);
+            Assert.AreEqual(0, retrievedDevices.Count());
         }
 
         [Test]
@@ -242,6 +256,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(1, retrievedDevices.TotalCount);
+            Assert.AreEqual(1, retrievedDevices.Count);
         }
 
         [Test]
@@ -263,6 +278,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(1, retrievedDevices.TotalCount);
+            Assert.AreEqual(1, retrievedDevices.Count);
         }
 
         [Test]
@@ -285,6 +301,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
+            Assert.AreEqual(3, retrievedDevices.Count);
         }
 
         [Test]
@@ -307,6 +324,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
+            Assert.AreEqual(3, retrievedDevices.Count);
             retrievedDevices.FirstOrDefault().Should().BeEquivalentTo(device);
         }
 
@@ -353,6 +371,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
+            Assert.AreEqual(3, retrievedDevices.Count);
             retrievedDevices.FirstOrDefault().Should().BeEquivalentTo(device3);
         }
 
@@ -376,7 +395,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
-            Assert.AreEqual(1, retrievedDevices.Count());
+            Assert.AreEqual(1, retrievedDevices.Count);
             retrievedDevices.FirstOrDefault().Should().BeEquivalentTo(device);
         }
 
@@ -400,7 +419,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
-            Assert.AreEqual(1, retrievedDevices.Count());
+            Assert.AreEqual(1, retrievedDevices.Count);
             retrievedDevices.FirstOrDefault().Should().BeEquivalentTo(device3);
         }
 
@@ -424,7 +443,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices(resourceParameters);
 
             Assert.AreEqual(3, retrievedDevices.TotalCount);
-            Assert.AreEqual(0, retrievedDevices.Count());
+            Assert.AreEqual(0, retrievedDevices.Count);
         }
 
         [Test]
@@ -629,6 +648,349 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
 
             Assert.AreEqual(2, retrievedMeasurements.Count());
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersNullThrowsException_ThrowsArgumentNullException()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            ResourceParameters resourceParameters = null;
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurements(device.Id, resourceParameters);
+            });
+        }
+
+        [Test]
+        public async Task CheckMeasurementsCanBeRetrievedWithResourceParametersWithOne_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = null,
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            retrievedMeasurements.First().Should().BeEquivalentTo(measurement);
+            Assert.AreEqual(1, retrievedMeasurements.Count());
+            Assert.AreEqual(1, retrievedMeasurements.TotalCount);
+        }
+
+        [Test]
+        public async Task CheckMeasurementsCanBeRetrievedWithResourceParametersWithTwo_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = null,
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(2, retrievedMeasurements.Count());
+            Assert.AreEqual(2, retrievedMeasurements.TotalCount);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithWrongSearchQueryWithOneReturnsEmptyPaginator_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "z",
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(0, retrievedMeasurements.TotalCount);
+            Assert.AreEqual(0, retrievedMeasurements.Count());
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithCorrectSearchQueryWithOne_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor 1",
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(1, retrievedMeasurements.TotalCount);
+            Assert.AreEqual(1, retrievedMeasurements.Count);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithCorrectSearchQueryWithTwo_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor 1",
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(1, retrievedMeasurements.Count);
+            Assert.AreEqual(1, retrievedMeasurements.TotalCount);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithCorrectSearchQueryWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(3, retrievedMeasurements.Count);
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithOrderByWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStamp",
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+            Assert.AreEqual(3, retrievedMeasurements.Count);
+            retrievedMeasurements.FirstOrDefault().Should().BeEquivalentTo(measurement);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithWrongOrderBye_ThrowsBadInputException()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStampp",
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            Assert.ThrowsAsync(typeof(BadInputException), async delegate
+            {
+                await repo.GetMeasurements(device.Id, resourceParameters);
+            });
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithOrderByDescendingWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStamp",
+                SortDirection = "desc",
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(3, retrievedMeasurements.Count);
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+            retrievedMeasurements.FirstOrDefault().Should().BeEquivalentTo(measurement3);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithPageSizeOfOneWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStamp",
+                SortDirection = "asc",
+                PageNumber = 1,
+                PageSize = 1
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(1, retrievedMeasurements.Count);
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+            retrievedMeasurements.FirstOrDefault().Should().BeEquivalentTo(measurement);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithPageSizeOfOneWithOrderByDescendingWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStamp",
+                SortDirection = "desc",
+                PageNumber = 1,
+                PageSize = 1
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(1, retrievedMeasurements.Count);
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+            retrievedMeasurements.FirstOrDefault().Should().BeEquivalentTo(measurement3);
+        }
+
+        [Test]
+        public async Task CheckGetMeasurementsWithResourceParametersWithPageSizeOfTenWithPageTwoWithThree_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            await repo.AddMeasurement(device.Id, measurement);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement2);
+            await repo.Save();
+            await repo.AddMeasurement(device.Id, measurement3);
+            await repo.Save();
+
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = "sensor",
+                OrderBy = "TimeStamp",
+                SortDirection = "asc",
+                PageNumber = 2,
+                PageSize = 10
+            };
+
+            var retrievedMeasurements = await repo.GetMeasurements(device.Id, resourceParameters);
+
+            Assert.AreEqual(3, retrievedMeasurements.TotalCount);
+            Assert.AreEqual(0, retrievedMeasurements.Count);
         }
 
         [Test]
