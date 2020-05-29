@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using IOT_DeviceManager.API.Repositories;
 using IOT_DeviceManager.API.Services;
@@ -76,7 +73,7 @@ namespace IOT_DeviceManager.API.Controllers
         [HttpOptions]
         public IActionResult GetDeviceStatusOptions()
         {
-            Response.Headers.Add("Allow", "POST,OPTIONS");
+            Response.Headers.Add("Allow", "GET,HEAD,POST,OPTIONS");
             return Ok();
         }
     }

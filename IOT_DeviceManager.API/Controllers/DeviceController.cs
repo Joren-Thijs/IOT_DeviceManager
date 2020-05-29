@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using IOT_DeviceManager.API.DTO.Device;
@@ -127,7 +126,7 @@ namespace IOT_DeviceManager.API.Controllers
         [HttpOptions]
         public IActionResult GetDeviceOptions()
         {
-            Response.Headers.Add("Allow", "GET,UPDATE,DELETE,OPTIONS");
+            Response.Headers.Add("Allow", "GET,HEAD,UPDATE,DELETE,OPTIONS");
             return Ok();
         }
 
