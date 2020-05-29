@@ -11,9 +11,11 @@ namespace IOT_DeviceManager.API.Profiles
         public IDeviceProfile()
         {
             CreateMap<IDevice, IDeviceDto>()
-                .Include<Device, DeviceDto>();
+                .Include<Device, DeviceDto>()
+                .Include<Device, DeviceForUpdateDto>().ReverseMap();
 
-            CreateMap<Device, DeviceDto>();
+            CreateMap<Device, DeviceDto>().ReverseMap();
+            CreateMap<Device, DeviceForUpdateDto>().ReverseMap();
         }
     }
 }

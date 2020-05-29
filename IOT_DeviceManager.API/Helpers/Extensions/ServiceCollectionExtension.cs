@@ -3,6 +3,8 @@ using IOT_DeviceManager.API.DeviceClient.MqttClient;
 using IOT_DeviceManager.API.Repositories;
 using IOT_DeviceManager.API.Services;
 using IOT_DeviceManager.API.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
@@ -11,7 +13,7 @@ namespace IOT_DeviceManager.API.Helpers.Extensions
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddControllersWithInputOutputFormatters(this IServiceCollection services)
+        public static IServiceCollection AddControllersWithInputOutputFormattersAndConfigureAPIBehaviour(this IServiceCollection services)
         {
             services
                 .AddControllers()
@@ -20,7 +22,29 @@ namespace IOT_DeviceManager.API.Helpers.Extensions
                     {
                         setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     })
-                .AddXmlDataContractSerializerFormatters();
+                .AddXmlDataContractSerializerFormatters()
+                .ConfigureApiBehaviorOptions(setupAction =>
+                {
+                    // Add support for correct error response when input model is invalid
+                    setupAction.InvalidModelStateResponseFactory = context =>
+                    {
+                        var problemDetails = new ValidationProblemDetails(context.ModelState)
+                        {
+                            Type = "https://iotdevicemanager/api/modelvalidationproblem",
+                            Title = "One or more model validation errors occurred.",
+                            Status = StatusCodes.Status422UnprocessableEntity,
+                            Detail = "See the errors property for details.",
+                            Instance = context.HttpContext.Request.Path
+                        };
+
+                        problemDetails.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+
+                        return new UnprocessableEntityObjectResult(problemDetails)
+                        {
+                            ContentTypes = { "application/problem+json" }
+                        };
+                    };
+                });
             return services;
         }
 
