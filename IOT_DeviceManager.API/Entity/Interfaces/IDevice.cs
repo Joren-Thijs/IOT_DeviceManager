@@ -9,8 +9,10 @@ namespace IOT_DeviceManager.API.Entity.Interfaces
         public string Id { get; set; }
         [Required]
         [MaxLength(50)]
+        [RegularExpression(@"^[\w'À-ÿ\.\-\/@][\w' À-ÿ\.\-\/@]*[\w'À-ÿ\.\-\/@]+$")]
         public string DeviceType { get; set; }
         [MaxLength(50)]
+        [RegularExpression(@"^[\w'À-ÿ\.\-\/@][\w' À-ÿ\.\-\/@]*[\w'À-ÿ\.\-\/@]+$")]
         public string DeviceName { get; set; }
         public IDeviceStatus Status { get; set; }
         public IEnumerable<IDeviceMeasurement> Measurements { get; set; }
