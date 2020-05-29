@@ -11,6 +11,7 @@ namespace IOT_DeviceManager.API.Entity.Interfaces
         public string Id { get; set; }
         public IDeviceStatus Status { get; set; }
         public IDictionary<string, object> Values { get; set; }
+        [Required]
         public DateTime TimeStamp { get; set; }
         [ForeignKey("DeviceId")]
         public IDevice Device { get; set; }

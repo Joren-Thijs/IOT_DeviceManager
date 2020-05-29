@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IOT_DeviceManager.API.Helpers.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 
 namespace IOT_DeviceManager.API.Middleware
 {
@@ -20,7 +21,7 @@ namespace IOT_DeviceManager.API.Middleware
         /// <summary>
         /// The hosting environment. (Is used to check whether the environment is in development)
         /// </summary>
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
 
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace IOT_DeviceManager.API.Middleware
         /// </summary>
         /// <param name="next">The next delegate to be invoked.</param>
         /// <param name="env">The hosting environment. (Is used to check whether the environment is in development)</param>
-        public ExceptionMiddleware(RequestDelegate next, IHostingEnvironment env)
+        public ExceptionMiddleware(RequestDelegate next, IWebHostEnvironment env)
         {
             _next = next;
             _env = env;
