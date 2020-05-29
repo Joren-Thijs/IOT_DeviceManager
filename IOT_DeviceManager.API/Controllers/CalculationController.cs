@@ -28,6 +28,7 @@ namespace IOT_DeviceManager.API.Controllers
         }
 
         [HttpGet("totalontime")]
+        [HttpHead]
         public async Task<IActionResult> GetTotalOnTime([FromRoute] string deviceId)
         {
             var deviceExists = await _deviceRepository.DeviceExists(deviceId);
@@ -46,6 +47,7 @@ namespace IOT_DeviceManager.API.Controllers
         }
 
         [HttpGet("average/{propertyName}")]
+        [HttpHead]
         public async Task<IActionResult> GetAverage([FromRoute] string deviceId, [FromRoute] string propertyName)
         {
             var deviceExists = await _deviceRepository.DeviceExists(deviceId);
@@ -73,6 +75,13 @@ namespace IOT_DeviceManager.API.Controllers
             };
 
             return Ok(result.SerializeJson());
+        }
+
+        [HttpOptions]
+        public IActionResult GetDeviceMeasurementCalculationOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS");
+            return Ok();
         }
     }
 }

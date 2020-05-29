@@ -56,5 +56,12 @@ namespace IOT_DeviceManager.API.Controllers
 
             return Ok(statusAnswer.SerializeJson());
         }
+
+        [HttpOptions]
+        public IActionResult GetDeviceStatusOptions()
+        {
+            Response.Headers.Add("Allow", "POST,OPTIONS");
+            return Ok();
+        }
     }
 }

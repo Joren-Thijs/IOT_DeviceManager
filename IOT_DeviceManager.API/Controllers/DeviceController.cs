@@ -31,6 +31,7 @@ namespace IOT_DeviceManager.API.Controllers
         }
 
         [HttpGet(Name = "GetDevices")]
+        [HttpHead]
         public async Task<IActionResult> GetDevices([FromQuery] ResourceParameters resourceParameters)
         {
             var devices = await _deviceRepository.GetDevices(resourceParameters);
@@ -43,6 +44,7 @@ namespace IOT_DeviceManager.API.Controllers
         }
 
         [HttpGet("{deviceId}")]
+        [HttpHead]
         public async Task<IActionResult> GetDevice([FromRoute] string deviceId)
         {
             var device = await _deviceRepository.GetDevice(deviceId);
@@ -107,6 +109,13 @@ namespace IOT_DeviceManager.API.Controllers
             var updatedDeviceDto = _mapper.Map<IDeviceDto>(updatedDevice);
 
             return Ok(updatedDeviceDto.SerializeJson());
+        }
+
+        [HttpOptions]
+        public IActionResult GetDeviceOptions()
+        {
+            Response.Headers.Add("Allow", "GET,UPDATE,OPTIONS");
+            return Ok();
         }
 
         // Override default method to make sure we get a code 422 on invalid models when patching

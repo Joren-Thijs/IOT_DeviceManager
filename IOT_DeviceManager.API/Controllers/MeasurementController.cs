@@ -26,19 +26,27 @@ namespace IOT_DeviceManager.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet(Name = "GetMeasurements")]
-        public async Task<IActionResult> GetMeasurements([FromRoute] string deviceId, [FromQuery] ResourceParameters resourceParameters)
+        [HttpGet(Name = "GetDeviceMeasurementsFromDevice")]
+        [HttpHead]
+        public async Task<IActionResult> GetDeviceMeasurementsFromDevice([FromRoute] string deviceId, [FromQuery] ResourceParameters resourceParameters)
         {
             var deviceExists = await _deviceRepository.DeviceExists(deviceId);
             if (!deviceExists) return NotFound();
 
             var measurements = await _deviceRepository.GetMeasurements(deviceId, resourceParameters);
 
-            this.SetXPaginationResponseHeaders("GetMeasurements", measurements, resourceParameters);
+            this.SetXPaginationResponseHeaders("GetDeviceMeasurementsFromDevice", measurements, resourceParameters);
 
             var measurementsDto = _mapper.Map<IEnumerable<IDeviceMeasurementDto>>(measurements);
 
             return Ok(measurementsDto.SerializeJson());
+        }
+
+        [HttpOptions]
+        public IActionResult GetDeviceMeasurementOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS");
+            return Ok();
         }
     }
 }
