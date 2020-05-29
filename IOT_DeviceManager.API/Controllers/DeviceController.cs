@@ -111,10 +111,23 @@ namespace IOT_DeviceManager.API.Controllers
             return Ok(updatedDeviceDto.SerializeJson());
         }
 
+        [HttpDelete("{deviceId}")]
+        public async Task<IActionResult> DeleteDevice([FromRoute] string deviceId)
+        {
+            var device = await _deviceRepository.GetDevice(deviceId);
+            if (device == null) return NotFound();
+
+            await _deviceRepository.DeleteDevice(device);
+            await _deviceRepository.Save();
+
+            return NoContent();
+        }
+
+
         [HttpOptions]
         public IActionResult GetDeviceOptions()
         {
-            Response.Headers.Add("Allow", "GET,UPDATE,OPTIONS");
+            Response.Headers.Add("Allow", "GET,UPDATE,DELETE,OPTIONS");
             return Ok();
         }
 
