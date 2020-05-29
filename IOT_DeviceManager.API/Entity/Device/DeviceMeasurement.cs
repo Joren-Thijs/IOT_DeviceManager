@@ -12,6 +12,7 @@ namespace IOT_DeviceManager.API.Entity.Device
         public string Id { get; set; }
         public IDeviceStatus Status { get; set; } = new DeviceStatus();
         public IDictionary<string, object> Values { get; set; } = new Dictionary<string, object>();
+        [Required]
         public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
         [ForeignKey("DeviceId")]
         public IDevice Device { get; set; }
