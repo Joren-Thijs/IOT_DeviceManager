@@ -95,6 +95,17 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(existingDevice != null);
         }
 
+        public Task<IDeviceStatus> GetDeviceStatus(string deviceId)
+        {
+            var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
+            if (device == null)
+            {
+                throw new ArgumentException($"No device exists with id: {deviceId}");
+            }
+
+            return Task.FromResult(device.Status);
+        }
+
         public Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId)
         {
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);

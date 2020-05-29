@@ -16,6 +16,8 @@ namespace IOT_DeviceManager.API.Repositories
         Task DeleteDevice(IDevice device);
         Task<bool> DeviceExists(string device);
 
+        Task<IDeviceStatus> GetDeviceStatus(string deviceId);
+
         Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId);
         Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters);
         Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId);

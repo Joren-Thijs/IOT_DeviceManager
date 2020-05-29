@@ -24,6 +24,8 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         private IDeviceMeasurement measurement2;
         private IDeviceMeasurement measurement3;
 
+        private IDeviceStatus status;
+
         [SetUp]
         public void Init()
         {
@@ -32,7 +34,8 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             {
                 Id = "1",
                 DeviceType = "device",
-                DeviceName = "Device 1"
+                DeviceName = "Device 1",
+                Status = status
             };
             device2 = new Device
             {
@@ -69,6 +72,11 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
                 {
                     {"sensor 3", 23},
                 }
+            };
+            status = new DeviceStatus
+            {
+                OnStatus = false,
+                Settings = new Dictionary<string, object>()
             };
         }
 
@@ -494,6 +502,17 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         {
             var result = await repo.DeviceExists(device.Id);
             Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task CheckDeviceStatusCanBeRetrieved_ReturnsFalseAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            var deviceStatus = await repo.GetDeviceStatus(device.Id);
+
+            deviceStatus.Should().BeEquivalentTo(status);
         }
 
         [Test]
