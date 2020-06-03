@@ -1,5 +1,3 @@
-<p align="center"><img src=".github\images\logo_with_background.svg" width="400"></p>
-
 ## Project description
 
 A device manager for IOT devices with applications in home automation and data collection.
