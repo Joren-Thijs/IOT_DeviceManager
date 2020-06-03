@@ -344,3 +344,6 @@ healthchecksdb
 
 # ignore environment files
 *.env
+
+# ignore UI/UX Designs
+.design/
