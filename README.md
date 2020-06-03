@@ -1,3 +1,5 @@
+<p align="center"><img src="https://www.jorenthijs.be/images/projects/iot_devicemanager.svg" width="400"></p>
+
 ## Project description
 
 A device manager for IOT devices with applications in home automation and data collection.
