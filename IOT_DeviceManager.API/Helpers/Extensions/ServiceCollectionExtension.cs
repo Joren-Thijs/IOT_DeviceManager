@@ -1,10 +1,12 @@
 ﻿using IOT_DeviceManager.API.DeviceClient;
 using IOT_DeviceManager.API.DeviceClient.MqttClient;
 using IOT_DeviceManager.API.Repositories;
+using IOT_DeviceManager.API.Repositories.DbContexts;
 using IOT_DeviceManager.API.Services;
 using IOT_DeviceManager.API.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Serialization;
@@ -50,7 +52,12 @@ namespace IOT_DeviceManager.API.Helpers.Extensions
 
         public static IServiceCollection AddRepositoryService(this IServiceCollection services)
         {
-            services.AddTransient<IDeviceRepository, DeviceInMemoryRepository>();
+            services.AddDbContext<DeviceRepositoryContext>(options =>
+            {
+                options.UseSqlServer(
+                    @"Server=(localdb)\mssqllocaldb;Database=IOT_DeviceManagerDB;Trusted_Connection=True;");
+            }, ServiceLifetime.Transient, ServiceLifetime.Transient);
+            services.AddTransient<IDeviceRepository, DeviceDbRepository>();
             return services;
         }
 
