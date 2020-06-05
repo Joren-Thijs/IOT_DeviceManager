@@ -22,6 +22,7 @@ namespace IOT_DeviceManager.API.Repositories
         public Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters)
         {
             _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
+
             var enumerableDevices = _devices as IEnumerable<IDevice>;
             var devices = enumerableDevices.AsQueryable();
 
@@ -54,18 +55,24 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds)
         {
-            var devicesList = (List<IDevice>)_devices.Where(dev => deviceIds.Any(id => id == dev.Id));
+            _ = deviceIds ?? throw new ArgumentNullException(nameof(deviceIds));
+
+            var devicesList = _devices.Where(dev => deviceIds.Any(id => id == dev.Id));
             return Task.FromResult<IEnumerable<IDevice>>(devicesList);
         }
 
         public Task<IDevice> GetDevice(string deviceId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             return Task.FromResult(device);
         }
 
         public Task<IDevice> AddDevice(IDevice device)
         {
+            _ = device ?? throw new ArgumentNullException(nameof(device));
+
             var existingDevice = _devices.FirstOrDefault(dev => dev.Id == device.Id);
             if (existingDevice != null)
             {
@@ -77,6 +84,8 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IDevice> UpdateDevice(IDevice device)
         {
+            _ = device ?? throw new ArgumentNullException(nameof(device));
+
             var deviceToUpdate = _devices.FirstOrDefault(dev => dev.Id == device.Id);
             _devices.Remove(deviceToUpdate);
             _devices.Add(device);
@@ -85,18 +94,24 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task DeleteDevice(IDevice device)
         {
+            _ = device ?? throw new ArgumentNullException(nameof(device));
+
             _devices.Remove(device);
             return Task.CompletedTask;
         }
 
         public Task<bool> DeviceExists(string deviceId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+
             var existingDevice = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             return Task.FromResult(existingDevice != null);
         }
 
         public Task<IDeviceStatus> GetDeviceStatus(string deviceId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
@@ -108,6 +123,8 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
@@ -119,6 +136,7 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
             _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
 
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
@@ -158,6 +176,9 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+            if (measurementId == Guid.Empty) throw new ArgumentNullException(nameof(measurementId));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
@@ -172,6 +193,9 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+            if (measurement == null) throw new ArgumentNullException(nameof(measurement));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
@@ -188,7 +212,7 @@ namespace IOT_DeviceManager.API.Repositories
 
             measurement.DeviceId = deviceId;
             measurement.Device = device;
-            if (measurement.Id.Equals(Guid.Empty))
+            if (measurement.Id == Guid.Empty)
             {
                 measurement.Id = Guid.NewGuid();
             }
@@ -200,6 +224,8 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement)
         {
+            _ = measurement ?? throw new ArgumentNullException(nameof(measurement));
+
             _devices.ForEach(
                 device =>
                 {
@@ -214,6 +240,8 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task DeleteMeasurement(IDeviceMeasurement measurement)
         {
+            _ = measurement ?? throw new ArgumentNullException(nameof(measurement));
+
             _devices.ForEach(
                 device =>
                 {
@@ -227,6 +255,9 @@ namespace IOT_DeviceManager.API.Repositories
 
         public Task<bool> MeasurementExists(string deviceId, Guid measurementId)
         {
+            if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
+            if (measurementId == Guid.Empty) throw new ArgumentNullException(nameof(measurementId));
+
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
             {
