@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Web;
@@ -20,11 +21,11 @@ namespace IOT_DeviceManager.API.Repositories
 
         Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId);
         Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters);
-        Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId);
+        Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId);
         Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement);
         Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement);
         Task DeleteMeasurement(IDeviceMeasurement measurement);
-        Task<bool> MeasurementExists(string deviceId, string measurementId);
+        Task<bool> MeasurementExists(string deviceId, Guid measurementId);
 
         Task<bool> Save();
     }

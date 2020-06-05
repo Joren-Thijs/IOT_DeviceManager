@@ -156,7 +156,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(Paginator<IDeviceMeasurement>.Create(measurements, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
-        public Task<IDeviceMeasurement> GetMeasurement(string deviceId, string measurementId)
+        public Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
         {
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
@@ -165,7 +165,7 @@ namespace IOT_DeviceManager.API.Repositories
             }
 
             var measurementsList = device.Measurements.ToList();
-            var measurement = measurementsList.FirstOrDefault(mes => mes.Id == measurementId);
+            var measurement = measurementsList.FirstOrDefault(mes => mes.Id.ToString() == measurementId.ToString());
 
             return Task.FromResult(measurement);
         }
@@ -180,17 +180,17 @@ namespace IOT_DeviceManager.API.Repositories
 
             var measurementsList = device.Measurements.ToList();
 
-            var existingMeasurement = measurementsList.FirstOrDefault(mes => mes.Id == measurement.Id);
+            var existingMeasurement = measurementsList.FirstOrDefault(mes => mes.Id.ToString() == measurement.Id.ToString());
             if (existingMeasurement != null)
             {
-                throw new ArgumentException("Measurement already exists");
+                throw new ArgumentException($"Measurement already exists with id: {measurement.Id.ToString()}");
             }
 
             measurement.DeviceId = deviceId;
             measurement.Device = device;
-            if (measurement.Id == null)
+            if (measurement.Id.Equals(Guid.Empty))
             {
-                measurement.Id = Convert.ToString(measurementsList.Count + 1);
+                measurement.Id = Guid.NewGuid();
             }
 
             measurementsList.Add(measurement);
@@ -225,7 +225,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.CompletedTask;
         }
 
-        public Task<bool> MeasurementExists(string deviceId, string measurementId)
+        public Task<bool> MeasurementExists(string deviceId, Guid measurementId)
         {
             var device = _devices.FirstOrDefault(dev => dev.Id == deviceId);
             if (device == null)
@@ -234,7 +234,7 @@ namespace IOT_DeviceManager.API.Repositories
             }
 
             var measurementsList = device.Measurements.ToList();
-            var measurement = measurementsList.FirstOrDefault(mes => mes.Id == measurementId);
+            var measurement = measurementsList.FirstOrDefault(mes => mes.Id.ToString() == measurementId.ToString());
 
             return Task.FromResult(measurement != null);
         }

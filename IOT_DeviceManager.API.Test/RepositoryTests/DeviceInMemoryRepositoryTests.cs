@@ -51,7 +51,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             };
             measurement = new DeviceMeasurement
             {
-                Id = "1",
+                Id = Guid.NewGuid(),
                 Values = new Dictionary<string, object>
                 {
                     {"sensor 1", 21},
@@ -59,7 +59,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             };
             measurement2 = new DeviceMeasurement
             {
-                Id = "2",
+                Id = Guid.NewGuid(),
                 Values = new Dictionary<string, object>
                 {
                     {"sensor 2", 22},
@@ -67,7 +67,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             };
             measurement3 = new DeviceMeasurement
             {
-                Id = "3",
+                Id = Guid.NewGuid(),
                 Values = new Dictionary<string, object>
                 {
                     {"sensor 3", 23},
