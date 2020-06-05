@@ -123,6 +123,16 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckDeviceCannotBeAddedWhenNull_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.AddDevice(null);
+                await repo.Save();
+            });
+        }
+
+        [Test]
         public async Task CheckDeviceCanBeRetrieved_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -130,6 +140,20 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevice = await repo.GetDevice(device.Id);
 
             retrievedDevice.Should().BeEquivalentTo(device);
+        }
+
+        [Test]
+        public void CheckDeviceCannotBeRetrievedWithEmptyId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetDevice("");
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetDevice(null);
+            });
         }
 
         [Test]
@@ -141,6 +165,16 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             await repo.Save();
             var retrievedDevice = await repo.GetDevice(device.Id);
             Assert.IsNull(retrievedDevice);
+        }
+
+        [Test]
+        public void CheckDeviceCannotBeDeletedWithEmptyDevice_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.DeleteDevice(null);
+                await repo.Save();
+            });
         }
 
         [Test]
@@ -165,6 +199,66 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedDevices = await repo.GetDevices();
 
             Assert.AreEqual(2, retrievedDevices.Count());
+        }
+
+        [Test]
+        public async Task CheckDevicesCanBeRetrievedWithDeviceIdsListWithOne_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            var ids = new List<string>
+            {
+                device.Id
+            };
+
+            var retrievedDevices = await repo.GetDevices(ids);
+
+            retrievedDevices.First().Should().BeEquivalentTo(device);
+            Assert.AreEqual(1, retrievedDevices.Count());
+        }
+
+        [Test]
+        public async Task CheckDevicesCanBeRetrievedWithDeviceIdsListWithTwo_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+            await repo.AddDevice(device2);
+            await repo.Save();
+
+            var ids = new List<string>
+            {
+                device.Id,
+                device2.Id
+            };
+
+            var retrievedDevices = await repo.GetDevices(ids);
+
+            Assert.AreEqual(2, retrievedDevices.Count());
+        }
+
+        [Test]
+        public async Task CheckDevicesRetrievedWithEmptyDeviceIdsListIsEmpty_ReturnsTrueAsync()
+        {
+            await repo.AddDevice(device);
+            await repo.Save();
+
+            var ids = new List<string>();
+
+            var retrievedDevices = await repo.GetDevices(ids);
+
+            Assert.AreEqual(0, retrievedDevices.Count());
+        }
+
+        [Test]
+        public void CheckDevicesCannotBeRetrievedWithEmptyList_ThrowsArgumentNullException()
+        {
+            List<string> ids = null;
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetDevices(ids);
+            });
         }
 
         [Test]
@@ -489,6 +583,16 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckDeviceCannotBeUpdatedWithEmptyDevice_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.UpdateDevice(null);
+                await repo.Save();
+            });
+        }
+
+        [Test]
         public async Task CheckDeviceExists_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -505,6 +609,20 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckDeviceExistsCannotBeUsedWithEmptyId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.DeviceExists("");
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.DeviceExists(null);
+            });
+        }
+
+        [Test]
         public async Task CheckDeviceStatusCanBeRetrieved_ReturnsFalseAsync()
         {
             await repo.AddDevice(device);
@@ -513,6 +631,15 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var deviceStatus = await repo.GetDeviceStatus(device.Id);
 
             deviceStatus.Should().BeEquivalentTo(status);
+        }
+
+        [Test]
+        public void CheckDeviceStatusCannotBeRetrievedWithEmptyId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetDeviceStatus(null);
+            });
         }
 
         [Test]
@@ -552,6 +679,29 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckMeasurementCannotBeAddedToDeviceWithEmptyId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.AddMeasurement("", measurement); await repo.Save();
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.AddMeasurement(null, measurement); await repo.Save();
+            });
+        }
+
+        [Test]
+        public void CheckMeasurementCannotBeAddedWithEmptyMeasurement_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.AddMeasurement(device.Id, null); await repo.Save();
+            });
+        }
+
+        [Test]
         public async Task CheckMeasurementCanBeRetrieved_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -562,6 +712,29 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
             retrievedMeasurement.Should().BeEquivalentTo(measurement);
+        }
+
+        [Test]
+        public void CheckMeasurementCannotBeRetrievedFromDeviceWithEmptyId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurement("", measurement.Id);
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurement(null, measurement.Id);
+            });
+        }
+
+        [Test]
+        public void CheckMeasurementCannotBeRetrievedWithEmptyMeasurementId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurement(device.Id, Guid.Empty);
+            });
         }
 
         [Test]
@@ -632,6 +805,15 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckMeasurementCannotBeDeletedWithEmptyMeasurement_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.DeleteMeasurement(null);
+            });
+        }
+
+        [Test]
         public async Task CheckMeasurementsCanBeRetrievedWithOne_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -670,14 +852,45 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
-        public async Task CheckGetMeasurementsWithResourceParametersNullThrowsException_ThrowsArgumentNullException()
+        public void CheckCannotGetMeasurementsWithEmptyDeviceId_ThrowsArgumentNullException()
         {
-            await repo.AddDevice(device);
-            await repo.Save();
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurements("");
+            });
 
-            await repo.AddMeasurement(device.Id, measurement);
-            await repo.Save();
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurements(null);
+            });
+        }
 
+        [Test]
+        public void CheckGetMeasurementsWithResourceParametersWithEmptyDeviceIdThrowsException_ThrowsArgumentNullException()
+        {
+            var resourceParameters = new ResourceParameters
+            {
+                SearchQuery = null,
+                OrderBy = null,
+                SortDirection = null,
+                PageNumber = 1,
+                PageSize = 10
+            };
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurements("", resourceParameters);
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.GetMeasurements(null, resourceParameters);
+            });
+        }
+
+        [Test]
+        public void CheckGetMeasurementsWithResourceParametersNullThrowsException_ThrowsArgumentNullException()
+        {
             ResourceParameters resourceParameters = null;
 
             Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
@@ -1048,6 +1261,16 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
+        public void CheckMeasurementCannotBeUpdatedWithEmptyMeasurement_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.UpdateMeasurement(null);
+                await repo.Save();
+            });
+        }
+
+        [Test]
         public async Task CheckMeasurementExists_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
@@ -1070,5 +1293,26 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             Assert.IsFalse(result);
         }
 
+        [Test]
+        public void CheckMeasurementCannotExistWithEmptyDeviceOrMeasurementId_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.MeasurementExists("", measurement.Id);
+                await repo.Save();
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.MeasurementExists(null, measurement.Id);
+                await repo.Save();
+            });
+
+            Assert.ThrowsAsync(typeof(ArgumentNullException), async delegate
+            {
+                await repo.MeasurementExists(device.Id, Guid.Empty);
+                await repo.Save();
+            });
+        }
     }
 }
