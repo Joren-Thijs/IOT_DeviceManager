@@ -154,13 +154,19 @@ class MQTTClient:
             'Status':
             {
                 'OnStatus': self.status,
-                'Settings': {
-                    'setpoint': self.setpoint
+                'Settings': [
+                    {
+                        'key': 'setpoint',
+                        'value': self.setpoint
+                    }
+                ],
+            },
+            'Values': [
+                {
+                    'key': 'temperature',
+                    'value': self.temperature
                 }
-            },
-            'Values': {
-                'temperature': self.temperature
-            },
+            ],
             'TimeStamp': datetime.now(tz=None)
         }
         try:
@@ -174,9 +180,12 @@ class MQTTClient:
     def sendStatusResponse(self):
         data = {
             'OnStatus': self.status,
-            'Settings': {
-                'setpoint': self.setpoint
-            }
+            'Settings': [
+                {
+                    'key': 'setpoint',
+                    'value': self.setpoint,
+                }
+            ]
         }
         try:
             payload = json.dumps(data)
