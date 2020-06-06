@@ -17,6 +17,6 @@ jobs:
             - name: Build API
               run: dotnet build ./IOT_DeviceManager.API/IOT_DeviceManager.API.csproj --configuration Release --no-restore
             - name: Build API Test
-              run: dotnet build ./IOT_DeviceManager.API/IOT_DeviceManager.API.Test.csproj --configuration Release --no-restore
+              run: dotnet build ./IOT_DeviceManager.API.Test/IOT_DeviceManager.API.Test.csproj --configuration Release --no-restore
             - name: Test
               run: dotnet test --no-restore --verbosity normal
