@@ -10,14 +10,14 @@ using IOT_DeviceManager.APP.Views;
 
 namespace IOT_DeviceManager.APP.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class DevicesViewModel : BaseViewModel
     {
         public ObservableCollection<Item> Items { get; set; }
         public Command LoadItemsCommand { get; set; }
 
-        public ItemsViewModel()
+        public DevicesViewModel()
         {
-            Title = "Browse";
+            Title = "My Devices";
             Items = new ObservableCollection<Item>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
