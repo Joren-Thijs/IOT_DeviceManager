@@ -15,8 +15,8 @@ jobs:
             - name: Install dependencies
               run: dotnet restore
             - name: Build API
-              run: dotnet build .\IOT_DeviceManager.API\IOT_DeviceManager.API.csproj --no-restore
+              run: dotnet build IOT_DeviceManager.API\IOT_DeviceManager.API.csproj --no-restore
             - name: Build API Test
-              run: dotnet build .\IOT_DeviceManager.API\IOT_DeviceManager.API.Test.csproj --no-restore
+              run: dotnet build IOT_DeviceManager.API\IOT_DeviceManager.API.Test.csproj --no-restore
             - name: Test
               run: dotnet test --no-restore --verbosity normal
