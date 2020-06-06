@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 
 namespace IOT_DeviceManager.API.DeviceClient
 {
@@ -8,7 +8,7 @@ namespace IOT_DeviceManager.API.DeviceClient
     {
         Task StartClientAsync();
         Task StopClientAsync();
-        Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status);
+        Task<DeviceStatus> SetDeviceStatus(Device device, DeviceStatus status);
         event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
         void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs);
     }

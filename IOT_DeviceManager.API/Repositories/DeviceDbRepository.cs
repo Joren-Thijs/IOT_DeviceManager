@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Helpers.Web;
 using IOT_DeviceManager.API.Repositories.DbContexts;
 
@@ -17,37 +17,37 @@ namespace IOT_DeviceManager.API.Repositories
             _deviceRepositoryContext = deviceRepositoryContext ?? throw new ArgumentNullException(nameof(deviceRepositoryContext));
         }
 
-        public async Task<IEnumerable<IDevice>> GetDevices()
+        public async Task<IEnumerable<Device>> GetDevices()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters)
+        public async Task<Paginator<Device>> GetDevices(ResourceParameters resourceParameters)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds)
+        public async Task<IEnumerable<Device>> GetDevices(IEnumerable<string> deviceIds)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDevice> GetDevice(string deviceId)
+        public async Task<Device> GetDevice(string deviceId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDevice> AddDevice(IDevice device)
+        public async Task<Device> AddDevice(Device device)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDevice> UpdateDevice(IDevice device)
+        public async Task<Device> UpdateDevice(Device device)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteDevice(IDevice device)
+        public async Task DeleteDevice(Device device)
         {
             throw new NotImplementedException();
         }
@@ -57,37 +57,37 @@ namespace IOT_DeviceManager.API.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IDeviceStatus> GetDeviceStatus(string deviceId)
+        public async Task<DeviceStatus> GetDeviceStatus(string deviceId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId)
+        public async Task<IEnumerable<DeviceMeasurement>> GetMeasurements(string deviceId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
+        public async Task<Paginator<DeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
+        public async Task<DeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement)
+        public async Task<DeviceMeasurement> AddMeasurement(string deviceId, DeviceMeasurement measurement)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement)
+        public async Task<DeviceMeasurement> UpdateMeasurement(DeviceMeasurement measurement)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteMeasurement(IDeviceMeasurement measurement)
+        public async Task DeleteMeasurement(DeviceMeasurement measurement)
         {
             throw new NotImplementedException();
         }

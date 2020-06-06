@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using IOT_DeviceManager.API.DTO.Interfaces;
 
 namespace IOT_DeviceManager.API.DTO.Device
 {
-    public class DeviceStatusDto : IDeviceStatusDto
+    public class DeviceStatusDto
     {
         public bool OnStatus { get; set; }
-        public IDictionary<string, object> Settings { get; set; }
+        public IEnumerable<DeviceSettingDto> Settings { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Helpers.Exceptions;
 using IOT_DeviceManager.API.Helpers.Reflection;
 using IOT_DeviceManager.API.Helpers.Web;
@@ -12,18 +12,18 @@ namespace IOT_DeviceManager.API.Repositories
 {
     public class DeviceInMemoryRepository : IDeviceRepository
     {
-        private static readonly List<IDevice> _devices = new List<IDevice>();
+        private static readonly List<Device> _devices = new List<Device>();
 
-        public Task<IEnumerable<IDevice>> GetDevices()
+        public Task<IEnumerable<Device>> GetDevices()
         {
-            return Task.FromResult<IEnumerable<IDevice>>(_devices);
+            return Task.FromResult<IEnumerable<Device>>(_devices);
         }
 
-        public Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters)
+        public Task<Paginator<Device>> GetDevices(ResourceParameters resourceParameters)
         {
             _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
 
-            var enumerableDevices = _devices as IEnumerable<IDevice>;
+            var enumerableDevices = _devices as IEnumerable<Device>;
             var devices = enumerableDevices.AsQueryable();
 
             // Filter on search
@@ -37,10 +37,10 @@ namespace IOT_DeviceManager.API.Repositories
             if (!string.IsNullOrWhiteSpace(resourceParameters.OrderBy))
             {
                 var orderBy = resourceParameters.OrderBy.Trim();
-                Expression<Func<IDevice, object>> orderByLambda;
+                Expression<Func<Device, object>> orderByLambda;
                 try
                 {
-                    orderByLambda = PropertyHelpers.GetPropertySelector<IDevice>(orderBy);
+                    orderByLambda = PropertyHelpers.GetPropertySelector<Device>(orderBy);
                 }
                 catch (ArgumentException e)
                 {
@@ -50,18 +50,18 @@ namespace IOT_DeviceManager.API.Repositories
                 devices = resourceParameters.SortDirection == "desc" ? devices.OrderByDescending(orderByLambda) : devices.OrderBy(orderByLambda);
             }
 
-            return Task.FromResult(Paginator<IDevice>.Create(devices, resourceParameters.PageNumber, resourceParameters.PageSize));
+            return Task.FromResult(Paginator<Device>.Create(devices, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
-        public Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds)
+        public Task<IEnumerable<Device>> GetDevices(IEnumerable<string> deviceIds)
         {
             _ = deviceIds ?? throw new ArgumentNullException(nameof(deviceIds));
 
             var devicesList = _devices.Where(dev => deviceIds.Any(id => id == dev.Id));
-            return Task.FromResult<IEnumerable<IDevice>>(devicesList);
+            return Task.FromResult<IEnumerable<Device>>(devicesList);
         }
 
-        public Task<IDevice> GetDevice(string deviceId)
+        public Task<Device> GetDevice(string deviceId)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
 
@@ -69,7 +69,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(device);
         }
 
-        public Task<IDevice> AddDevice(IDevice device)
+        public Task<Device> AddDevice(Device device)
         {
             _ = device ?? throw new ArgumentNullException(nameof(device));
 
@@ -82,7 +82,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(device);
         }
 
-        public Task<IDevice> UpdateDevice(IDevice device)
+        public Task<Device> UpdateDevice(Device device)
         {
             _ = device ?? throw new ArgumentNullException(nameof(device));
 
@@ -92,7 +92,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(device);
         }
 
-        public Task DeleteDevice(IDevice device)
+        public Task DeleteDevice(Device device)
         {
             _ = device ?? throw new ArgumentNullException(nameof(device));
 
@@ -108,7 +108,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(existingDevice != null);
         }
 
-        public Task<IDeviceStatus> GetDeviceStatus(string deviceId)
+        public Task<DeviceStatus> GetDeviceStatus(string deviceId)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
 
@@ -121,7 +121,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(device.Status);
         }
 
-        public Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId)
+        public Task<IEnumerable<DeviceMeasurement>> GetMeasurements(string deviceId)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
 
@@ -134,7 +134,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(device.Measurements);
         }
 
-        public Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
+        public Task<Paginator<DeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
             _ = resourceParameters ?? throw new ArgumentNullException(nameof(resourceParameters));
@@ -158,10 +158,10 @@ namespace IOT_DeviceManager.API.Repositories
             if (!string.IsNullOrWhiteSpace(resourceParameters.OrderBy))
             {
                 var orderBy = resourceParameters.OrderBy.Trim();
-                Expression<Func<IDeviceMeasurement, object>> orderByLambda;
+                Expression<Func<DeviceMeasurement, object>> orderByLambda;
                 try
                 {
-                    orderByLambda = PropertyHelpers.GetPropertySelector<IDeviceMeasurement>(orderBy);
+                    orderByLambda = PropertyHelpers.GetPropertySelector<DeviceMeasurement>(orderBy);
                 }
                 catch (ArgumentException e)
                 {
@@ -171,10 +171,10 @@ namespace IOT_DeviceManager.API.Repositories
                 measurements = resourceParameters.SortDirection == "desc" ? measurements.OrderByDescending(orderByLambda) : measurements.OrderBy(orderByLambda);
             }
 
-            return Task.FromResult(Paginator<IDeviceMeasurement>.Create(measurements, resourceParameters.PageNumber, resourceParameters.PageSize));
+            return Task.FromResult(Paginator<DeviceMeasurement>.Create(measurements, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 
-        public Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
+        public Task<DeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
             if (measurementId == Guid.Empty) throw new ArgumentNullException(nameof(measurementId));
@@ -191,7 +191,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(measurement);
         }
 
-        public Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement)
+        public Task<DeviceMeasurement> AddMeasurement(string deviceId, DeviceMeasurement measurement)
         {
             if (string.IsNullOrEmpty(deviceId)) throw new ArgumentNullException(nameof(deviceId));
             if (measurement == null) throw new ArgumentNullException(nameof(measurement));
@@ -222,7 +222,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(measurement);
         }
 
-        public Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement)
+        public Task<DeviceMeasurement> UpdateMeasurement(DeviceMeasurement measurement)
         {
             _ = measurement ?? throw new ArgumentNullException(nameof(measurement));
 
@@ -238,7 +238,7 @@ namespace IOT_DeviceManager.API.Repositories
             return Task.FromResult(measurement);
         }
 
-        public Task DeleteMeasurement(IDeviceMeasurement measurement)
+        public Task DeleteMeasurement(DeviceMeasurement measurement)
         {
             _ = measurement ?? throw new ArgumentNullException(nameof(measurement));
 

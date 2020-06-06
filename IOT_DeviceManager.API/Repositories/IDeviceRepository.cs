@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Helpers.Web;
 
 namespace IOT_DeviceManager.API.Repositories
 {
     public interface IDeviceRepository
     {
-        Task<IEnumerable<IDevice>> GetDevices();
-        Task<Paginator<IDevice>> GetDevices(ResourceParameters resourceParameters);
-        Task<IEnumerable<IDevice>> GetDevices(IEnumerable<string> deviceIds);
-        Task<IDevice> GetDevice(string deviceId);
-        Task<IDevice> AddDevice(IDevice device);
-        Task<IDevice> UpdateDevice(IDevice device);
-        Task DeleteDevice(IDevice device);
+        Task<IEnumerable<Device>> GetDevices();
+        Task<Paginator<Device>> GetDevices(ResourceParameters resourceParameters);
+        Task<IEnumerable<Device>> GetDevices(IEnumerable<string> deviceIds);
+        Task<Device> GetDevice(string deviceId);
+        Task<Device> AddDevice(Device device);
+        Task<Device> UpdateDevice(Device device);
+        Task DeleteDevice(Device device);
         Task<bool> DeviceExists(string device);
 
-        Task<IDeviceStatus> GetDeviceStatus(string deviceId);
+        Task<DeviceStatus> GetDeviceStatus(string deviceId);
 
-        Task<IEnumerable<IDeviceMeasurement>> GetMeasurements(string deviceId);
-        Task<Paginator<IDeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters);
-        Task<IDeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId);
-        Task<IDeviceMeasurement> AddMeasurement(string deviceId, IDeviceMeasurement measurement);
-        Task<IDeviceMeasurement> UpdateMeasurement(IDeviceMeasurement measurement);
-        Task DeleteMeasurement(IDeviceMeasurement measurement);
+        Task<IEnumerable<DeviceMeasurement>> GetMeasurements(string deviceId);
+        Task<Paginator<DeviceMeasurement>> GetMeasurements(string deviceId, ResourceParameters resourceParameters);
+        Task<DeviceMeasurement> GetMeasurement(string deviceId, Guid measurementId);
+        Task<DeviceMeasurement> AddMeasurement(string deviceId, DeviceMeasurement measurement);
+        Task<DeviceMeasurement> UpdateMeasurement(DeviceMeasurement measurement);
+        Task DeleteMeasurement(DeviceMeasurement measurement);
         Task<bool> MeasurementExists(string deviceId, Guid measurementId);
 
         Task<bool> Save();

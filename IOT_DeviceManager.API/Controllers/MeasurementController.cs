@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using IOT_DeviceManager.API.DTO.Interfaces;
+using IOT_DeviceManager.API.DTO.Device;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using IOT_DeviceManager.API.Helpers.Web;
 using IOT_DeviceManager.API.Repositories;
@@ -34,7 +34,7 @@ namespace IOT_DeviceManager.API.Controllers
 
             this.SetXPaginationResponseHeaders("GetDeviceMeasurementsFromDevice", measurements, resourceParameters);
 
-            var measurementsDto = _mapper.Map<IEnumerable<IDeviceMeasurementDto>>(measurements);
+            var measurementsDto = _mapper.Map<IEnumerable<DeviceMeasurementDto>>(measurements);
 
             return Ok(measurementsDto.SerializeJson());
         }

@@ -3,7 +3,6 @@ using System.Text;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Requests;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Requests.DeviceId;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using MQTTnet;
 using Newtonsoft.Json;
@@ -29,12 +28,12 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers
             return deviceId;
         }
 
-        public static IDeviceMeasurement GetDeviceMeasurementFromMessage(MqttApplicationMessage message)
+        public static DeviceMeasurement GetDeviceMeasurementFromMessage(MqttApplicationMessage message)
         {
             var topic = message.Topic;
             var payload = Encoding.UTF8.GetString(message.Payload);
-            IDeviceMeasurement measurement = JsonConvert.DeserializeObject<DeviceMeasurement>(payload);
-            
+            var measurement = JsonConvert.DeserializeObject<DeviceMeasurement>(payload);
+
             return measurement;
         }
 
@@ -47,16 +46,16 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers
             return responseDto;
         }
 
-        public static string GetSetDeviceStatusRpcTopicFromDevice(IDevice device)
+        public static string GetSetDeviceStatusRpcTopicFromDevice(Device device)
         {
             var topic = device.DeviceType + "." + device.Id + ".cmd.status";
             return topic;
         }
 
-        public static IDeviceStatus GetDeviceStatusFromRcpAnswer(IDevice device, byte[] rcpAnswer)
+        public static DeviceStatus GetDeviceStatusFromRcpAnswer(Device device, byte[] rcpAnswer)
         {
             var payload = Encoding.UTF8.GetString(rcpAnswer);
-            IDeviceStatus status = JsonConvert.DeserializeObject<DeviceStatus>(payload);
+            DeviceStatus status = JsonConvert.DeserializeObject<DeviceStatus>(payload);
 
             return status;
         }

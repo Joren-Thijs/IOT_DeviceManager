@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Test.CalculationTests
 {
@@ -16,15 +15,19 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         public void CalculatingAverageWithOne_ReturnsTrue()
         {
             CalculationService calculationService = new CalculationService();
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
 
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 }
@@ -40,23 +43,31 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 }
@@ -71,15 +82,19 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         public void CalculatingAverageWithPropertyNameWithMissmatchingCase_ReturnsTrue()
         {
             CalculationService calculationService = new CalculationService();
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
 
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 }
@@ -95,32 +110,44 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 21}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 21
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
@@ -136,32 +163,44 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 21}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 21
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
@@ -177,41 +216,57 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 24}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 24
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 26}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 26
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
@@ -227,50 +282,70 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 24}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 24
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 26}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 26
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 23}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 23
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
@@ -286,59 +361,83 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 20}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 20
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 22}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 22
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 24}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 24
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 26}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 26
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 23}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 23
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },
                 new DeviceMeasurement
                 {
                     Status = new DeviceStatus(true),
-                    Values = new Dictionary<string, object>
+                    Values = new List<MeasurementValue>
                     {
-                        {"temperature", 23}
+                        new MeasurementValue
+                        {
+                            Key = "temperature",
+                            Value = 23
+                        }
                     },
                     TimeStamp = DateTime.UtcNow
                 },

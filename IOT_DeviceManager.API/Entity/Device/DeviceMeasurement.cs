@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Entity.Device
 {
-    public class DeviceMeasurement : IDeviceMeasurement
+    public class DeviceMeasurement
     {
         [Key]
         public Guid Id { get; set; }
-        public IDeviceStatus Status { get; set; } = new DeviceStatus();
-        public IDictionary<string, object> Values { get; set; } = new Dictionary<string, object>();
+        public DeviceStatus Status { get; set; } = new DeviceStatus();
+        public IEnumerable<MeasurementValue> Values { get; set; } = new List<MeasurementValue>();
         [Required]
         public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
         [ForeignKey("DeviceId")]
-        public IDevice Device { get; set; }
+        public Device Device { get; set; }
         public string DeviceId { get; set; }
     }
 }

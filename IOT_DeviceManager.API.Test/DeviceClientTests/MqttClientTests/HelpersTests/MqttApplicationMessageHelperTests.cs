@@ -54,15 +54,23 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
                 Status = new DeviceStatus
                 {
                     OnStatus = false,
-                    Settings = new Dictionary<string, object>
+                    Settings = new List<DeviceSetting>
                     {
-                        {"setpoint", 22}
+                        new DeviceSetting
+                        {
+                            Key = "setpoint",
+                            Value = 22
+                        }
                     }
                 },
                 DeviceId = "1",
-                Values = new Dictionary<string, object>
+                Values = new List<MeasurementValue>
                 {
-                    {"temperature", 20}
+                    new MeasurementValue
+                    {
+                        Key = "temperature",
+                        Value = 20
+                    }
                 },
                 TimeStamp = DateTime.Now
             };
@@ -118,15 +126,23 @@ namespace IOT_DeviceManager.API.Test.DeviceClientTests.MqttClientTests.HelpersTe
                 Status = new DeviceStatus
                 {
                     OnStatus = false,
-                    Settings = new Dictionary<string, object>
+                    Settings = new List<DeviceSetting>
                     {
-                        {"setpoint", 22}
+                        new DeviceSetting
+                        {
+                            Key = "setpoint",
+                            Value = 22
+                        }
                     }
                 },
                 DeviceId = "1",
-                Values = new Dictionary<string, object>
+                Values = new List<MeasurementValue>
                 {
-                    {"temperature", 20}
+                    new MeasurementValue
+                    {
+                        Key = "temperature",
+                        Value = 20
+                    }
                 },
                 TimeStamp = DateTime.Now
             };

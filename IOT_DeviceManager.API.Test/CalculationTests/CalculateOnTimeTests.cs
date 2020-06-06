@@ -3,7 +3,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Test.CalculationTests
 {
@@ -15,7 +14,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -32,7 +31,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -56,7 +55,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -85,7 +84,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -119,7 +118,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -158,7 +157,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -187,7 +186,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -221,7 +220,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -260,7 +259,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -304,7 +303,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -353,7 +352,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {
@@ -407,7 +406,7 @@ namespace IOT_DeviceManager.API.Test.CalculationTests
         {
             CalculationService calculationService = new CalculationService();
 
-            IEnumerable<IDeviceMeasurement> measurements = new List<IDeviceMeasurement>
+            IEnumerable<DeviceMeasurement> measurements = new List<DeviceMeasurement>
             {
                 new DeviceMeasurement
                 {

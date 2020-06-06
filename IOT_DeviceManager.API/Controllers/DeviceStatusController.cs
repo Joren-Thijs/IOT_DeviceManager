@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using IOT_DeviceManager.API.DTO.Interfaces;
+using IOT_DeviceManager.API.DTO.Device;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using IOT_DeviceManager.API.Repositories;
@@ -34,7 +34,7 @@ namespace IOT_DeviceManager.API.Controllers
 
             var deviceStatus = await _deviceRepository.GetDeviceStatus(deviceId);
 
-            var deviceStatusDto = _mapper.Map<IDeviceStatusDto>(deviceStatus);
+            var deviceStatusDto = _mapper.Map<DeviceStatusDto>(deviceStatus);
 
             return Ok(deviceStatusDto.SerializeJson());
         }

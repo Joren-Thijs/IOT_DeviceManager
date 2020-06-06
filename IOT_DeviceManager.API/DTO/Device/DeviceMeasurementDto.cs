@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using IOT_DeviceManager.API.DTO.Interfaces;
 
 namespace IOT_DeviceManager.API.DTO.Device
 {
-    public class DeviceMeasurementDto : IDeviceMeasurementDto
+    public class DeviceMeasurementDto
     {
         public Guid Id { get; set; }
-        public IDeviceStatusDto Status { get; set; }
-        public IDictionary<string, object> Values { get; set; }
+        public DeviceStatusDto Status { get; set; }
+        public IEnumerable<MeasurementValueDto> Values { get; set; }
         public DateTime TimeStamp { get; set; }
         public string DeviceId { get; set; }
     }

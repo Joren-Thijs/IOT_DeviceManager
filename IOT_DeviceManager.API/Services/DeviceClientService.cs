@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Repositories;
 using Microsoft.Extensions.Hosting;
 
@@ -37,7 +36,7 @@ namespace IOT_DeviceManager.API.Services
             return _deviceClient.StopClientAsync();
         }
 
-        public async Task<IDeviceStatus> SetDeviceStatusAsync(IDevice device, IDeviceStatus status)
+        public async Task<DeviceStatus> SetDeviceStatusAsync(Device device, DeviceStatus status)
         {
             return await _deviceClient.SetDeviceStatus(device, status);
         }
@@ -56,16 +55,16 @@ namespace IOT_DeviceManager.API.Services
             await _deviceRepository.Save();
         }
 
-        private async Task UpdateCurrentDeviceStatus(DeviceMeasurementEventArgs e, IDevice device)
+        private async Task UpdateCurrentDeviceStatus(DeviceMeasurementEventArgs e, Device device)
         {
             device.Status = e.DeviceMeasurement.Status;
             await _deviceRepository.UpdateDevice(device);
             await _deviceRepository.Save();
         }
 
-        private async Task<IDevice> AddDeviceToDeviceRepository(DeviceMeasurementEventArgs e)
+        private async Task<Device> AddDeviceToDeviceRepository(DeviceMeasurementEventArgs e)
         {
-            IDevice device = new Device()
+            Device device = new Device()
             {
                 Id = e.DeviceId,
                 DeviceType = e.DeviceType,

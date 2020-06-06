@@ -39,7 +39,7 @@ namespace IOT_DeviceManager.API.Controllers
 
             var result = new CalculationResultDto
             {
-                Values = new Dictionary<string, object> {{"totalontime", calculationResult}}
+                Values = new Dictionary<string, object> { { "totalontime", calculationResult } }
             };
 
             return Ok(result.SerializeJson());

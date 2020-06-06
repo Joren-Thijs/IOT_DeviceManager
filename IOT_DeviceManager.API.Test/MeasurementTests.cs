@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using IOT_DeviceManager.API.Entity.Device;
 
 namespace IOT_DeviceManager.API.Test
@@ -56,11 +57,15 @@ namespace IOT_DeviceManager.API.Test
         public void CheckMeasurementValuesCanBeSet_ReturnsTrue()
         {
             DeviceMeasurement deviceMeasurement = new DeviceMeasurement();
-            deviceMeasurement.Values = new Dictionary<string, object>
+            deviceMeasurement.Values = new List<MeasurementValue>
             {
-                {"setpoint", 20}
+                new MeasurementValue
+                {
+                    Key = "setpoint",
+                    Value = 20
+                }
             };
-            Assert.AreEqual(20, deviceMeasurement.Values["setpoint"]);
+            Assert.AreEqual(20, deviceMeasurement.Values.First().Value);
         }
     }
 }

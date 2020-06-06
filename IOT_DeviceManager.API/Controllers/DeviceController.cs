@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using IOT_DeviceManager.API.DTO.Device;
-using IOT_DeviceManager.API.DTO.Interfaces;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using IOT_DeviceManager.API.Helpers.Web;
 using IOT_DeviceManager.API.Repositories;
@@ -37,7 +36,7 @@ namespace IOT_DeviceManager.API.Controllers
 
             this.SetXPaginationResponseHeaders("GetDevices", devices, resourceParameters);
 
-            var devicesDto = _mapper.Map<IEnumerable<IDeviceDto>>(devices);
+            var devicesDto = _mapper.Map<IEnumerable<DeviceDto>>(devices);
 
             return Ok(devicesDto.SerializeJson());
         }
@@ -52,7 +51,7 @@ namespace IOT_DeviceManager.API.Controllers
                 return NotFound();
             }
 
-            var deviceDto = _mapper.Map<IDeviceDto>(device);
+            var deviceDto = _mapper.Map<DeviceDto>(device);
 
             return Ok(deviceDto.SerializeJson());
         }
@@ -66,15 +65,15 @@ namespace IOT_DeviceManager.API.Controllers
                 return NotFound();
             }
 
-            // map the IDevice entity to a deviceForUpdateDto
+            // map the Device entity to a deviceForUpdateDto
             // apply the updated field values to that dto
-            // map the deviceForUpdateDto back to an IDevice Entity
+            // map the deviceForUpdateDto back to an Device Entity
             _mapper.Map(deviceUpdateDto, deviceFromRepo);
 
             var updatedDevice = await _deviceRepository.UpdateDevice(deviceFromRepo);
             await _deviceRepository.Save();
 
-            var updatedDeviceDto = _mapper.Map<IDeviceDto>(updatedDevice);
+            var updatedDeviceDto = _mapper.Map<DeviceDto>(updatedDevice);
 
             return Ok(updatedDeviceDto.SerializeJson());
         }
@@ -97,15 +96,15 @@ namespace IOT_DeviceManager.API.Controllers
                 return ValidationProblem(ModelState);
             }
 
-            // map the IDevice entity to a deviceForUpdateDto
+            // map the Device entity to a deviceForUpdateDto
             // apply the updated field values to that dto
-            // map the deviceForUpdateDto back to an IDevice Entity
+            // map the deviceForUpdateDto back to an Device Entity
             _mapper.Map(deviceToPatch, deviceFromRepo);
 
             var updatedDevice = await _deviceRepository.UpdateDevice(deviceFromRepo);
             await _deviceRepository.Save();
 
-            var updatedDeviceDto = _mapper.Map<IDeviceDto>(updatedDevice);
+            var updatedDeviceDto = _mapper.Map<DeviceDto>(updatedDevice);
 
             return Ok(updatedDeviceDto.SerializeJson());
         }

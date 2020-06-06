@@ -1,37 +1,37 @@
 {
-    "iisSettings": {
-        "windowsAuthentication": false,
-        "anonymousAuthentication": true,
-        "iisExpress": {
-            "applicationUrl": "http://localhost:53967",
-            "sslPort": 0
-        }
-    },
-    "$schema": "http://json.schemastore.org/launchsettings.json",
-    "profiles": {
-        "IIS Express": {
-            "commandName": "IISExpress",
-            "launchBrowser": true,
-            "launchUrl": "iotthermostat",
-            "environmentVariables": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            }
-        },
-        "IOT_DeviceManager.API": {
-            "commandName": "Project",
-            "launchUrl": "iotthermostat",
-            "environmentVariables": {
-                "MQTT_CLIENT_USERNAME": "web_api",
-                "MQTT_BROKER_PORT": "1883",
-                "MQTT_CLIENT_PASSWORD": "Pass123$",
-                "MQTT_RPC_CLIENT_USERNAME": "web_api_rpc",
-                "MQTT_RPC_CLIENT_PASSWORD": "Pass123$",
-                "MQTT_RPC_CLIENT_ID": "api_rpc",
-                "ASPNETCORE_ENVIRONMENT": "Development",
-                "MQTT_BROKER_SERVER": "localhost",
-                "MQTT_CLIENT_ID": "api"
-            },
-            "applicationUrl": "http://localhost:53967"
-        }
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:53967",
+      "sslPort": 0
     }
+  },
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "iotthermostat",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IOT_DeviceManager.API": {
+      "commandName": "Project",
+      "launchUrl": "iotthermostat",
+      "environmentVariables": {
+        "MQTT_RPC_CLIENT_USERNAME": "web_api_rpc",
+        "MQTT_CLIENT_USERNAME": "web_api",
+        "MQTT_BROKER_PORT": "1883",
+        "MQTT_CLIENT_PASSWORD": "Pass123$",
+        "MQTT_RPC_CLIENT_ID": "api_rpc",
+        "MQTT_RPC_CLIENT_PASSWORD": "Pass123$",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MQTT_BROKER_SERVER": "localhost",
+        "MQTT_CLIENT_ID": "api"
+      },
+      "applicationUrl": "http://localhost:53967"
+    }
+  }
 }

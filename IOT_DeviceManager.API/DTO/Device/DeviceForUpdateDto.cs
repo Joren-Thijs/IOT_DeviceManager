@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using IOT_DeviceManager.API.DTO.Interfaces;
 
 namespace IOT_DeviceManager.API.DTO.Device
 {
-    public class DeviceForUpdateDto : IDeviceDto
+    public class DeviceForUpdateDto
     {
         [Required]
         [MaxLength(50)]

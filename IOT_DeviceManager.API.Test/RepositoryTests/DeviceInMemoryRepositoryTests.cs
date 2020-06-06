@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Exceptions;
 using IOT_DeviceManager.API.Helpers.Web;
 
@@ -17,14 +16,14 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
     class DeviceInMemoryRepositoryTests
     {
         DeviceInMemoryRepository repo;
-        IDevice device;
-        IDevice device2;
-        IDevice device3;
-        private IDeviceMeasurement measurement;
-        private IDeviceMeasurement measurement2;
-        private IDeviceMeasurement measurement3;
+        Device device;
+        Device device2;
+        Device device3;
+        private DeviceMeasurement measurement;
+        private DeviceMeasurement measurement2;
+        private DeviceMeasurement measurement3;
 
-        private IDeviceStatus status;
+        private DeviceStatus status;
 
         [SetUp]
         public void Init()
@@ -52,31 +51,43 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             measurement = new DeviceMeasurement
             {
                 Id = Guid.NewGuid(),
-                Values = new Dictionary<string, object>
+                Values = new List<MeasurementValue>
                 {
-                    {"sensor 1", 21},
+                    new MeasurementValue
+                    {
+                        Key = "sensor 1", 
+                        Value = 21
+                    },
                 }
             };
             measurement2 = new DeviceMeasurement
             {
                 Id = Guid.NewGuid(),
-                Values = new Dictionary<string, object>
+                Values = new List<MeasurementValue>
                 {
-                    {"sensor 2", 22},
+                    new MeasurementValue
+                    {
+                        Key = "sensor 2",
+                        Value = 22
+                    },
                 }
             };
             measurement3 = new DeviceMeasurement
             {
                 Id = Guid.NewGuid(),
-                Values = new Dictionary<string, object>
+                Values = new List<MeasurementValue>
                 {
-                    {"sensor 3", 23},
+                    new MeasurementValue
+                    {
+                        Key = "sensor 3",
+                        Value = 23
+                    },
                 }
             };
             status = new DeviceStatus
             {
                 OnStatus = false,
-                Settings = new Dictionary<string, object>()
+                Settings = new List<DeviceSetting>()
             };
         }
 

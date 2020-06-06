@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Services.Interfaces;
 
 namespace IOT_DeviceManager.API.Services
 {
     public class CalculationService : ICalculationService
     {
-        public double CalculateAverage(IEnumerable<IDeviceMeasurement> measurements, string propertyName)
+        public double CalculateAverage(IEnumerable<DeviceMeasurement> measurements, string propertyName)
         {
             propertyName = propertyName.ToLower();
             return measurements
@@ -29,7 +29,7 @@ namespace IOT_DeviceManager.API.Services
                 .Average();
         }
 
-        public TimeSpan CalculateTotalOnTime(IEnumerable<IDeviceMeasurement> measurements)
+        public TimeSpan CalculateTotalOnTime(IEnumerable<DeviceMeasurement> measurements)
         {
             // Check for at least 2 measurements
             if (measurements.Count() < 2)

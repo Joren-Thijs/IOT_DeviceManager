@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using IOT_DeviceManager.API.Entity.Device;
-using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.Test
 {

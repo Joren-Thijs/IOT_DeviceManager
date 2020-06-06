@@ -57,7 +57,7 @@ namespace IOT_DeviceManager.API.Helpers.Extensions
                 options.UseSqlServer(
                     @"Server=(localdb)\mssqllocaldb;Database=IOT_DeviceManagerDB;Trusted_Connection=True;");
             }, ServiceLifetime.Transient, ServiceLifetime.Transient);
-            services.AddTransient<IDeviceRepository, DeviceDbRepository>();
+            services.AddTransient<IDeviceRepository, DeviceInMemoryRepository>();
             return services;
         }
 

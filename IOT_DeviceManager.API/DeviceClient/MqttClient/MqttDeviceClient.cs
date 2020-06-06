@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers;
 using IOT_DeviceManager.API.DeviceClient.MqttClient.Options;
-using IOT_DeviceManager.API.Entity.Interfaces;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Helpers.Extensions;
 using MQTTnet;
 using MQTTnet.Client;
@@ -95,8 +95,8 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         private async Task OnMqttClientMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
         {
             string topic = eventArgs.ApplicationMessage.Topic;
-            System.Console.WriteLine("A message is received");
-            System.Console.WriteLine(topic);
+            Console.WriteLine("A message is received");
+            Console.WriteLine(topic);
 
             await DistributeReceivedMessageToCorrectHandler(eventArgs.ApplicationMessage);
         }
@@ -146,7 +146,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         {
             var deviceType = MqttApplicationMessageHelper.GetDeviceTypeFromMessage(message);
             var deviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
-            IDeviceMeasurement measurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
+            DeviceMeasurement measurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceType, deviceId, measurement);
             OnDeviceMeasurementReceived(eventArgs);
         }
@@ -184,7 +184,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             await _mqttClient.SubscribeAsync("+/+/ms");
         }
 
-        public async Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status)
+        public async Task<DeviceStatus> SetDeviceStatus(Device device, DeviceStatus status)
         {
             var topic = MqttApplicationMessageHelper.GetSetDeviceStatusRpcTopicFromDevice(device);
             var payload = status.SerializeJson();
