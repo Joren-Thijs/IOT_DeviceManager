@@ -30,7 +30,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers
 
         public static DeviceMeasurement GetDeviceMeasurementFromMessage(MqttApplicationMessage message)
         {
-            var topic = message.Topic;
             var payload = Encoding.UTF8.GetString(message.Payload);
             var measurement = JsonConvert.DeserializeObject<DeviceMeasurement>(payload);
 
@@ -39,7 +38,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient.Helpers
 
         public static DeviceIdRequestResponseDto GetDeviceIdRequestResponseFromMessage(MqttApplicationMessage message)
         {
-            var topic = message.Topic;
             var payload = Encoding.UTF8.GetString(message.Payload);
             DeviceIdRequestResponseDto responseDto = JsonConvert.DeserializeObject<DeviceIdRequestResponseDto>(payload);
             responseDto.DeviceId = Guid.NewGuid().ToString();

@@ -60,16 +60,31 @@ function sendMeasurement() {
     let message = {
         Status: {
             OnStatus: onStatus,
-            Settings: {
-                referenceVoltage: 5,
-                operatingMode: 'auto',
+            Settings: [
+                {
+                    key: 'referenceVoltage',
+                    value: 5,
+                },
+                {
+                    key: 'operatingMode',
+                    value: 'auto',
+                },
+            ],
+        },
+        Values: [
+            {
+                key: 'sensor_1',
+                value: getRandomInt(15, 25),
             },
-        },
-        Values: {
-            sensor_1: getRandomInt(15, 25),
-            sensor_2: getRandomInt(15, 25),
-            sensor_3: getRandomInt(15, 25),
-        },
+            {
+                key: 'sensor_2',
+                value: getRandomInt(15, 25),
+            },
+            {
+                key: 'sensor_3',
+                value: getRandomInt(15, 25),
+            },
+        ],
     };
     let payload = JSON.stringify(message);
     client.publish(deviceTopicString + '/ms', payload);
