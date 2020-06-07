@@ -21,7 +21,7 @@
             BackgroundColor="#00B4DB"
             HorizontalOptions="FillAndExpand"
             Orientation="Horizontal"
-            VerticalOptions="Fill">
+            VerticalOptions="FillAndExpand">
             <Label
                 Margin="10,18,0,0"
                 d:Text="Device name"
@@ -38,17 +38,33 @@
                 TextColor="White"
                 VerticalTextAlignment="Center" />
         </StackLayout>
-        <Grid Grid.Row="1" BackgroundColor="#FAFAFA">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Label
-                FontSize="Large"
-                Text="TestLabel"
-                TextColor="Black" />
+            <StackLayout
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    Margin="10,0,0,0"
+                    FontSize="Medium"
+                    HorizontalOptions="FillAndExpand"
+                    Text="DeviceType"
+                    TextColor="#0083B0"
+                    VerticalTextAlignment="Center" />
+                <Label
+                    Margin="0,0,10,0"
+                    d:Text="Device type"
+                    FontSize="Small"
+                    HorizontalTextAlignment="End"
+                    Text="{Binding Device.DeviceType}"
+                    TextColor="#6D6D6D"
+                    VerticalTextAlignment="Center" />
+            </StackLayout>
         </Grid>
     </Grid>
 
