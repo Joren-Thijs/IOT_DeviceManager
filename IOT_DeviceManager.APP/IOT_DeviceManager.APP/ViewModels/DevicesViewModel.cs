@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
+using IOT_DeviceManager.APP.DTO.Device;
 using Xamarin.Forms;
 
 using IOT_DeviceManager.APP.Models;
@@ -12,21 +12,14 @@ namespace IOT_DeviceManager.APP.ViewModels
 {
     public class DevicesViewModel : BaseViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
+        public ObservableCollection<DeviceDto> Devices { get; set; }
         public Command LoadItemsCommand { get; set; }
 
         public DevicesViewModel()
         {
             Title = "My Devices";
-            Items = new ObservableCollection<Item>();
+            Devices = new ObservableCollection<DeviceDto>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Item;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -35,12 +28,13 @@ namespace IOT_DeviceManager.APP.ViewModels
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
+                Devices.Clear();
+                Devices.Add(new DeviceDto
                 {
-                    Items.Add(item);
-                }
+                    DeviceName = "Test Device",
+                    DeviceType = "Mock-Device"
+                });
+                
             }
             catch (Exception ex)
             {

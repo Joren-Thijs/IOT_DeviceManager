@@ -35,16 +35,16 @@ namespace IOT_DeviceManager.APP.Views
             await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(device)));
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
+            if (viewModel.Devices.Count == 0)
                 viewModel.IsBusy = true;
         }
     }
