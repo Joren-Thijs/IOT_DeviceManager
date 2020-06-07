@@ -31,7 +31,7 @@ namespace IOT_DeviceManager.APP.Views
         {
             var layout = (BindableObject)sender;
             var item = (Item)layout.BindingContext;
-            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(item)));
+            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(null)));
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)

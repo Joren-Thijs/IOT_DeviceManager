@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using IOT_DeviceManager.APP.DTO.Device;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -26,13 +27,12 @@ namespace IOT_DeviceManager.APP.Views
         {
             InitializeComponent();
 
-            var item = new Item
+            var device = new DeviceDto
             {
-                Text = "Item 1",
-                Description = "This is an item description."
+                DeviceName = "Device"
             };
 
-            viewModel = new DeviceDetailViewModel(item);
+            viewModel = new DeviceDetailViewModel(device);
             BindingContext = viewModel;
         }
     }
