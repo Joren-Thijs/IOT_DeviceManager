@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOT_DeviceManager.APP.DTO.Device;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -30,8 +31,8 @@ namespace IOT_DeviceManager.APP.Views
         async void OnItemSelected(object sender, EventArgs args)
         {
             var layout = (BindableObject)sender;
-            var item = (Item)layout.BindingContext;
-            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(null)));
+            var device = (DeviceDto)layout.BindingContext;
+            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(device)));
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
