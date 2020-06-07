@@ -8,17 +8,74 @@
     Title="{Binding Title}"
     mc:Ignorable="d">
 
-    <StackLayout Padding="15" Spacing="20">
-        <Label FontSize="Medium" Text="Device name:" />
-        <Label
-            d:Text="Device name"
-            FontSize="Small"
-            Text="{Binding Device.DeviceName}" />
-        <Label FontSize="Medium" Text="DeviceType:" />
-        <Label
-            d:Text="Device type"
-            FontSize="Small"
-            Text="{Binding Device.DeviceType}" />
-    </StackLayout>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <StackLayout
+            BackgroundColor="#00B4DB"
+            HorizontalOptions="FillAndExpand"
+            Orientation="Horizontal"
+            VerticalOptions="Fill">
+            <Label
+                Margin="10,18,0,0"
+                d:Text="Device name"
+                FontSize="Large"
+                HorizontalOptions="FillAndExpand"
+                Text="{Binding Device.DeviceName}"
+                TextColor="White"
+                VerticalTextAlignment="Center" />
+            <Label
+                Margin="0,18,10,0"
+                FontSize="Small"
+                HorizontalTextAlignment="End"
+                Text="Edit"
+                TextColor="White"
+                VerticalTextAlignment="Center" />
+        </StackLayout>
+        <Grid Grid.Row="1" BackgroundColor="#FAFAFA">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label
+                FontSize="Large"
+                Text="TestLabel"
+                TextColor="Black" />
+        </Grid>
+    </Grid>
+
+    <!--<StackLayout Padding="15" Orientation="Vertical">
+        <StackLayout BackgroundColor="#00B4DB">
+            <Label
+                d:Text="Device name"
+                FontSize="Small"
+                Text="{Binding Device.DeviceName}"
+                TextColor="White" />
+        </StackLayout>
+        <FlexLayout BackgroundColor="#FAFAFA" Direction="Column">
+            <StackLayout Orientation="Horizontal">
+                <Label
+                    FontSize="Medium"
+                    Text="DeviceType"
+                    TextColor="#0083B0" />
+                <Label
+                    d:Text="Device type"
+                    FontSize="Small"
+                    HorizontalTextAlignment="End"
+                    Text="{Binding Device.DeviceType}"
+                    TextColor="#6D6D6D"
+                    VerticalTextAlignment="Center" />
+            </StackLayout>
+        </FlexLayout>
+
+    </StackLayout>-->
 
 </ContentPage>
