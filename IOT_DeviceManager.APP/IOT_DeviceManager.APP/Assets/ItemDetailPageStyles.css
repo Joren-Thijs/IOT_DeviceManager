@@ -1,0 +1,49 @@
+﻿.mainBackground {
+    background-color: #00B4DB;
+}
+
+.deviceNameTitle {
+    margin: 0 18 0 15;
+    font-size: 37;
+    vertical-align: center;
+    color: white;
+}
+
+.editDeviceButton {
+    margin: 10 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: white;
+    vertical-align: center;
+}
+
+.deviceProperty {
+    margin: 0 0 0 15;
+    font-size: 30;
+    color: #0083B0;
+    vertical-align: center;
+}
+
+.devicePropertyValue {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.editDeviceSettingsButton {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.expandDeviceMeasurementsButton {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}

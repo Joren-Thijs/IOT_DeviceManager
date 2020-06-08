@@ -8,6 +8,10 @@
     Title="{Binding Title}"
     mc:Ignorable="d">
 
+    <ContentPage.Resources>
+        <StyleSheet Source="/Assets/ItemDetailPageStyles.css" />
+    </ContentPage.Resources>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,29 +22,23 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <StackLayout
-            BackgroundColor="#00B4DB"
             HorizontalOptions="FillAndExpand"
             Orientation="Horizontal"
+            StyleClass="mainBackground"
             VerticalOptions="FillAndExpand">
             <Label
-                Margin="10,18,0,0"
                 d:Text="Device name"
-                FontSize="Large"
                 HorizontalOptions="FillAndExpand"
-                Text="{Binding Device.DeviceName}"
-                TextColor="White"
-                VerticalTextAlignment="Center" />
-            <Label
-                Margin="0,18,10,0"
-                FontSize="Small"
-                HorizontalTextAlignment="End"
-                Text="Edit"
-                TextColor="White"
-                VerticalTextAlignment="Center" />
+                StyleClass="deviceNameTitle"
+                Text="{Binding Device.DeviceName}" />
+            <Label StyleClass="editDeviceButton" Text="Edit" />
         </StackLayout>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -50,21 +48,61 @@
                 Orientation="Horizontal"
                 VerticalOptions="FillAndExpand">
                 <Label
-                    Margin="10,0,0,0"
-                    FontSize="Medium"
                     HorizontalOptions="FillAndExpand"
-                    Text="DeviceType"
-                    TextColor="#0083B0"
-                    VerticalTextAlignment="Center" />
+                    StyleClass="deviceProperty"
+                    Text="DeviceType" />
                 <Label
-                    Margin="0,0,10,0"
                     d:Text="Device type"
-                    FontSize="Small"
-                    HorizontalTextAlignment="End"
-                    Text="{Binding Device.DeviceType}"
-                    TextColor="#6D6D6D"
-                    VerticalTextAlignment="Center" />
+                    StyleClass="devicePropertyValue"
+                    Text="{Binding Device.DeviceType}" />
             </StackLayout>
+
+            <StackLayout
+                Grid.Row="1"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Status" />
+                <Label
+                    d:Text="Device status"
+                    StyleClass="devicePropertyValue"
+                    Text="{Binding Device.Status.OnStatus}" />
+
+            </StackLayout>
+
+            <StackLayout
+                Grid.Row="2"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Settings" />
+                <Label
+                    d:Text="Edit settings"
+                    StyleClass="editDeviceSettingsButton"
+                    Text="Edit settings" />
+            </StackLayout>
+
+            <StackLayout
+                Grid.Row="3"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Measurements" />
+                <Label
+                    d:Text="expand"
+                    StyleClass="expandDeviceMeasurementsButton"
+                    Text="expand" />
+            </StackLayout>
+
         </Grid>
     </Grid>
 
