@@ -2,8 +2,16 @@
     background-color: #00B4DB;
 }
 
+.detailBackground {
+    background-color: #FFFFFF;
+}
+
+.topRow {
+    margin: 20 0 0 0;
+}
+
 .deviceNameTitle {
-    margin: 0 18 0 15;
+    margin: 0 0 0 15;
     font-size: 37;
     vertical-align: center;
     color: white;
@@ -15,6 +23,11 @@
     horiz-align: right;
     color: white;
     vertical-align: center;
+}
+
+.loadingSpinner {
+    color: white;
+    margin: 5 0 5 0;
 }
 
 .deviceProperty {

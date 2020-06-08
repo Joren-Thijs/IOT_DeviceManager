@@ -13,9 +13,10 @@
     </ContentPage.Resources>
 
 
-    <Grid>
+    <Grid StyleClass="mainBackground">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -24,7 +25,7 @@
         <StackLayout
             HorizontalOptions="FillAndExpand"
             Orientation="Horizontal"
-            StyleClass="mainBackground"
+            StyleClass="topRow"
             VerticalOptions="FillAndExpand">
             <Label
                 d:Text="Device name"
@@ -33,8 +34,13 @@
                 Text="{Binding Device.DeviceName}" />
             <Label StyleClass="editDeviceButton" Text="Edit" />
         </StackLayout>
-        <Grid Grid.Row="1">
+        <ActivityIndicator
+            Grid.Row="1"
+            IsRunning="True"
+            StyleClass="loadingSpinner" />
+        <Grid Grid.Row="2" StyleClass="detailBackground">
             <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
@@ -103,33 +109,8 @@
                     Text="expand" />
             </StackLayout>
 
+
         </Grid>
     </Grid>
-
-    <!--<StackLayout Padding="15" Orientation="Vertical">
-        <StackLayout BackgroundColor="#00B4DB">
-            <Label
-                d:Text="Device name"
-                FontSize="Small"
-                Text="{Binding Device.DeviceName}"
-                TextColor="White" />
-        </StackLayout>
-        <FlexLayout BackgroundColor="#FAFAFA" Direction="Column">
-            <StackLayout Orientation="Horizontal">
-                <Label
-                    FontSize="Medium"
-                    Text="DeviceType"
-                    TextColor="#0083B0" />
-                <Label
-                    d:Text="Device type"
-                    FontSize="Small"
-                    HorizontalTextAlignment="End"
-                    Text="{Binding Device.DeviceType}"
-                    TextColor="#6D6D6D"
-                    VerticalTextAlignment="Center" />
-            </StackLayout>
-        </FlexLayout>
-
-    </StackLayout>-->
 
 </ContentPage>
