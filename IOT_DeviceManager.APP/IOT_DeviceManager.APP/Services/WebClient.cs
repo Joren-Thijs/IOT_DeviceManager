@@ -28,12 +28,12 @@ namespace IOT_DeviceManager.APP.Services
         {
             var uriString = BaseUrl + "devices";
             var uri = new Uri(uriString);
-            
-            var response = await _httpClient.GetAsync(uri);
 
-            if (!response.IsSuccessStatusCode)
+            var response = await GetResourcesAsync(uri);
+            if (response == null)
             {
-                throw new Exception();
+                InvokeWebClientErrorEvent("There was a problem loading the devices");
+                return new List<DeviceDto>();
             }
 
             var content = await response.Content.ReadAsStringAsync();
@@ -44,12 +44,14 @@ namespace IOT_DeviceManager.APP.Services
         {
             var uriString = BaseUrl + "devices/" + deviceId;
             var uri = new Uri(uriString);
-            var response = await _httpClient.GetAsync(uri);
 
-            if (!response.IsSuccessStatusCode)
+            var response = await GetResourcesAsync(uri);
+            if (response == null)
             {
-                throw new Exception();
+                InvokeWebClientErrorEvent("There was a problem loading the device details");
+                return new DeviceDto();
             }
+
             var content = await response.Content.ReadAsStringAsync();
             return content.DeserializeJson<DeviceDto>();
         }

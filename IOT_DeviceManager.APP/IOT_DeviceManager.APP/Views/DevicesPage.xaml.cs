@@ -26,6 +26,13 @@ namespace IOT_DeviceManager.APP.Views
             InitializeComponent();
 
             BindingContext = viewModel = new DevicesViewModel();
+
+            viewModel.WebClient.WebClientErrorEvent += WebClientOnWebClientErrorEvent;
+        }
+
+        private void WebClientOnWebClientErrorEvent(object sender, string e)
+        {
+            DisplayAlert("Error", e, "close");
         }
 
         async void OnItemSelected(object sender, EventArgs args)
