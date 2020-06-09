@@ -104,7 +104,19 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId, DeviceStatusDto deviceStatusDto)
         {
-            throw new NotImplementedException();
+            var uriString = BaseUrl + "devices/" + deviceId + "/status/onstatus/toggle";
+            var uri = new Uri(uriString);
+            var stringContent = new StringContent("", Encoding.UTF8);
+
+            var response = await PostResourcesAsync(uri, stringContent);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent("There was a problem setting the device status");
+                return new DeviceStatusDto();
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            return content.DeserializeJson<DeviceStatusDto>();
         }
 
         public async Task<CalculationResultDto> GetTotalOnTime(string deviceId)
@@ -128,6 +140,25 @@ namespace IOT_DeviceManager.APP.Services
             try
             {
                 response = await _httpClient.GetAsync(uri);
+                if (!response.IsSuccessStatusCode) return null;
+                return response;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private async Task<HttpResponseMessage> PostResourcesAsync(Uri uri, HttpContent content)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.PostAsync(uri, content);
                 if (!response.IsSuccessStatusCode) return null;
                 return response;
             }
