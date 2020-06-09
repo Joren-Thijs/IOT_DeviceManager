@@ -45,6 +45,13 @@
     vertical-align: center;
 }
 
+.editDeviceOnStatusButton {
+    margin: 0 15 0 0;
+    horiz-align: right;
+    vertical-align: center;
+}
+
+
 .editDeviceSettingsButton {
     margin: 0 15 0 0;
     font-size: small;

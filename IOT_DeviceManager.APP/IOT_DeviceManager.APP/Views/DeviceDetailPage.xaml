@@ -72,10 +72,10 @@
                     HorizontalOptions="FillAndExpand"
                     StyleClass="deviceProperty"
                     Text="Status" />
-                <Label
-                    d:Text="Device status"
-                    StyleClass="devicePropertyValue"
-                    Text="{Binding Device.Status.OnStatus}" />
+                <Switch
+                    Margin="0,10,-50,0"
+                    HorizontalOptions="End"
+                    IsToggled="{Binding Device.Status.OnStatus}" />
 
             </StackLayout>
 
