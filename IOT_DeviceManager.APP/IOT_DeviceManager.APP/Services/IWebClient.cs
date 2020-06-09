@@ -10,6 +10,7 @@ namespace IOT_DeviceManager.APP.Services
 {
     public interface IWebClient
     {
+        event EventHandler<string> WebClientErrorEvent;
         Task<IEnumerable<DeviceDto>> GetDevices(ResourceParameters resourceParameters = null);
         Task<DeviceDto> GetDevice(string deviceId);
         Task<DeviceDto> UpdateDevice(string deviceId, DeviceForUpdateDto deviceForUpdateDto);

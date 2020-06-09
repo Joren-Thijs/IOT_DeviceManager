@@ -21,6 +21,12 @@ namespace IOT_DeviceManager.APP.Views
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
+            viewModel.WebClient.WebClientErrorEvent += WebClientOnErrorEvent;
+        }
+
+        private void WebClientOnErrorEvent(object sender, string e)
+        {
+            DisplayAlert("Error", e, "close");
         }
 
         public DeviceDetailPage()

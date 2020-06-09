@@ -13,8 +13,11 @@ namespace IOT_DeviceManager.APP.Services
 {
     public class WebClient : IWebClient
     {
+        public event EventHandler<string> WebClientErrorEvent;
+
         private const string BaseUrl = "http://127.0.0.1:53967/api/";
         private readonly HttpClient _httpClient;
+
 
         public WebClient()
         {
@@ -30,7 +33,7 @@ namespace IOT_DeviceManager.APP.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                return null;
+                throw new Exception();
             }
 
             var content = await response.Content.ReadAsStringAsync();
@@ -45,7 +48,7 @@ namespace IOT_DeviceManager.APP.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                return null;
+                throw new Exception();
             }
             var content = await response.Content.ReadAsStringAsync();
             return content.DeserializeJson<DeviceDto>();
@@ -75,21 +78,14 @@ namespace IOT_DeviceManager.APP.Services
         {
             var uriString = BaseUrl + "devices/" + deviceId + "/measurements";
             var uri = new Uri(uriString);
-            HttpResponseMessage response;
-            try
+
+            var response = await GetResourcesAsync(uri);
+            if(response == null)
             {
-                response = await _httpClient.GetAsync(uri);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                InvokeWebClientErrorEvent("There was a problem loading the device measurements");
                 return new List<DeviceMeasurementDto>();
             }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return new List<DeviceMeasurementDto>();
-            }
             var content = await response.Content.ReadAsStringAsync();
             return content.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
         }
@@ -117,6 +113,30 @@ namespace IOT_DeviceManager.APP.Services
         public async Task<CalculationResultDto> GetAverage(string deviceId, string propertyName)
         {
             throw new NotImplementedException();
+        }
+
+        private void InvokeWebClientErrorEvent(string message)
+        {
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => WebClientErrorEvent?.Invoke(this, message)); 
+        }
+
+        private async Task<HttpResponseMessage> GetResourcesAsync(Uri uri)
+        {
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.GetAsync(uri);
+                if (!response.IsSuccessStatusCode) return null;
+                return response;
+            }
+            catch (HttpRequestException)
+            {
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 }
