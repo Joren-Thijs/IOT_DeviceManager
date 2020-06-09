@@ -36,7 +36,7 @@
         </StackLayout>
         <ActivityIndicator
             Grid.Row="1"
-            IsRunning="True"
+            IsRunning="{Binding IsBusy}"
             StyleClass="loadingSpinner" />
         <Grid Grid.Row="2" StyleClass="detailBackground">
             <Grid.RowDefinitions>

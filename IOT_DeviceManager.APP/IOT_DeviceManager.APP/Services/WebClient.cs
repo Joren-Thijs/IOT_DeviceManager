@@ -73,7 +73,25 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<IEnumerable<DeviceMeasurementDto>> GetDeviceMeasurementsFromDevice(string deviceId, ResourceParameters resourceParameters = null)
         {
-            throw new NotImplementedException();
+            var uriString = BaseUrl + "devices/" + deviceId + "/measurements";
+            var uri = new Uri(uriString);
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.GetAsync(uri);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return new List<DeviceMeasurementDto>();
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return new List<DeviceMeasurementDto>();
+            }
+            var content = await response.Content.ReadAsStringAsync();
+            return content.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
         }
 
         public async Task<DeviceStatusDto> GetDeviceStatus(string deviceId)
