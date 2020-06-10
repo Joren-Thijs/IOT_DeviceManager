@@ -41,5 +41,10 @@ namespace IOT_DeviceManager.APP.Views
             viewModel = new DeviceDetailViewModel(device);
             BindingContext = viewModel;
         }
+
+        private void DeviceStatusButton_OnClicked(object sender, EventArgs e)
+        {
+            viewModel.ToggleDeviceStatusCommand.Execute(null);
+        }
     }
 }

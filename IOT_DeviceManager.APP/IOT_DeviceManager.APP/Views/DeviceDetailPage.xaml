@@ -72,11 +72,11 @@
                     HorizontalOptions="FillAndExpand"
                     StyleClass="deviceProperty"
                     Text="Status" />
-                <Switch
-                    Margin="0,10,-50,0"
-                    HorizontalOptions="End"
-                    IsToggled="{Binding Device.Status.OnStatus}" />
-
+                <Button
+                    x:Name="DeviceStatusButton"
+                    Clicked="DeviceStatusButton_OnClicked"
+                    StyleClass="editDeviceOnStatusButton"
+                    Text="{Binding Device.Status.OnStatus}" />
             </StackLayout>
 
             <StackLayout
@@ -108,7 +108,6 @@
                     StyleClass="expandDeviceMeasurementsButton"
                     Text="expand" />
             </StackLayout>
-
 
         </Grid>
     </Grid>
