@@ -28,19 +28,12 @@ namespace IOT_DeviceManager.APP.ViewModels
             set => SetProperty(ref _deviceMeasurements, value);
         }
 
-        public bool OnStatus
-        {
-            get => _onStatus;
-            set => SetProperty(ref _onStatus, value);
-        }
-
         public ICommand ToggleDeviceStatusCommand { get; }
 
         public DeviceDetailViewModel(DeviceDto device = null)
         {
             Title = device?.DeviceName;
             Device = device;
-            OnStatus = Device.Status.OnStatus;
             DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>();
             ToggleDeviceStatusCommand = new Command(ExecuteToggleDeviceStatusCommand);
             Task.Run(async () => await LoadDeviceMeasurements());
@@ -50,13 +43,15 @@ namespace IOT_DeviceManager.APP.ViewModels
         {
             IsBusy = true;
             var status = await WebClient.ToggleDeviceOnStatus(Device.Id);
+
             if (status.Settings == null)
             {
-                OnStatus = false;
-                IsBusy = false;
-                return;
+                Device.Status.OnStatus = false;
+                status.Settings = Device.Status.Settings;
             }
+
             Device.Status = status;
+            OnPropertyChanged(nameof(Device));
             IsBusy = false;
         }
 
