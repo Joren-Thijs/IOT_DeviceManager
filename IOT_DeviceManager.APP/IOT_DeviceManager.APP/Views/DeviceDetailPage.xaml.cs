@@ -46,5 +46,10 @@ namespace IOT_DeviceManager.APP.Views
         {
             viewModel.ToggleDeviceStatusCommand.Execute(null);
         }
+
+        private void ExpandDeviceMeasurementsButton_OnClicked(object sender, EventArgs e)
+        {
+            DeviceMeasurementsCollectionView.IsVisible = !DeviceMeasurementsCollectionView.IsVisible;
+        }
     }
 }

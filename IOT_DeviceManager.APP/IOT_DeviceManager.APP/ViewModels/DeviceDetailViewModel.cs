@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -30,13 +31,16 @@ namespace IOT_DeviceManager.APP.ViewModels
 
         public ICommand ToggleDeviceStatusCommand { get; }
 
+        public ICommand LoadDeviceMeasurementsCommand { get; }
+
         public DeviceDetailViewModel(DeviceDto device = null)
         {
             Title = device?.DeviceName;
             Device = device;
             DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>();
             ToggleDeviceStatusCommand = new Command(ExecuteToggleDeviceStatusCommand);
-            Task.Run(async () => await LoadDeviceMeasurements());
+            LoadDeviceMeasurementsCommand = new Command(ExecuteLoadDeviceMeasurementsCommand);
+            Task.Run(() => LoadDeviceMeasurementsCommand.Execute(null));
         }
 
         private async void ExecuteToggleDeviceStatusCommand(object obj)
@@ -55,14 +59,12 @@ namespace IOT_DeviceManager.APP.ViewModels
             IsBusy = false;
         }
 
-        private async Task LoadDeviceMeasurements()
+        private async void ExecuteLoadDeviceMeasurementsCommand(object obj)
         {
-            IsBusy = true;
-
             var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
 
             DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements);
-            IsBusy = false;
+            //DeviceMeasurements.Add(measurements.FirstOrDefault());
         }
     }
 }
