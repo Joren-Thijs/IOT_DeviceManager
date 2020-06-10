@@ -23,7 +23,7 @@ namespace IOT_DeviceManager.APP.Services
         Task<DeviceStatusDto> GetDeviceStatus(string deviceId);
 
         Task<DeviceStatusDto> SetDeviceStatus(string deviceId, DeviceStatusDto deviceStatusDto);
-        Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId, DeviceStatusDto deviceStatusDto);
+        Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId);
 
         Task<CalculationResultDto> GetTotalOnTime(string deviceId);
         Task<CalculationResultDto> GetAverage(string deviceId, string propertyName);

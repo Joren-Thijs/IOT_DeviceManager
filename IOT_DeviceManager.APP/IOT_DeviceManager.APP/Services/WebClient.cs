@@ -102,7 +102,7 @@ namespace IOT_DeviceManager.APP.Services
             throw new NotImplementedException();
         }
 
-        public async Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId, DeviceStatusDto deviceStatusDto)
+        public async Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId)
         {
             var uriString = BaseUrl + "devices/" + deviceId + "/status/onstatus/toggle";
             var uri = new Uri(uriString);
