@@ -7,7 +7,7 @@ A device manager for IOT devices with applications in home automation and data c
 ## Technical overview
 
 - It uses the MQTT protocol to communicate with different IOT devices.
-- The measurement data and settings of these devices are stored in a SQL database.
+- The measurement data and settings of these devices are stored in a MongoDB database.
 - This data can be retieved from an API written in ASP.NET Core 3.1.
 - The data can be viewed and the devices can be managed from a webinterface made with Angular 9.
 - And an Android mobile app built with Xamarin
