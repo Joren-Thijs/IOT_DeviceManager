@@ -4,6 +4,8 @@
 
 A device manager for IOT devices with applications in home automation and data collection.
 
+(This is a school project)
+
 ## Technical overview
 
 - It uses the MQTT protocol to communicate with different IOT devices.
