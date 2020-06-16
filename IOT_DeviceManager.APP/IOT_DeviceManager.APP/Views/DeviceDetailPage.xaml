@@ -5,7 +5,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:IOT_DeviceManager.APP.Helpers.Converters;assembly=IOT_DeviceManager.APP"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-    xmlns:device="clr-namespace:IOT_DeviceManager.APP.DTO.Device;assembly=IOT_DeviceManager.APP"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="{Binding Title}"
     mc:Ignorable="d">
@@ -181,15 +180,14 @@
                                         Text="Expand" />
                                 </StackLayout>
 
-                                <!--<Label Grid.Row="3" Text="{Binding Values.Count}" />-->
                                 <ListView Grid.Row="3" ItemsSource="{Binding Values}">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
-                                                <StackLayout>
+                                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
 
-                                                    <Label Text="{Binding Path=Value}" />
-                                                    <Label Text="{Binding Path=Key}" />
+                                                    <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                                    <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
 
                                                 </StackLayout>
                                             </ViewCell>

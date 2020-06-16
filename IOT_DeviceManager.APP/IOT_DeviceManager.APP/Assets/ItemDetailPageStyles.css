@@ -114,3 +114,12 @@
     color: #6D6D6D;
     vertical-align: center;
 }
+
+.dictionary-key {
+    margin: 0 0 0 15;
+    color: #6d6d6d;
+}
+
+.dictionary-value {
+    color: #6d6d6d;
+}
