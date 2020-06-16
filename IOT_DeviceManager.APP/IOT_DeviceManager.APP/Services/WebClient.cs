@@ -8,6 +8,7 @@ using IOT_DeviceManager.APP.DTO.Calculations;
 using IOT_DeviceManager.APP.DTO.Device;
 using IOT_DeviceManager.APP.Helpers.Extensions;
 using IOT_DeviceManager.APP.Models;
+using Newtonsoft.Json;
 
 namespace IOT_DeviceManager.APP.Services
 {
@@ -80,6 +81,8 @@ namespace IOT_DeviceManager.APP.Services
         {
             var uriString = BaseUrl + "devices/" + deviceId + "/measurements";
             var uri = new Uri(uriString);
+            uri = uri.AddParameter("orderBy", "timestamp");
+            uri = uri.AddParameter("sortDirection", "desc");
 
             var response = await GetResourcesAsync(uri);
             if(response == null)
@@ -89,7 +92,9 @@ namespace IOT_DeviceManager.APP.Services
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            return content.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
+            var x = JsonConvert.DeserializeAnonymousType(content, new List<DeviceMeasurementDto>());
+            var returnValue = content.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
+            return returnValue;
         }
 
         public async Task<DeviceStatusDto> GetDeviceStatus(string deviceId)

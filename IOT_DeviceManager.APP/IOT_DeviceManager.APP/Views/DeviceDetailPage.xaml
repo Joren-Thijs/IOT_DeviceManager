@@ -143,7 +143,7 @@
                                         <Label
                                             d:Text="{Binding .}"
                                             StyleClass="measurementTimeStampTime"
-                                            Text="{Binding TimeStamp, StringFormat='{}{0:hh\\:mm}'}" />
+                                            Text="{Binding TimeStamp, StringFormat='{}{0:hh\\:mm\\:ss}'}" />
                                         <Label
                                             d:Text="{Binding .}"
                                             StyleClass="measurementTimeStampDate"
@@ -165,6 +165,37 @@
                                         StyleClass="measurementPropertyValue"
                                         Text="Expand" />
                                 </StackLayout>
+
+                                <StackLayout
+                                    Grid.Row="2"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal"
+                                    VerticalOptions="FillAndExpand">
+                                    <Label
+                                        HorizontalOptions="FillAndExpand"
+                                        StyleClass="measurementProperty"
+                                        Text="Measurements" />
+                                    <Label
+                                        d:Text="{Binding .}"
+                                        StyleClass="measurementPropertyValue"
+                                        Text="Expand" />
+                                </StackLayout>
+
+                                <!--<Label Grid.Row="3" Text="{Binding Values.Count}" />-->
+                                <ListView Grid.Row="3" ItemsSource="{Binding Values}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout>
+
+                                                    <Label Text="{Binding Path=Value}" />
+                                                    <Label Text="{Binding Path=Key}" />
+
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

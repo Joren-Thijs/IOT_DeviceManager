@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IOT_DeviceManager.APP.DTO.Device;
@@ -15,7 +16,6 @@ namespace IOT_DeviceManager.APP.ViewModels
     {
         private DeviceDto _device;
         private ObservableCollection<DeviceMeasurementDto> _deviceMeasurements;
-        private bool _onStatus;
 
         public DeviceDto Device
         {
@@ -61,10 +61,13 @@ namespace IOT_DeviceManager.APP.ViewModels
 
         private async void ExecuteLoadDeviceMeasurementsCommand(object obj)
         {
-            var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
+            while (true)
+            {
+                var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
+                DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements);
+                await Task.Delay(TimeSpan.FromSeconds(10), new CancellationToken());
+            }
 
-            DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements);
-            //DeviceMeasurements.Add(measurements.FirstOrDefault());
         }
     }
 }
