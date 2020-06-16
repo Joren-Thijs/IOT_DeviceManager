@@ -85,7 +85,7 @@ namespace IOT_DeviceManager.APP.Services
             uri = uri.AddParameter("sortDirection", "desc");
 
             var response = await GetResourcesAsync(uri);
-            if(response == null)
+            if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem loading the device measurements");
                 return new List<DeviceMeasurementDto>();
@@ -136,7 +136,7 @@ namespace IOT_DeviceManager.APP.Services
 
         private void InvokeWebClientErrorEvent(string message)
         {
-            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => WebClientErrorEvent?.Invoke(this, message)); 
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => WebClientErrorEvent?.Invoke(this, message));
         }
 
         private async Task<HttpResponseMessage> GetResourcesAsync(Uri uri)

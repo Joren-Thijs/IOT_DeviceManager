@@ -3,6 +3,7 @@
     x:Class="IOT_DeviceManager.APP.Views.DeviceDetailPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviour="clr-namespace:IOT_DeviceManager.APP.Helpers.Behaviour;assembly=IOT_DeviceManager.APP"
     xmlns:converters="clr-namespace:IOT_DeviceManager.APP.Helpers.Converters;assembly=IOT_DeviceManager.APP"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -23,6 +24,8 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+
+        <!--  Main Title  -->
         <StackLayout
             HorizontalOptions="FillAndExpand"
             Orientation="Horizontal"
@@ -39,11 +42,14 @@
             Grid.Row="1"
             IsRunning="{Binding IsBusy}"
             StyleClass="loadingSpinner" />
+
+        <!--  Main Body  -->
         <Grid Grid.Row="2" StyleClass="detailBackground">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="50" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -95,8 +101,29 @@
                     Text="Edit settings" />
             </StackLayout>
 
-            <StackLayout
+            <ListView
                 Grid.Row="3"
+                HasUnevenRows="True"
+                ItemsSource="{Binding Device.Status.Settings}">
+                <ListView.Behaviors>
+                    <behaviour:AutoSizeBehavior />
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+
+                                <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout
+                Grid.Row="4"
                 HorizontalOptions="FillAndExpand"
                 Orientation="Horizontal"
                 VerticalOptions="FillAndExpand">
@@ -111,7 +138,8 @@
                     Text="expand" />
             </StackLayout>
 
-            <ScrollView Grid.Row="4">
+            <!--  Measurements  -->
+            <ScrollView Grid.Row="5">
                 <CollectionView
                     x:Name="DeviceMeasurementsCollectionView"
                     IsVisible="False"
@@ -122,6 +150,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
@@ -165,8 +194,29 @@
                                         Text="Expand" />
                                 </StackLayout>
 
-                                <StackLayout
+                                <ListView
                                     Grid.Row="2"
+                                    HasUnevenRows="True"
+                                    ItemsSource="{Binding Status.Settings}">
+                                    <ListView.Behaviors>
+                                        <behaviour:AutoSizeBehavior />
+                                    </ListView.Behaviors>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+
+                                                    <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                                    <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
+
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                                <StackLayout
+                                    Grid.Row="3"
                                     HorizontalOptions="FillAndExpand"
                                     Orientation="Horizontal"
                                     VerticalOptions="FillAndExpand">
@@ -180,7 +230,14 @@
                                         Text="Expand" />
                                 </StackLayout>
 
-                                <ListView Grid.Row="3" ItemsSource="{Binding Values}">
+                                <!--  Measurement values  -->
+                                <ListView
+                                    Grid.Row="4"
+                                    HasUnevenRows="True"
+                                    ItemsSource="{Binding Values}">
+                                    <ListView.Behaviors>
+                                        <behaviour:AutoSizeBehavior />
+                                    </ListView.Behaviors>
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
