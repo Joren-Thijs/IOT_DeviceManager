@@ -14,9 +14,7 @@ namespace IOT_DeviceManager.APP.Services
         Task<IEnumerable<DeviceDto>> GetDevices(ResourceParameters resourceParameters = null);
         Task<DeviceDto> GetDevice(string deviceId);
         Task<DeviceDto> UpdateDevice(string deviceId, DeviceForUpdateDto deviceForUpdateDto);
-        Task<DeviceDto> UpdateDeviceName(string deviceId, string deviceName);
-        Task<DeviceDto> UpdateDeviceType(string deviceId, string deviceType);
-        Task DeleteDevice(string deviceId);
+        Task<bool> DeleteDevice(string deviceId);
 
         Task<IEnumerable<DeviceMeasurementDto>> GetDeviceMeasurementsFromDevice(string deviceId, ResourceParameters resourceParameters = null);
 

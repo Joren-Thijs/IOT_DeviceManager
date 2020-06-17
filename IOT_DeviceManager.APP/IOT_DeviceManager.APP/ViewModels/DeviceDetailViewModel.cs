@@ -61,13 +61,8 @@ namespace IOT_DeviceManager.APP.ViewModels
 
         private async void ExecuteLoadDeviceMeasurementsCommand(object obj)
         {
-            while (true)
-            {
-                var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
-                DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements);
-                await Task.Delay(TimeSpan.FromSeconds(10), new CancellationToken());
-            }
-
+            var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
+            Xamarin.Forms.Device.BeginInvokeOnMainThread(() => { DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements); });
         }
     }
 }

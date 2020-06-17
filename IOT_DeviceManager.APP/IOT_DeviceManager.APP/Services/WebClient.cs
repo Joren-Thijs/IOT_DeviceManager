@@ -8,7 +8,8 @@ using IOT_DeviceManager.APP.DTO.Calculations;
 using IOT_DeviceManager.APP.DTO.Device;
 using IOT_DeviceManager.APP.Helpers.Extensions;
 using IOT_DeviceManager.APP.Models;
-using Newtonsoft.Json;
+using Flurl;
+using Flurl.Http;
 
 namespace IOT_DeviceManager.APP.Services
 {
@@ -16,40 +17,45 @@ namespace IOT_DeviceManager.APP.Services
     {
         public event EventHandler<string> WebClientErrorEvent;
 
-        private const string BaseUrl = "http://127.0.0.1:53967/api/";
-        private readonly HttpClient _httpClient;
-
-
-        public WebClient()
-        {
-            _httpClient = new HttpClient();
-        }
+        private readonly Url _baseUrl = new Url("http://127.0.0.1:53967/api/");
 
         public async Task<IEnumerable<DeviceDto>> GetDevices(ResourceParameters resourceParameters = null)
         {
-            var uriString = BaseUrl + "devices";
-            var uri = new Uri(uriString);
+            var url = _baseUrl.AppendPathSegment("devices").SetQueryParams(resourceParameters);
 
-            var response = await GetResourcesAsync(uri);
+            var response = await url.GetStringAsync();
             if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem loading the devices");
                 return new List<DeviceDto>();
             }
 
-            var content = await response.Content.ReadAsStringAsync();
-            return content.DeserializeJson<IEnumerable<DeviceDto>>();
+            return response.DeserializeJson<IEnumerable<DeviceDto>>();
         }
 
         public async Task<DeviceDto> GetDevice(string deviceId)
         {
-            var uriString = BaseUrl + "devices/" + deviceId;
-            var uri = new Uri(uriString);
+            var url = _baseUrl.AppendPathSegments("devices", deviceId);
 
-            var response = await GetResourcesAsync(uri);
+            var response = await GetResourcesAsync(url);
             if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem loading the device details");
+                return new DeviceDto();
+            }
+
+            return response.DeserializeJson<DeviceDto>();
+        }
+
+        public async Task<DeviceDto> UpdateDevice(string deviceId, DeviceForUpdateDto deviceForUpdateDto)
+        {
+            var url = _baseUrl.AppendPathSegments("devices", deviceId);
+            var stringContent = new StringContent(deviceForUpdateDto.SerializeJson(), Encoding.UTF8);
+
+            var response = await PutResourcesAsync(url, stringContent);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent("There was a problem updating the device");
                 return new DeviceDto();
             }
 
@@ -57,63 +63,63 @@ namespace IOT_DeviceManager.APP.Services
             return content.DeserializeJson<DeviceDto>();
         }
 
-        public async Task<DeviceDto> UpdateDevice(string deviceId, DeviceForUpdateDto deviceForUpdateDto)
+        public async Task<bool> DeleteDevice(string deviceId)
         {
-            throw new NotImplementedException();
-        }
+            var url = _baseUrl.AppendPathSegments("devices", deviceId);
+            return await DeleteResourcesAsync(url);
 
-        public async Task<DeviceDto> UpdateDeviceName(string deviceId, string deviceName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<DeviceDto> UpdateDeviceType(string deviceId, string deviceType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task DeleteDevice(string deviceId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<DeviceMeasurementDto>> GetDeviceMeasurementsFromDevice(string deviceId, ResourceParameters resourceParameters = null)
         {
-            var uriString = BaseUrl + "devices/" + deviceId + "/measurements";
-            var uri = new Uri(uriString);
-            uri = uri.AddParameter("orderBy", "timestamp");
-            uri = uri.AddParameter("sortDirection", "desc");
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements").SetQueryParams(resourceParameters);
 
-            var response = await GetResourcesAsync(uri);
+            var response = await GetResourcesAsync(url);
             if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem loading the device measurements");
                 return new List<DeviceMeasurementDto>();
             }
 
-            var content = await response.Content.ReadAsStringAsync();
-            var x = JsonConvert.DeserializeAnonymousType(content, new List<DeviceMeasurementDto>());
-            var returnValue = content.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
-            return returnValue;
+            return response.DeserializeJson<IEnumerable<DeviceMeasurementDto>>();
         }
 
         public async Task<DeviceStatusDto> GetDeviceStatus(string deviceId)
         {
-            throw new NotImplementedException();
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "status");
+
+            var response = await GetResourcesAsync(url);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent("There was a problem loading the device status");
+                return new DeviceStatusDto();
+            }
+
+            return response.DeserializeJson<DeviceStatusDto>();
         }
 
         public async Task<DeviceStatusDto> SetDeviceStatus(string deviceId, DeviceStatusDto deviceStatusDto)
         {
-            throw new NotImplementedException();
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "status");
+            var stringContent = new StringContent(deviceStatusDto.SerializeJson(), Encoding.UTF8);
+
+            var response = await PostResourcesAsync(url, stringContent);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent("There was a problem setting the device status");
+                return new DeviceStatusDto();
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            return content.DeserializeJson<DeviceStatusDto>();
         }
 
         public async Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId)
         {
-            var uriString = BaseUrl + "devices/" + deviceId + "/status/onstatus/toggle";
-            var uri = new Uri(uriString);
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "status", "onstatus", "toggle");
             var stringContent = new StringContent("", Encoding.UTF8);
 
-            var response = await PostResourcesAsync(uri, stringContent);
+            var response = await PostResourcesAsync(url, stringContent);
             if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem setting the device status");
@@ -126,12 +132,30 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<CalculationResultDto> GetTotalOnTime(string deviceId)
         {
-            throw new NotImplementedException();
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements", "calculations", "totalontime");
+
+            var response = await GetResourcesAsync(url);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent("There was a problem loading the total ON time");
+                return new CalculationResultDto();
+            }
+
+            return response.DeserializeJson<CalculationResultDto>();
         }
 
         public async Task<CalculationResultDto> GetAverage(string deviceId, string propertyName)
         {
-            throw new NotImplementedException();
+            var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements", "calculations", "average", propertyName);
+
+            var response = await GetResourcesAsync(url);
+            if (response == null)
+            {
+                InvokeWebClientErrorEvent($"There was a problem loading the average {propertyName}");
+                return new CalculationResultDto();
+            }
+
+            return response.DeserializeJson<CalculationResultDto>();
         }
 
         private void InvokeWebClientErrorEvent(string message)
@@ -139,14 +163,34 @@ namespace IOT_DeviceManager.APP.Services
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() => WebClientErrorEvent?.Invoke(this, message));
         }
 
-        private async Task<HttpResponseMessage> GetResourcesAsync(Uri uri)
+        private async Task<string> GetResourcesAsync(Url url)
         {
-            HttpResponseMessage response;
             try
             {
-                response = await _httpClient.GetAsync(uri);
+                var response = await url.GetStringAsync();
+                return response;
+            }
+            catch (FlurlHttpException)
+            {
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private async Task<HttpResponseMessage> PostResourcesAsync(Url url, HttpContent content)
+        {
+            try
+            {
+                var response = await url.PostAsync(content);
                 if (!response.IsSuccessStatusCode) return null;
                 return response;
+            }
+            catch (FlurlHttpException)
+            {
+                return null;
             }
             catch (HttpRequestException)
             {
@@ -158,14 +202,17 @@ namespace IOT_DeviceManager.APP.Services
             }
         }
 
-        private async Task<HttpResponseMessage> PostResourcesAsync(Uri uri, HttpContent content)
+        private async Task<HttpResponseMessage> PutResourcesAsync(Url url, HttpContent content)
         {
-            HttpResponseMessage response;
             try
             {
-                response = await _httpClient.PostAsync(uri, content);
+                var response = await url.PutAsync(content);
                 if (!response.IsSuccessStatusCode) return null;
                 return response;
+            }
+            catch (FlurlHttpException)
+            {
+                return null;
             }
             catch (HttpRequestException)
             {
@@ -174,6 +221,24 @@ namespace IOT_DeviceManager.APP.Services
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        private async Task<bool> DeleteResourcesAsync(Url url)
+        {
+            try
+            {
+                var response = await url.DeleteAsync();
+                if (!response.IsSuccessStatusCode) return false;
+                return true;
+            }
+            catch (FlurlHttpException)
+            {
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }
