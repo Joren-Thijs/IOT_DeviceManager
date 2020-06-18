@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using IOT_DeviceManager.APP.DTO.Device;
-using IOT_DeviceManager.APP.Helpers.Extensions;
 using Xamarin.Forms;
-
 using IOT_DeviceManager.APP.Models;
-using IOT_DeviceManager.APP.Views;
 
 namespace IOT_DeviceManager.APP.ViewModels
 {
     public class DevicesViewModel : BaseViewModel
     {
-        public ObservableCollection<DeviceDto> Devices { get; set; }
+        private ObservableCollection<DeviceDto> _devices;
+
+        public ObservableCollection<DeviceDto> Devices
+        {
+            get => _devices;
+            set => SetProperty(ref _devices, value);
+        }
+
         public Command LoadItemsCommand { get; set; }
 
         public DevicesViewModel()
@@ -23,37 +28,31 @@ namespace IOT_DeviceManager.APP.ViewModels
             Title = "My Devices";
             Devices = new ObservableCollection<DeviceDto>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            MessagingCenter.Subscribe<EditDeviceViewModel, DeviceDto>(this, "updated device",
+                (viewmodel, updatedDevice) =>
+                {
+                    var currentDevice = Devices.FirstOrDefault(x => x.Id == updatedDevice.Id);
+                    Devices.Remove(currentDevice);
+                    Devices.Add(updatedDevice);
+                });
+            MessagingCenter.Subscribe<EditDeviceViewModel, string>(this, "deleted device",
+                (viewmodel, deletedDeviceId) =>
+                {
+                    var currentDevice = Devices.FirstOrDefault(x => x.Id == deletedDeviceId);
+                    if(currentDevice != null) Devices.Remove(currentDevice);
+                });
         }
 
         async Task ExecuteLoadItemsCommand()
         {
+            
             IsBusy = true;
+            IEnumerable<DeviceDto> devices = new List<DeviceDto>();
 
             try
             {
-                Devices.Clear();
-                Devices.Add(new DeviceDto
-                {
-                    Id = "Mock-device",
-                    DeviceName = "Test Device",
-                    DeviceType = "Mock-Device",
-                    Status = new DeviceStatusDto
-                    {
-                        OnStatus = false,
-                        Settings = new Dictionary<string, object>
-                        {
-                            {"Sensor 1", 25}
-                        }
-                    }
-                });
+                devices = await WebClient.GetDevices(new ResourceParameters { OrderBy = "DeviceName" });
 
-                var devices = await WebClient.GetDevices();
-
-                foreach (var device in devices)
-                {
-                    if (string.IsNullOrEmpty(device.DeviceName)) device.DeviceName = "New Device";
-                    Devices.Add(device);
-                }
             }
             catch (Exception ex)
             {
@@ -63,6 +62,32 @@ namespace IOT_DeviceManager.APP.ViewModels
             {
                 IsBusy = false;
             }
+
+            Devices = new ObservableCollection<DeviceDto>();
+
+            Devices.Add(new DeviceDto
+            {
+                Id = "Local-Device",
+                DeviceName = "Test Device",
+                DeviceType = "Local-Device",
+                Status = new DeviceStatusDto
+                {
+                    OnStatus = false,
+                    Settings = new Dictionary<string, object>
+                    {
+                        {"Sensor 1", 25}
+                    }
+                }
+            });
+
+            foreach (var device in devices)
+            {
+                if (string.IsNullOrEmpty(device.DeviceName)) device.DeviceName = "New Device";
+                Devices.Add(device);
+            }
+
+
+            IsBusy = false;
         }
     }
 }

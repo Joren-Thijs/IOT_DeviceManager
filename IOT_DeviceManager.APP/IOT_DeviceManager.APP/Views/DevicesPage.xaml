@@ -10,7 +10,7 @@
     mc:Ignorable="d">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Clicked="AddItem_Clicked" Text="Add" />
+        <ToolbarItem Clicked="Refresh_Clicked" Text="Refresh" />
     </ContentPage.ToolbarItems>
 
     <RefreshView Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">

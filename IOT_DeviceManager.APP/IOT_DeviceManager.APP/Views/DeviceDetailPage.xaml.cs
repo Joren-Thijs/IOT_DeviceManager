@@ -51,5 +51,10 @@ namespace IOT_DeviceManager.APP.Views
         {
             DeviceMeasurementsCollectionView.IsVisible = !DeviceMeasurementsCollectionView.IsVisible;
         }
+
+        private void EditDeviceButton_OnClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new EditDevicePage(new EditDeviceViewModel(viewModel.Device)));
+        }
     }
 }

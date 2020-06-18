@@ -19,15 +19,15 @@ namespace IOT_DeviceManager.APP.Views
     [DesignTimeVisible(false)]
     public partial class DevicesPage : ContentPage
     {
-        DevicesViewModel viewModel;
+        readonly DevicesViewModel _viewModel;
 
         public DevicesPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new DevicesViewModel();
+            BindingContext = _viewModel = new DevicesViewModel();
 
-            viewModel.WebClient.WebClientErrorEvent += WebClientOnWebClientErrorEvent;
+            _viewModel.WebClient.WebClientErrorEvent += WebClientOnWebClientErrorEvent;
         }
 
         private void WebClientOnWebClientErrorEvent(object sender, string e)
@@ -42,17 +42,17 @@ namespace IOT_DeviceManager.APP.Views
             await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(device)));
         }
 
-        void AddItem_Clicked(object sender, EventArgs e)
+        void Refresh_Clicked(object sender, EventArgs e)
         {
-            
+            _viewModel.LoadItemsCommand.Execute(null);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.Devices.Count == 0)
-                viewModel.IsBusy = true;
+            if (_viewModel.Devices.Count == 0)
+                _viewModel.IsBusy = true;
         }
     }
 }

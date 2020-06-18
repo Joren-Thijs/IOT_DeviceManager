@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,12 +56,13 @@ namespace IOT_DeviceManager.APP.Services
             ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId);
             var stringContent = new StringContent(deviceForUpdateDto.SerializeJson(), Encoding.UTF8);
+            stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
             var response = await PutResourcesAsync(url, stringContent);
             if (response == null)
             {
                 InvokeWebClientErrorEvent("There was a problem updating the device");
-                return new DeviceDto();
+                return null;
             }
 
             var content = await response.Content.ReadAsStringAsync();
@@ -226,7 +228,7 @@ namespace IOT_DeviceManager.APP.Services
                 if (!response.IsSuccessStatusCode) return null;
                 return response;
             }
-            catch (FlurlHttpException)
+            catch (FlurlHttpException ex)
             {
                 return null;
             }

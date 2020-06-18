@@ -1,0 +1,17 @@
+﻿.label {
+    margin: 5 15 5 15;
+}
+
+.entry {
+    margin: 5 15 5 15;
+}
+
+.saveBtn {
+    margin: 5 15 5 15;
+}
+
+.deleteBtn {
+    margin: 5 15 5 15;
+    background-color: red;
+    color: white;
+}

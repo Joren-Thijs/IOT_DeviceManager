@@ -18,10 +18,11 @@
 }
 
 .editDeviceButton {
-    margin: 10 15 0 0;
+    margin: 0 15 0 0;
     font-size: small;
     horiz-align: right;
     color: white;
+    background-color: transparent;
     vertical-align: center;
 }
 

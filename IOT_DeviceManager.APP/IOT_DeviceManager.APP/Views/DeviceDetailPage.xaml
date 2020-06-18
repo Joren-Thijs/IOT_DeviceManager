@@ -31,12 +31,17 @@
             Orientation="Horizontal"
             StyleClass="topRow"
             VerticalOptions="FillAndExpand">
+
             <Label
                 d:Text="Device name"
                 HorizontalOptions="FillAndExpand"
                 StyleClass="deviceNameTitle"
                 Text="{Binding Device.DeviceName}" />
-            <Label StyleClass="editDeviceButton" Text="Edit" />
+            <Button
+                x:Name="EditDeviceButton"
+                Clicked="EditDeviceButton_OnClicked"
+                StyleClass="editDeviceButton"
+                Text="Edit" />
         </StackLayout>
         <ActivityIndicator
             Grid.Row="1"

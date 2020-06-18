@@ -40,6 +40,11 @@ namespace IOT_DeviceManager.APP.ViewModels
             DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>();
             ToggleDeviceStatusCommand = new Command(ExecuteToggleDeviceStatusCommand);
             LoadDeviceMeasurementsCommand = new Command(ExecuteLoadDeviceMeasurementsCommand);
+            MessagingCenter.Subscribe<EditDeviceViewModel, DeviceDto>(this, "updated device",
+                (viewmodel, updatedDevice) =>
+                {
+                    Device = Device.Id == updatedDevice.Id ? updatedDevice : Device;
+                });
             Task.Run(() => LoadDeviceMeasurementsCommand.Execute(null));
         }
 
