@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IOT_DeviceManager.APP.DTO.Device;
-using IOT_DeviceManager.APP.Models;
 using Xamarin.Forms;
 
 namespace IOT_DeviceManager.APP.ViewModels

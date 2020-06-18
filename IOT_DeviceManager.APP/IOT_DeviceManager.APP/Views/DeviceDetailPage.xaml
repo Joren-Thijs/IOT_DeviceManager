@@ -104,10 +104,9 @@
             <ListView
                 Grid.Row="3"
                 HasUnevenRows="True"
+                HeightRequest="50"
                 ItemsSource="{Binding Device.Status.Settings}">
-                <ListView.Behaviors>
-                    <behaviour:AutoSizeBehavior />
-                </ListView.Behaviors>
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -147,6 +146,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid StyleClass="detailBackground">
+
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />
                                     <RowDefinition Height="30" />
@@ -256,8 +256,6 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </ScrollView>
-
-
         </Grid>
     </Grid>
 

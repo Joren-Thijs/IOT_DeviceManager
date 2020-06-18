@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using IOT_DeviceManager.APP.DTO.Calculations;
@@ -17,10 +18,11 @@ namespace IOT_DeviceManager.APP.Services
     {
         public event EventHandler<string> WebClientErrorEvent;
 
-        private readonly Url _baseUrl = new Url("http://127.0.0.1:53967/api/");
+        private Url _baseUrl = new Url("http://127.0.0.1:53967/api/");
 
         public async Task<IEnumerable<DeviceDto>> GetDevices(ResourceParameters resourceParameters = null)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegment("devices").SetQueryParams(resourceParameters);
 
             var response = await url.GetStringAsync();
@@ -35,6 +37,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceDto> GetDevice(string deviceId)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId);
 
             var response = await GetResourcesAsync(url);
@@ -49,6 +52,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceDto> UpdateDevice(string deviceId, DeviceForUpdateDto deviceForUpdateDto)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId);
             var stringContent = new StringContent(deviceForUpdateDto.SerializeJson(), Encoding.UTF8);
 
@@ -65,6 +69,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<bool> DeleteDevice(string deviceId)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId);
             return await DeleteResourcesAsync(url);
 
@@ -72,6 +77,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<IEnumerable<DeviceMeasurementDto>> GetDeviceMeasurementsFromDevice(string deviceId, ResourceParameters resourceParameters = null)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements").SetQueryParams(resourceParameters);
 
             var response = await GetResourcesAsync(url);
@@ -86,6 +92,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceStatusDto> GetDeviceStatus(string deviceId)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "status");
 
             var response = await GetResourcesAsync(url);
@@ -100,6 +107,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceStatusDto> SetDeviceStatus(string deviceId, DeviceStatusDto deviceStatusDto)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "status");
             var stringContent = new StringContent(deviceStatusDto.SerializeJson(), Encoding.UTF8);
 
@@ -116,6 +124,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<DeviceStatusDto> ToggleDeviceOnStatus(string deviceId)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "status", "onstatus", "toggle");
             var stringContent = new StringContent("", Encoding.UTF8);
 
@@ -132,6 +141,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<CalculationResultDto> GetTotalOnTime(string deviceId)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements", "calculations", "totalontime");
 
             var response = await GetResourcesAsync(url);
@@ -146,6 +156,7 @@ namespace IOT_DeviceManager.APP.Services
 
         public async Task<CalculationResultDto> GetAverage(string deviceId, string propertyName)
         {
+            ResetBaseUrl();
             var url = _baseUrl.AppendPathSegments("devices", deviceId, "measurements", "calculations", "average", propertyName);
 
             var response = await GetResourcesAsync(url);
@@ -161,6 +172,11 @@ namespace IOT_DeviceManager.APP.Services
         private void InvokeWebClientErrorEvent(string message)
         {
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() => WebClientErrorEvent?.Invoke(this, message));
+        }
+
+        private void ResetBaseUrl()
+        {
+            _baseUrl = new Url("http://127.0.0.1:53967/api/");
         }
 
         private async Task<string> GetResourcesAsync(Url url)
@@ -188,7 +204,7 @@ namespace IOT_DeviceManager.APP.Services
                 if (!response.IsSuccessStatusCode) return null;
                 return response;
             }
-            catch (FlurlHttpException)
+            catch (FlurlHttpException ex)
             {
                 return null;
             }
