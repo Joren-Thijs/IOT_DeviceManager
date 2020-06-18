@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using IOT_DeviceManager.APP.DTO.Device;
+using IOT_DeviceManager.APP.Models;
 using Xamarin.Forms;
 
 namespace IOT_DeviceManager.APP.ViewModels
@@ -60,7 +61,12 @@ namespace IOT_DeviceManager.APP.ViewModels
 
         private async void ExecuteLoadDeviceMeasurementsCommand(object obj)
         {
-            var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id);
+            var parameters = new ResourceParameters
+            {
+                OrderBy = "TimeStamp",
+                SortDirection = "desc"
+            };
+            var measurements = await WebClient.GetDeviceMeasurementsFromDevice(Device.Id, parameters);
             Xamarin.Forms.Device.BeginInvokeOnMainThread(() => { DeviceMeasurements = new ObservableCollection<DeviceMeasurementDto>(measurements); });
         }
     }
