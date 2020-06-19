@@ -34,6 +34,7 @@ namespace IOT_DeviceManager.APP.ViewModels
                     var currentDevice = Devices.FirstOrDefault(x => x.Id == updatedDevice.Id);
                     Devices.Remove(currentDevice);
                     Devices.Add(updatedDevice);
+                    Devices = new ObservableCollection<DeviceDto>(Devices.OrderBy(x => x.DeviceName));
                 });
             MessagingCenter.Subscribe<EditDeviceViewModel, string>(this, "deleted device",
                 (viewmodel, deletedDeviceId) =>
@@ -86,6 +87,7 @@ namespace IOT_DeviceManager.APP.ViewModels
                 Devices.Add(device);
             }
 
+            Devices = new ObservableCollection<DeviceDto>(Devices.OrderBy(x => x.DeviceName));
 
             IsBusy = false;
         }

@@ -37,7 +37,7 @@
                 <ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
                     <Image
                         HeightRequest="64"
-                        Source="xamarin_logo.png"
+                        Source="iotdevicemanager_logo.png"
                         VerticalOptions="Center" />
                 </ContentView>
             </StackLayout>
@@ -54,7 +54,7 @@
                                 <Span
                                     FontAttributes="Bold"
                                     FontSize="22"
-                                    Text="AppName" />
+                                    Text="IOT DeviceManager" />
                                 <Span Text=" " />
                                 <Span ForegroundColor="{StaticResource LightTextColor}" Text="1.0" />
                             </FormattedString.Spans>
@@ -67,7 +67,7 @@
                             <FormattedString.Spans>
                                 <Span Text="This app is written in C# and native APIs using the" />
                                 <Span Text=" " />
-                                <Span FontAttributes="Bold" Text="Xamarin Platform" />
+                                <Span FontAttributes="Bold" Text="ASP.NET Core and Xamarin Platform" />
                                 <Span Text="." />
                             </FormattedString.Spans>
                         </FormattedString>
@@ -79,7 +79,7 @@
                             <FormattedString.Spans>
                                 <Span Text="It shares code with its" />
                                 <Span Text=" " />
-                                <Span FontAttributes="Bold" Text="iOS, Android, and Windows" />
+                                <Span FontAttributes="Bold" Text="Android, and Windows" />
                                 <Span Text=" " />
                                 <Span Text="versions." />
                             </FormattedString.Spans>
