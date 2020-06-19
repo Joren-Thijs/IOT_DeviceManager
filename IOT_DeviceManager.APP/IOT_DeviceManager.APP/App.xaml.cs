@@ -13,7 +13,6 @@ namespace IOT_DeviceManager.APP
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             DependencyService.Register<IWebClient, WebClient>();
             MainPage = new MainPage();
         }

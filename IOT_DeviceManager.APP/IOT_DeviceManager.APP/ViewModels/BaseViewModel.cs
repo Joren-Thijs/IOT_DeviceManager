@@ -12,8 +12,6 @@ namespace IOT_DeviceManager.APP.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
-
         public IWebClient WebClient { get; protected set; } = new WebClient();
 
         bool isBusy = false;
@@ -31,7 +29,7 @@ namespace IOT_DeviceManager.APP.ViewModels
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
+            [CallerMemberName] string propertyName = "",
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
