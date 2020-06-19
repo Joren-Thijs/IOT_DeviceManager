@@ -170,7 +170,7 @@ namespace IOT_DeviceManager.API.Repositories
 
                 measurements = resourceParameters.SortDirection == "desc" ? measurements.OrderByDescending(orderByLambda) : measurements.OrderBy(orderByLambda);
             }
-
+             
             return Task.FromResult(Paginator<IDeviceMeasurement>.Create(measurements, resourceParameters.PageNumber, resourceParameters.PageSize));
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using IOT_DeviceManager.APP.DTO.Device;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,20 +21,40 @@ namespace IOT_DeviceManager.APP.Views
             InitializeComponent();
 
             BindingContext = this.viewModel = viewModel;
+            viewModel.WebClient.WebClientErrorEvent += WebClientOnErrorEvent;
+        }
+
+        private void WebClientOnErrorEvent(object sender, string e)
+        {
+            DisplayAlert("Error", e, "close");
         }
 
         public DeviceDetailPage()
         {
             InitializeComponent();
 
-            var item = new Item
+            var device = new DeviceDto
             {
-                Text = "Item 1",
-                Description = "This is an item description."
+                DeviceName = "Device"
             };
 
-            viewModel = new DeviceDetailViewModel(item);
+            viewModel = new DeviceDetailViewModel(device);
             BindingContext = viewModel;
+        }
+
+        private void DeviceStatusButton_OnClicked(object sender, EventArgs e)
+        {
+            viewModel.ToggleDeviceStatusCommand.Execute(null);
+        }
+
+        private void ExpandDeviceMeasurementsButton_OnClicked(object sender, EventArgs e)
+        {
+            DeviceMeasurementsCollectionView.IsVisible = !DeviceMeasurementsCollectionView.IsVisible;
+        }
+
+        private void EditDeviceButton_OnClicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new EditDevicePage(new EditDeviceViewModel(viewModel.Device)));
         }
     }
 }

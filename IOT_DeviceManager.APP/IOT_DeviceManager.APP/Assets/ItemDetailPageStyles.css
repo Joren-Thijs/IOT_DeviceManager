@@ -1,0 +1,126 @@
+﻿.mainBackground {
+    background-color: #00B4DB;
+}
+
+.detailBackground {
+    background-color: #FFFFFF;
+}
+
+.topRow {
+    margin: 20 0 0 0;
+}
+
+.deviceNameTitle {
+    margin: 0 0 0 15;
+    font-size: 37;
+    vertical-align: center;
+    color: white;
+}
+
+.editDeviceButton {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: white;
+    background-color: transparent;
+    vertical-align: center;
+}
+
+.loadingSpinner {
+    color: white;
+    margin: 5 0 5 0;
+}
+
+.deviceProperty {
+    margin: 0 0 0 15;
+    font-size: 30;
+    color: #0083B0;
+    vertical-align: center;
+}
+
+.devicePropertyValue {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.editDeviceOnStatusButton {
+    margin: 0 15 0 0;
+    horiz-align: right;
+    vertical-align: center;
+    background-color: #00b4db;
+    color: white;
+}
+
+
+.editDeviceSettingsButton {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.measurementBackground {
+
+}
+
+.expandDeviceMeasurementsButton {
+    margin: 0 15 0 0;
+    horiz-align: right;
+    vertical-align: center;
+    background-color: #00b4db;
+    color: white;
+}
+
+.measurementProperty {
+    margin: 0 0 0 15;
+    font-size: 20;
+    color: #0083B0;
+    vertical-align: center;
+}
+
+.measurementStatus {
+    margin: 0 0 0 35;
+    font-size: 20;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.measurementTimeStampHolder {
+    margin: 7 15 0 0;
+    vertical-align: center;
+}
+
+.measurementTimeStampDate {
+    margin: 0 0 0 0;
+    horiz-align: right;
+    font-size: 13;
+    color: #0083B0;
+}
+
+.measurementTimeStampTime {
+    margin: 0 0 0 0;
+    horiz-align: right;
+    font-size: 13;
+    color: #0083B0;
+}
+
+.measurementPropertyValue {
+    margin: 0 15 0 0;
+    font-size: small;
+    horiz-align: right;
+    color: #6D6D6D;
+    vertical-align: center;
+}
+
+.dictionary-key {
+    margin: 0 0 0 15;
+    color: #6d6d6d;
+}
+
+.dictionary-value {
+    color: #6d6d6d;
+}

@@ -1,17 +1,267 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="IOT_DeviceManager.APP.Views.DeviceDetailPage"
-             Title="{Binding Title}">
+<ContentPage
+    x:Class="IOT_DeviceManager.APP.Views.DeviceDetailPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviour="clr-namespace:IOT_DeviceManager.APP.Helpers.Behaviour;assembly=IOT_DeviceManager.APP"
+    xmlns:converters="clr-namespace:IOT_DeviceManager.APP.Helpers.Converters;assembly=IOT_DeviceManager.APP"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="{Binding Title}"
+    mc:Ignorable="d">
 
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Item.Text}" d:Text="Item name" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Item.Description}" d:Text="Item description" FontSize="Small"/>
-    </StackLayout>
-    
+    <ContentPage.Resources>
+        <StyleSheet Source="/Assets/ItemDetailPageStyles.css" />
+    </ContentPage.Resources>
+
+
+    <Grid StyleClass="mainBackground">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Main Title  -->
+        <StackLayout
+            HorizontalOptions="FillAndExpand"
+            Orientation="Horizontal"
+            StyleClass="topRow"
+            VerticalOptions="FillAndExpand">
+
+            <Label
+                d:Text="Device name"
+                HorizontalOptions="FillAndExpand"
+                StyleClass="deviceNameTitle"
+                Text="{Binding Device.DeviceName}" />
+            <Button
+                x:Name="EditDeviceButton"
+                Clicked="EditDeviceButton_OnClicked"
+                StyleClass="editDeviceButton"
+                Text="Edit" />
+        </StackLayout>
+        <ActivityIndicator
+            Grid.Row="1"
+            IsRunning="{Binding IsBusy}"
+            StyleClass="loadingSpinner" />
+
+        <!--  Main Body  -->
+        <Grid Grid.Row="2" StyleClass="detailBackground">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackLayout
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="DeviceType" />
+                <Label
+                    d:Text="Device type"
+                    StyleClass="devicePropertyValue"
+                    Text="{Binding Device.DeviceType}" />
+            </StackLayout>
+
+            <StackLayout
+                Grid.Row="1"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Status" />
+                <Button
+                    x:Name="DeviceStatusButton"
+                    Clicked="DeviceStatusButton_OnClicked"
+                    StyleClass="editDeviceOnStatusButton"
+                    Text="{Binding Device.Status.OnStatus, Converter={converters:DeviceOnStatusToStringConverter}}" />
+            </StackLayout>
+
+            <StackLayout
+                Grid.Row="2"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Settings" />
+                <Label
+                    d:Text="Edit settings"
+                    StyleClass="editDeviceSettingsButton"
+                    Text="Edit settings" />
+            </StackLayout>
+
+            <ListView
+                Grid.Row="3"
+                HasUnevenRows="True"
+                HeightRequest="50"
+                ItemsSource="{Binding Device.Status.Settings}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+
+                                <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
+
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout
+                Grid.Row="4"
+                HorizontalOptions="FillAndExpand"
+                Orientation="Horizontal"
+                VerticalOptions="FillAndExpand">
+                <Label
+                    HorizontalOptions="FillAndExpand"
+                    StyleClass="deviceProperty"
+                    Text="Measurements" />
+                <Button
+                    x:Name="ExpandDeviceMeasurementsButton"
+                    Clicked="ExpandDeviceMeasurementsButton_OnClicked"
+                    StyleClass="expandDeviceMeasurementsButton"
+                    Text="expand" />
+            </StackLayout>
+
+            <!--  Measurements  -->
+            <ScrollView Grid.Row="5">
+                <CollectionView
+                    x:Name="DeviceMeasurementsCollectionView"
+                    IsVisible="False"
+                    ItemsSource="{Binding DeviceMeasurements}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid StyleClass="detailBackground">
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal"
+                                    VerticalOptions="FillAndExpand">
+                                    <Label StyleClass="measurementProperty" Text="Status" />
+                                    <Label
+                                        HorizontalOptions="FillAndExpand"
+                                        StyleClass="measurementStatus"
+                                        Text="{Binding Status.OnStatus, Converter={converters:DeviceOnStatusToStringConverter}}" />
+                                    <StackLayout Orientation="Horizontal" StyleClass="measurementTimeStampHolder">
+                                        <Label
+                                            d:Text="{Binding .}"
+                                            StyleClass="measurementTimeStampTime"
+                                            Text="{Binding TimeStamp, StringFormat='{}{0:hh\\:mm\\:ss}'}" />
+                                        <Label
+                                            d:Text="{Binding .}"
+                                            StyleClass="measurementTimeStampDate"
+                                            Text="{Binding TimeStamp, StringFormat='{0:dd/MM}'}" />
+                                    </StackLayout>
+                                </StackLayout>
+
+                                <StackLayout
+                                    Grid.Row="1"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal"
+                                    VerticalOptions="FillAndExpand">
+                                    <Label
+                                        HorizontalOptions="FillAndExpand"
+                                        StyleClass="measurementProperty"
+                                        Text="Settings" />
+                                    <Label
+                                        d:Text="{Binding .}"
+                                        StyleClass="measurementPropertyValue"
+                                        Text="Expand" />
+                                </StackLayout>
+
+                                <ListView
+                                    Grid.Row="2"
+                                    HasUnevenRows="True"
+                                    ItemsSource="{Binding Status.Settings}">
+                                    <ListView.Behaviors>
+                                        <behaviour:AutoSizeBehavior />
+                                    </ListView.Behaviors>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+
+                                                    <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                                    <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
+
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                                <StackLayout
+                                    Grid.Row="3"
+                                    HorizontalOptions="FillAndExpand"
+                                    Orientation="Horizontal"
+                                    VerticalOptions="FillAndExpand">
+                                    <Label
+                                        HorizontalOptions="FillAndExpand"
+                                        StyleClass="measurementProperty"
+                                        Text="Measurements" />
+                                    <Label
+                                        d:Text="{Binding .}"
+                                        StyleClass="measurementPropertyValue"
+                                        Text="Expand" />
+                                </StackLayout>
+
+                                <!--  Measurement values  -->
+                                <ListView
+                                    Grid.Row="4"
+                                    HasUnevenRows="True"
+                                    ItemsSource="{Binding Values}">
+                                    <ListView.Behaviors>
+                                        <behaviour:AutoSizeBehavior />
+                                    </ListView.Behaviors>
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+
+                                                    <Label StyleClass="dictionary-key" Text="{Binding Path=Key}" />
+                                                    <Label StyleClass="dictionary-value" Text="{Binding Path=Value}" />
+
+                                                </StackLayout>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </Grid>
+    </Grid>
+
 </ContentPage>

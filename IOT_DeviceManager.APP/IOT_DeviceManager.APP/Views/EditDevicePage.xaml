@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="IOT_DeviceManager.APP.Views.EditDevicePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ContentPage.Resources>
+        <StyleSheet Source="/Assets/EditDevicePageStyles.css" />
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <FlexLayout Direction="Column">
+            <Label
+                StyleClass="label"
+                Text="DeviceName:"
+                VerticalOptions="CenterAndExpand" />
+            <Entry
+                x:Name="deviceNameEntry"
+                Placeholder="DeviceName"
+                StyleClass="entry"
+                Text="{Binding DeviceName}" />
+            <Label
+                StyleClass="label"
+                Text="DeviceType:"
+                VerticalOptions="CenterAndExpand" />
+            <Entry
+                x:Name="deviceTypeEntry"
+                Placeholder="DeviceName"
+                StyleClass="entry"
+                Text="{Binding DeviceType}" />
+            <Button
+                x:Name="saveButton"
+                Clicked="SaveButton_OnClicked"
+                StyleClass="saveBtn"
+                Text="Save" />
+            <Button
+                x:Name="deleteButton"
+                Clicked="DeleteButton_OnClicked"
+                StyleClass="deleteBtn"
+                Text="Delete" />
+        </FlexLayout>
+    </ContentPage.Content>
+</ContentPage>

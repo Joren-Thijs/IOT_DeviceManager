@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOT_DeviceManager.APP.UWP",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOT_DeviceManager.APP.Android", "IOT_DeviceManager.APP\IOT_DeviceManager.APP.Android\IOT_DeviceManager.APP.Android.csproj", "{E0583A87-02C6-47F6-972D-7304E38FF921}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOT_DeviceManager.APP", "IOT_DeviceManager.APP\IOT_DeviceManager.APP\IOT_DeviceManager.APP.csproj", "{2B170B6A-156D-495B-A395-11151584DAD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOT_DeviceManager.APP", "IOT_DeviceManager.APP\IOT_DeviceManager.APP\IOT_DeviceManager.APP.csproj", "{2B170B6A-156D-495B-A395-11151584DAD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,8 +99,6 @@ Global
 		{E0583A87-02C6-47F6-972D-7304E38FF921}.Release|x64.Build.0 = Release|Any CPU
 		{E0583A87-02C6-47F6-972D-7304E38FF921}.Release|x64.Deploy.0 = Release|Any CPU
 		{E0583A87-02C6-47F6-972D-7304E38FF921}.Release|x86.ActiveCfg = Release|Any CPU
-		{E0583A87-02C6-47F6-972D-7304E38FF921}.Release|x86.Build.0 = Release|Any CPU
-		{E0583A87-02C6-47F6-972D-7304E38FF921}.Release|x86.Deploy.0 = Release|Any CPU
 		{2B170B6A-156D-495B-A395-11151584DAD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2B170B6A-156D-495B-A395-11151584DAD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2B170B6A-156D-495B-A395-11151584DAD1}.Debug|ARM.ActiveCfg = Debug|Any CPU

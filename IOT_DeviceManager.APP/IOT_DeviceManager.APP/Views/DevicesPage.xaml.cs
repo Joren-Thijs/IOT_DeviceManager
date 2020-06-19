@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOT_DeviceManager.APP.DTO.Device;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,33 +19,40 @@ namespace IOT_DeviceManager.APP.Views
     [DesignTimeVisible(false)]
     public partial class DevicesPage : ContentPage
     {
-        DevicesViewModel viewModel;
+        readonly DevicesViewModel _viewModel;
 
         public DevicesPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new DevicesViewModel();
+            BindingContext = _viewModel = new DevicesViewModel();
+
+            _viewModel.WebClient.WebClientErrorEvent += WebClientOnWebClientErrorEvent;
+        }
+
+        private void WebClientOnWebClientErrorEvent(object sender, string e)
+        {
+            DisplayAlert("Error", e, "close");
         }
 
         async void OnItemSelected(object sender, EventArgs args)
         {
             var layout = (BindableObject)sender;
-            var item = (Item)layout.BindingContext;
-            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(item)));
+            var device = (DeviceDto)layout.BindingContext;
+            await Navigation.PushAsync(new DeviceDetailPage(new DeviceDetailViewModel(device)));
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        void Refresh_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
+            _viewModel.LoadItemsCommand.Execute(null);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
-                viewModel.IsBusy = true;
+            if (_viewModel.Devices.Count == 0)
+                _viewModel.IsBusy = true;
         }
     }
 }

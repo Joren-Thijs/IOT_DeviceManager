@@ -14,6 +14,8 @@ namespace IOT_DeviceManager.APP.ViewModels
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
+        public IWebClient WebClient { get; protected set; } = new WebClient();
+
         bool isBusy = false;
         public bool IsBusy
         {
