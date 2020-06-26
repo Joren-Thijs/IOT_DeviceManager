@@ -1,4 +1,5 @@
-﻿using IOT_DeviceManager.API.DTO.Interfaces;
+﻿using System;
+using IOT_DeviceManager.API.DTO.Interfaces;
 
 namespace IOT_DeviceManager.API.DTO.Device
 {
@@ -8,5 +9,7 @@ namespace IOT_DeviceManager.API.DTO.Device
         public string DeviceType { get; set; }
         public string DeviceName { get; set; }
         public IDeviceStatusDto Status { get; set; }
+        public DateTime LastSeen { get; set; }
+        public bool Online { get; set; }
     }
 }

@@ -50,15 +50,17 @@ namespace IOT_DeviceManager.API.Services
                 device = await AddDeviceToDeviceRepository(e);
             }
 
-            await UpdateCurrentDeviceStatus(e, device);
+            await UpdateCurrentDeviceStatus(e.DeviceMeasurement, device);
 
             await _deviceRepository.AddMeasurement(e.DeviceId, e.DeviceMeasurement);
             await _deviceRepository.Save();
         }
 
-        private async Task UpdateCurrentDeviceStatus(DeviceMeasurementEventArgs e, IDevice device)
+        private async Task UpdateCurrentDeviceStatus(IDeviceMeasurement deviceMeasurement, IDevice device)
         {
-            device.Status = e.DeviceMeasurement.Status;
+            device.Status = deviceMeasurement.Status;
+            device.LastSeen = deviceMeasurement.TimeStamp;
+            device.Online = true;
             await _deviceRepository.UpdateDevice(device);
             await _deviceRepository.Save();
         }
@@ -69,7 +71,9 @@ namespace IOT_DeviceManager.API.Services
             {
                 Id = e.DeviceId,
                 DeviceType = e.DeviceType,
-                Status = e.DeviceMeasurement.Status
+                Status = e.DeviceMeasurement.Status,
+                LastSeen = e.DeviceMeasurement.TimeStamp,
+                Online = true,
             };
 
             device = await _deviceRepository.AddDevice(device);
