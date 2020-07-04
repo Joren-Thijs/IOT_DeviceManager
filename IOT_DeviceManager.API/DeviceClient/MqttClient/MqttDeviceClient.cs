@@ -188,6 +188,7 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         {
             await _mqttClient.SubscribeAsync("+/+/request/+");
             await _mqttClient.SubscribeAsync("+/+/ms");
+            await _mqttClient.SubscribeAsync("+/+/disconnected");
         }
 
         public async Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status)
