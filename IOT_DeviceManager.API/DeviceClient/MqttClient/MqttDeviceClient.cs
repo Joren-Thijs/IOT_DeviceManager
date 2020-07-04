@@ -31,6 +31,8 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
 
         public event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
 
+        public event EventHandler<DeviceDisconnectedEventArgs> DeviceDisconnected;
+
         public MqttDeviceClient()
         {
             _mqttClientOptions = MqttDeviceClientOptionsLoader.LoadMqttClientOptions();
@@ -54,7 +56,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             Console.WriteLine("MQTT Client is connected");
             _mqttClient.UseDisconnectedHandler(OnMqttClientDisconnectedAsync);
             await MqttClientSubscribeToTopicsAsync();
-            await Task.CompletedTask;
         }
 
         private Task OnMqttRpcClientConnectedAsync(MqttClientConnectedEventArgs arg)
@@ -104,19 +105,17 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
         private async Task DistributeReceivedMessageToCorrectHandler(MqttApplicationMessage message)
         {
             if (message.Topic.EndsWith("/request/id"))
-            {
                 await HandleRespondToRequestId(message);
-            }
+
 
             if (message.Topic.EndsWith("/request/ping"))
-            {
                 await HandleRespondToRequestPing(message.Topic);
-            }
 
             if (message.Topic.EndsWith("/ms"))
-            {
                 HandleMeasurementReceived(message);
-            }
+
+            if (message.Topic.EndsWith("/diconnected"))
+                HandleDeviceDisconnected(message);
         }
 
         private async Task HandleRespondToRequestId(MqttApplicationMessage message)
@@ -148,7 +147,14 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
             var deviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
             IDeviceMeasurement measurement = MqttApplicationMessageHelper.GetDeviceMeasurementFromMessage(message);
             DeviceMeasurementEventArgs eventArgs = new DeviceMeasurementEventArgs(deviceType, deviceId, measurement);
-            OnDeviceMeasurementReceived(eventArgs);
+            DeviceMeasurementReceived?.Invoke(this, eventArgs);
+        }
+
+        private void HandleDeviceDisconnected(MqttApplicationMessage message)
+        {
+            var deviceId = MqttApplicationMessageHelper.GetDeviceIdFromMessage(message);
+            DeviceDisconnectedEventArgs eventArgs = new DeviceDisconnectedEventArgs(deviceId);
+            DeviceDisconnected?.Invoke(this, eventArgs);
         }
 
         public async Task StartClientAsync()
@@ -192,11 +198,6 @@ namespace IOT_DeviceManager.API.DeviceClient.MqttClient
                 MqttQualityOfServiceLevel.AtLeastOnce);
             var newStatus = MqttApplicationMessageHelper.GetDeviceStatusFromRcpAnswer(device, rcpAnswer);
             return newStatus;
-        }
-
-        public void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs)
-        {
-            DeviceMeasurementReceived?.Invoke(this, eventArgs);
         }
     }
 }

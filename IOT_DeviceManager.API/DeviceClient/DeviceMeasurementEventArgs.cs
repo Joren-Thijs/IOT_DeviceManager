@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IOT_DeviceManager.API.Entity.Interfaces;
+﻿using IOT_DeviceManager.API.Entity.Interfaces;
 
 namespace IOT_DeviceManager.API.DeviceClient
 {

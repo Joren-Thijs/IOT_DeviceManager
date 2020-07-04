@@ -41,7 +41,7 @@ class MQTTClient:
         self._client = mqtt.Client(client_id=settings.DEVICE_NAME, clean_session=False,
                                    userdata=None, transport="tcp")
         self._client.will_set(
-            self._deviceTopic + "/diconnect", payload="disconnected", qos=1, retain=False)
+            self._deviceTopic + "/diconnected", payload="disconnected", qos=1, retain=False)
 
     def setup_connection_handlers(self):
         self._client.on_connect = self.on_connect

@@ -10,6 +10,6 @@ namespace IOT_DeviceManager.API.DeviceClient
         Task StopClientAsync();
         Task<IDeviceStatus> SetDeviceStatus(IDevice device, IDeviceStatus status);
         event EventHandler<DeviceMeasurementEventArgs> DeviceMeasurementReceived;
-        void OnDeviceMeasurementReceived(DeviceMeasurementEventArgs eventArgs);
+        event EventHandler<DeviceDisconnectedEventArgs> DeviceDisconnected;
     }
 }

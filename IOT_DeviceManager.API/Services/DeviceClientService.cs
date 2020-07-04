@@ -25,6 +25,11 @@ namespace IOT_DeviceManager.API.Services
                 {
                     await DeviceClientOnDeviceMeasurementReceived(s, e);
                 });
+            _deviceClient.DeviceDisconnected += new EventHandler<DeviceDisconnectedEventArgs>(
+                async (s, e) =>
+                {
+                    await DeviceClientOnDeviceDisconnected(s, e);
+                });
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -79,6 +84,18 @@ namespace IOT_DeviceManager.API.Services
             device = await _deviceRepository.AddDevice(device);
             await _deviceRepository.Save();
             return device;
+        }
+
+        private async Task DeviceClientOnDeviceDisconnected(object s, DeviceDisconnectedEventArgs e)
+        {
+            var device = await _deviceRepository.GetDevice(e.DeviceId);
+            if (device != null)
+            {
+                device.Online = false;
+                device.LastSeen = DateTime.Now;
+                await _deviceRepository.UpdateDevice(device);
+                await _deviceRepository.Save();
+            }
         }
     }
 }
