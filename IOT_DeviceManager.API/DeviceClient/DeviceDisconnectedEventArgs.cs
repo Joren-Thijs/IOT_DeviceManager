@@ -1,6 +1,4 @@
-﻿using IOT_DeviceManager.API.Entity.Interfaces;
-
-namespace IOT_DeviceManager.API.DeviceClient
+﻿namespace IOT_DeviceManager.API.DeviceClient
 {
     public class DeviceDisconnectedEventArgs
     {
