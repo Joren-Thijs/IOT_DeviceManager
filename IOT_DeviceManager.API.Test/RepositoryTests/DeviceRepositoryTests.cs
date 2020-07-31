@@ -13,13 +13,14 @@ using IOT_DeviceManager.API.Helpers.Web;
 
 namespace IOT_DeviceManager.API.Test.RepositoryTests
 {
-    [TestFixture]
-    class DeviceInMemoryRepositoryTests
+    [TestFixture(typeof(DeviceInMemoryRepository))]
+    [TestFixture(typeof(DeviceMongoRepository))]
+    class DeviceRepositoryTests<TRepo> where TRepo : IDeviceRepository, new()
     {
-        DeviceInMemoryRepository repo;
-        IDevice device;
-        IDevice device2;
-        IDevice device3;
+        private IDeviceRepository repo;
+        private IDevice device;
+        private IDevice device2;
+        private IDevice device3;
         private IDeviceMeasurement measurement;
         private IDeviceMeasurement measurement2;
         private IDeviceMeasurement measurement3;
@@ -29,7 +30,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
-            repo = new DeviceInMemoryRepository();
+            repo = new TRepo();
             device = new Device
             {
                 Id = "1",
