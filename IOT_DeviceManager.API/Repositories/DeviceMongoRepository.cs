@@ -1,14 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Web;
+using MongoDB.Driver;
 
 namespace IOT_DeviceManager.API.Repositories
 {
 
     public class DeviceMongoRepository : IDeviceRepository
     {
+        private MongoClient _mongoClient;
+        private IMongoDatabase _database;
+        private IMongoCollection<Device> _deviceCollection;
+
+        public DeviceMongoRepository()
+        {
+            _mongoClient = new MongoClient();
+            _database = _mongoClient.GetDatabase("IOT_DeviceManager");
+            _deviceCollection = _database.GetCollection<Device>("Devices");
+        }
+
+        public DeviceMongoRepository(string connectionString)
+        {
+            _mongoClient = new MongoClient(connectionString);
+            _database = _mongoClient.GetDatabase("IOT_DeviceManager");
+            _deviceCollection = _database.GetCollection<Device>("Devices");
+        }
+
+        public DeviceMongoRepository(string connectionString, string databaseName)
+        {
+            _mongoClient = new MongoClient(connectionString);
+            _database = _mongoClient.GetDatabase(databaseName);
+            _deviceCollection = _database.GetCollection<Device>("Devices");
+        }
+
         public Task<IDevice> AddDevice(IDevice device)
         {
             throw new NotImplementedException();
