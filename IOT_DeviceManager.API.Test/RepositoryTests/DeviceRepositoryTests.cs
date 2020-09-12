@@ -30,9 +30,9 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
-            #if !DEBUG
-              Assert.Ignore();
-            #endif
+#if !DEBUG
+            Assert.Ignore("Not neccesarry.");
+#endif
             var config = ConfigurationHelper.GetConfiguration();
             repo = Activator.CreateInstance(typeof(TRepo), config) as TRepo;
             device = new Device
@@ -88,12 +88,15 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [TearDown]
         public void CleanUp()
         {
-            repo.DeleteMeasurement(measurement);
-            repo.DeleteMeasurement(measurement2);
-            repo.DeleteMeasurement(measurement3);
-            repo.DeleteDevice(device);
-            repo.DeleteDevice(device2);
-            repo.DeleteDevice(device3);
+            if (repo != null)
+            {
+                repo.DeleteMeasurement(measurement);
+                repo.DeleteMeasurement(measurement2);
+                repo.DeleteMeasurement(measurement3);
+                repo.DeleteDevice(device);
+                repo.DeleteDevice(device2);
+                repo.DeleteDevice(device3);
+            }
         }
 
         [Test]
