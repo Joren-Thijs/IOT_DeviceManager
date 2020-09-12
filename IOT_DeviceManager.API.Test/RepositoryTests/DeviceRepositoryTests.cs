@@ -30,6 +30,9 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
+            #if !DEBUG
+              Assert.Ignore();
+            #endif
             var config = ConfigurationHelper.GetConfiguration();
             repo = Activator.CreateInstance(typeof(TRepo), config) as TRepo;
             device = new Device
