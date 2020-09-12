@@ -20,4 +20,10 @@
     <ProjectReference Include="..\IOT_DeviceManager.API\IOT_DeviceManager.API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.Test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

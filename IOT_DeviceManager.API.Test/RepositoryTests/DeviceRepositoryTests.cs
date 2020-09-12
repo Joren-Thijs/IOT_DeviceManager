@@ -15,7 +15,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
 {
     [TestFixture(typeof(DeviceInMemoryRepository))]
     [TestFixture(typeof(DeviceMongoRepository))]
-    class DeviceRepositoryTests<TRepo> where TRepo : IDeviceRepository, new()
+    class DeviceRepositoryTests<TRepo> where TRepo : class, IDeviceRepository
     {
         private IDeviceRepository repo;
         private IDevice device;
@@ -30,7 +30,8 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
-            repo = new TRepo();
+            var config = ConfigurationHelper.GetConfiguration();
+            repo = Activator.CreateInstance(typeof(TRepo), config) as TRepo;
             device = new Device
             {
                 Id = "1",

@@ -7,12 +7,15 @@ using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Exceptions;
 using IOT_DeviceManager.API.Helpers.Reflection;
 using IOT_DeviceManager.API.Helpers.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace IOT_DeviceManager.API.Repositories
 {
     public class DeviceInMemoryRepository : IDeviceRepository
     {
         private static readonly List<IDevice> _devices = new List<IDevice>();
+
+        public DeviceInMemoryRepository(IConfiguration configuration) { }
 
         public Task<IEnumerable<IDevice>> GetDevices()
         {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using IOT_DeviceManager.API.Entity.Device;
 using IOT_DeviceManager.API.Entity.Interfaces;
 using IOT_DeviceManager.API.Helpers.Web;
+using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 
 namespace IOT_DeviceManager.API.Repositories
@@ -15,24 +16,10 @@ namespace IOT_DeviceManager.API.Repositories
         private IMongoDatabase _database;
         private IMongoCollection<Device> _deviceCollection;
 
-        public DeviceMongoRepository()
+        public DeviceMongoRepository(IConfiguration configuration)
         {
-            _mongoClient = new MongoClient();
-            _database = _mongoClient.GetDatabase("IOT_DeviceManager");
-            _deviceCollection = _database.GetCollection<Device>("Devices");
-        }
-
-        public DeviceMongoRepository(string connectionString)
-        {
-            _mongoClient = new MongoClient(connectionString);
-            _database = _mongoClient.GetDatabase("IOT_DeviceManager");
-            _deviceCollection = _database.GetCollection<Device>("Devices");
-        }
-
-        public DeviceMongoRepository(string connectionString, string databaseName)
-        {
-            _mongoClient = new MongoClient(connectionString);
-            _database = _mongoClient.GetDatabase(databaseName);
+            _mongoClient = new MongoClient(configuration.GetConnectionString("deviceDb"));
+            _database = _mongoClient.GetDatabase(configuration.GetSection("Databases").GetValue<string>("deviceDb"));
             _deviceCollection = _database.GetCollection<Device>("Devices");
         }
 
