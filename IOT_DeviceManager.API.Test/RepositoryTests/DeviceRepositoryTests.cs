@@ -31,14 +31,14 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
-            var config = ConfigurationHelper.GetConfiguration();
-
             if (Environment.GetEnvironmentVariable("CI") == "true")
             {
-                Assert.Ignore("ignoring db tests");
+                Assert.Ignore("Ignoring db tests");
             }
 
+            var config = ConfigurationHelper.GetConfiguration();
             repo = Activator.CreateInstance(typeof(TRepo), config) as TRepo;
+
             device = new Device
             {
                 Id = "1",
