@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -30,10 +31,13 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         [SetUp]
         public void Init()
         {
-#if !DEBUG
-            Assert.Ignore("Not neccesarry.");
-#endif
             var config = ConfigurationHelper.GetConfiguration();
+
+            if (Environment.GetEnvironmentVariable("CI") == "true")
+            {
+                Assert.Ignore("ignoring db tests");
+            }
+
             repo = Activator.CreateInstance(typeof(TRepo), config) as TRepo;
             device = new Device
             {
