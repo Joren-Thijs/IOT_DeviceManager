@@ -347,3 +347,6 @@ healthchecksdb
 
 # ignore UI/UX Designs
 .design/
+
+# ignore local db data
+.dev/

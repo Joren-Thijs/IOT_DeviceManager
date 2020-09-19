@@ -41,20 +41,20 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
 
             device = new Device
             {
-                Id = "1",
+                Id = Guid.NewGuid().ToString(),
                 DeviceType = "device",
                 DeviceName = "Device 1",
                 Status = status
             };
             device2 = new Device
             {
-                Id = "2",
+                Id = Guid.NewGuid().ToString(),
                 DeviceType = "device",
                 DeviceName = "Device 2"
             };
             device3 = new Device
             {
-                Id = "3",
+                Id = Guid.NewGuid().ToString(),
                 DeviceType = "device",
                 DeviceName = "Device 3"
             };
@@ -104,7 +104,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
-        public void CheckDeviceInMemoryRepositoryCanBeCreated_ReturnsTrue()
+        public void CheckDeviceRepositoryCanBeCreated_ReturnsTrue()
         {
             Assert.IsNotNull(repo);
         }
@@ -723,7 +723,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             await repo.Save();
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
-            retrievedMeasurement.Should().BeEquivalentTo(measurement);
+            Assert.AreEqual(retrievedMeasurement.Id, measurement.Id);
         }
 
         [Test]
@@ -788,7 +788,7 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
         }
 
         [Test]
-        public async Task CheckMeasurementCanBeRetrievedAndHasCorrectDeviceId_ReturnsTrueAsync()
+        public async Task CheckMeasurementHasCorrectDeviceId_ReturnsTrueAsync()
         {
             await repo.AddDevice(device);
             await repo.Save();
@@ -798,7 +798,6 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
 
             var retrievedMeasurement = await repo.GetMeasurement(device.Id, measurement.Id);
             Assert.AreEqual(device.Id, retrievedMeasurement.DeviceId);
-            retrievedMeasurement.Device.Should().BeEquivalentTo(device);
         }
 
         [Test]
@@ -840,10 +839,10 @@ namespace IOT_DeviceManager.API.Test.RepositoryTests
             var retrievedMeasurements = await repo.GetMeasurements(device.Id);
             var retrievedMeasurements2 = await repo.GetMeasurements(device2.Id);
 
-            retrievedMeasurements.First().Should().BeEquivalentTo(measurement);
+            Assert.AreEqual(retrievedMeasurements.First().Id, measurement.Id);
             Assert.AreEqual(1, retrievedMeasurements.Count());
 
-            retrievedMeasurements2.First().Should().BeEquivalentTo(measurement2);
+            Assert.AreEqual(retrievedMeasurements2.First().Id, measurement2.Id);
             Assert.AreEqual(1, retrievedMeasurements2.Count());
         }
 

@@ -37,6 +37,36 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "compose-up-test",
+            "type": "shell",
+            "command": "docker-compose -f docker-compose.test.yml up -d --build"
+        },
+        {
+            "label": "execute tests",
+            "dependsOn": "compose-up-test",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "test",
+                "${workspaceFolder}/IOT_DeviceManager.API.Test/IOT_DeviceManager.API.Test.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "compose-down-test",
+            "dependsOn": "execute tests",
+            "type": "shell",
+            "command": "docker-compose -f docker-compose.test.yml up -d --build"
+        },
+        {
+            "label": "Run all Tests",
+            "dependsOn": "compose-down-test",
+            "type": "shell",
+            "command": "echo All Tests have been executed"
         }
     ]
 }
